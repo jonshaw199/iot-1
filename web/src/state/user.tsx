@@ -5,7 +5,7 @@ import { AuthRequest, Nullable, User } from "../serverTypes";
 import { getList, get, create, remove, update, auth } from "../api/user";
 import useReducerWithActions from "../hooks/useReducerWithActions";
 
-export enum UserActionType {
+enum UserActionType {
   GET_LIST = "GET_LIST",
   GET = "GET",
   UPDATE = "UPDATE",
