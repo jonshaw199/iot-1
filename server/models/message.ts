@@ -10,14 +10,4 @@ const messageSchema = new mongoose.Schema<Message>({
   orgId: { type: mongoose.Schema.Types.ObjectId, ref: "Org" },
 });
 
-// Duplicate the ID field.
-messageSchema.virtual("id").get(function () {
-  return this._id.toHexString();
-});
-
-// Ensure virtual fields are serialised.
-messageSchema.set("toJSON", {
-  virtuals: true,
-});
-
 export default mongoose.model<Message>("Message", messageSchema);

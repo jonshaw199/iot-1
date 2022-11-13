@@ -29,7 +29,7 @@ export function useWebsocket({
     }
   }, [url, onOpen, onRecv]);
 
-  const send = useCallback((m: Message) => {
+  const send = useCallback((m: Omit<Message, "_id">) => {
     if (client.current?.readyState === w3cwebsocket.OPEN) {
       client.current.send(m);
     } else {
@@ -54,7 +54,7 @@ export function useAF1Websocket({
   onRecv?: (msg: Message) => void;
 }) {
   const onOpenInternal = useCallback(() => {
-    const m: InfoMessage = {
+    const m: Omit<InfoMessage, "_id"> = {
       senderID: Number(process.env.REACT_APP_DEVICE_ID),
       type: MessageType.TYPE_INFO,
       info: {

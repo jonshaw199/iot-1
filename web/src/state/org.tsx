@@ -52,7 +52,7 @@ const orgReducer: Reducer<OrgState, Action<OrgPayload>> = (state, action) => {
           state = {
             ...state,
             orgs: new Map(state.orgs).set(
-              action.payload.org.id,
+              action.payload.org._id.toString(),
               action.payload.org
             ),
           };
@@ -65,7 +65,7 @@ const orgReducer: Reducer<OrgState, Action<OrgPayload>> = (state, action) => {
           state = {
             ...state,
             orgs: action.payload.orgs.reduce(
-              (prev, cur) => prev.set(cur.id, cur),
+              (prev, cur) => prev.set(cur._id, cur),
               new Map()
             ),
           };

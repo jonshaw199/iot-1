@@ -91,7 +91,7 @@ function MessageTableRow({ org }: { org: Org }) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {org.id}
+          {org._id.toString()}
         </TableCell>
       </TableRow>
       <TableRow>

@@ -127,7 +127,7 @@ function UsersTableRow({ user }: { user: User }) {
               <Button
                 variant="outlined"
                 color="error"
-                onClick={() => remove(user.id)}
+                onClick={() => remove(user._id.toString())}
               >
                 Delete
               </Button>

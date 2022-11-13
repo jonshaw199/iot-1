@@ -95,7 +95,7 @@ const userReducer: Reducer<UserState, Action<UserPayload>> = (
           state = {
             ...state,
             users: new Map(state.users).set(
-              action.payload.user.id,
+              action.payload.user._id.toString(),
               action.payload.user
             ),
           };
@@ -107,7 +107,7 @@ const userReducer: Reducer<UserState, Action<UserPayload>> = (
       case UserActionType.REMOVE:
         if (action.payload?.user) {
           state = { ...state, users: new Map(state.users) };
-          state.users.delete(action.payload.user.id);
+          state.users.delete(action.payload.user._id.toString());
         } else {
           throw new Error("No user removed");
         }
@@ -117,7 +117,7 @@ const userReducer: Reducer<UserState, Action<UserPayload>> = (
           state = {
             ...state,
             users: action.payload.users.reduce(
-              (prev, cur) => prev.set(cur.id, cur),
+              (prev, cur) => prev.set(cur._id, cur),
               new Map()
             ),
           };

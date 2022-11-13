@@ -51,6 +51,7 @@ export type Message = {
   transportType?: TransportType | number;
   senderID: number;
   orgId: ObjectId;
+  _id: ObjectId;
 };
 
 export type InfoMessage = Message & {
@@ -72,12 +73,12 @@ export type User = {
   name: string;
   email: string;
   password: string;
-  id: string;
+  _id: ObjectId;
   orgId: ObjectId;
 };
 
 export type Org = {
-  id: string;
+  _id: ObjectId;
 };
 
 // API
