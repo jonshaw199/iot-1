@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -12,14 +12,39 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import { Collapse, IconButton } from "@mui/material";
+import {
+  Button,
+  Collapse,
+  IconButton,
+  TextField,
+  useTheme,
+} from "@mui/material";
 
 import { Org } from "../serverTypes";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Box } from "@mui/system";
+import { GlobalOrgContext } from "../state/org";
+
+const Error = styled("div")(({ theme }) => ({
+  color: "red",
+  paddingTop: theme.spacing(1),
+}));
 
 function NewOrg() {
+  const theme = useTheme();
+  const { create } = useContext(GlobalOrgContext);
+  const [error, setError] = useState("");
+  const [name, setName] = useState("");
+
+  const submit = useCallback(() => {
+    try {
+      create({});
+    } catch (e) {
+      setError(String(e));
+    }
+  }, [create]);
+
   return (
     <div>
       <Accordion>
@@ -31,10 +56,20 @@ function NewOrg() {
           <Typography>New Org</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <Box display="flex" gap={1} flexWrap="wrap">
+            <TextField
+              required
+              label="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Box>
+          {error && <Error>{error}</Error>}
+          <Box pt={theme.spacing(1)}>
+            <Button variant="outlined" onClick={() => submit()}>
+              Submit
+            </Button>
+          </Box>
         </AccordionDetails>
       </Accordion>
     </div>
@@ -71,7 +106,13 @@ function MessageTableRow({ org }: { org: Org }) {
 }
 
 function OrgTable() {
-  const [orgs] = useState<Org[]>([{ id: "" }]);
+  const { orgs: orgMap, getList } = useContext(GlobalOrgContext);
+
+  useEffect(() => {
+    getList();
+  }, [getList]);
+
+  const orgs = useMemo(() => Array.from(orgMap.values()), [orgMap]);
 
   return (
     <TableContainer component={Paper}>
@@ -79,9 +120,7 @@ function OrgTable() {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Sender ID</TableCell>
-            <TableCell>Type</TableCell>
-            <TableCell>State</TableCell>
+            <TableCell>Org ID</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

@@ -90,7 +90,7 @@ export function useOrgState() {
   });
 }
 
-export const GlobalOrgState = createContext({
+export const GlobalOrgContext = createContext({
   ...initialOrgState,
   ...orgActionCreators,
 });

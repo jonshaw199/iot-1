@@ -14,6 +14,7 @@ import { useMemo } from "react";
 import Login from "./components/Login";
 // import { useAF1Websocket } from "./hooks/useWebsocket";
 import Orgs from "./components/Orgs";
+import { GlobalOrgContext, useOrgState } from "./state/org";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -75,6 +76,7 @@ function App() {
   const userState = useUserState();
   const { token, currentUser, loadToken } = userState;
   const loggedIn = useMemo(() => token && currentUser, [token, currentUser]);
+  const orgState = useOrgState();
 
   useEffect(() => {
     loadToken();
@@ -83,9 +85,11 @@ function App() {
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <GlobalUserContext.Provider value={userState}>
-          <Outer>{loggedIn ? <LoggedIn /> : <Login />}</Outer>
-        </GlobalUserContext.Provider>
+        <GlobalOrgContext.Provider value={orgState}>
+          <GlobalUserContext.Provider value={userState}>
+            <Outer>{true ? <LoggedIn /> : <Login />}</Outer>
+          </GlobalUserContext.Provider>
+        </GlobalOrgContext.Provider>
       </ThemeProvider>
     </Router>
   );

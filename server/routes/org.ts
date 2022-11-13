@@ -1,5 +1,5 @@
 import express from "express";
-import * as orgCtrl from "../controllers/message";
+import * as orgCtrl from "../controllers/org";
 import { verifyToken } from "../controllers/user";
 
 const orgRouter = express.Router();
