@@ -36,10 +36,10 @@ const initialUserState: UserState = {
 
 type UserActionCreators = {
   getList: () => Promise<Action<UserPayload>>;
-  get: (uuid: string) => Promise<Action<UserPayload>>;
+  get: (id: string) => Promise<Action<UserPayload>>;
   create: (user: Partial<User>) => Promise<Action<UserPayload>>;
-  update: (uuid: string, user: Partial<User>) => Promise<Action<UserPayload>>;
-  remove: (uuid: string) => Promise<Action<UserPayload>>;
+  update: (id: string, user: Partial<User>) => Promise<Action<UserPayload>>;
+  remove: (id: string) => Promise<Action<UserPayload>>;
   auth: (cred: AuthRequest) => Promise<Action<UserPayload>>;
   logout: () => Action;
   loadToken: () => Action;
@@ -51,8 +51,8 @@ const userActionCreators: UserActionCreators = {
       type: UserActionType.GET_LIST,
       payload: { users },
     })),
-  get: (uuid: string) =>
-    get(uuid).then(({ user }) => ({
+  get: (id: string) =>
+    get(id).then(({ user }) => ({
       type: UserActionType.GET,
       payload: { user },
     })),
@@ -61,13 +61,13 @@ const userActionCreators: UserActionCreators = {
       type: UserActionType.CREATE,
       payload: { user, token },
     })),
-  update: (uuid: string, user: Partial<User>) =>
-    update(uuid, user).then(({ user }) => ({
+  update: (id: string, user: Partial<User>) =>
+    update(id, user).then(({ user }) => ({
       type: UserActionType.UPDATE,
       payload: { user },
     })),
-  remove: (uuid: string) =>
-    remove(uuid).then(({ user }) => ({
+  remove: (id: string) =>
+    remove(id).then(({ user }) => ({
       type: UserActionType.REMOVE,
       payload: { user },
     })),
@@ -94,7 +94,7 @@ const userReducer: Reducer<UserState, Action<UserPayload>> = (
           state = {
             ...state,
             users: new Map(state.users).set(
-              action.payload.user.uuid,
+              action.payload.user.id,
               action.payload.user
             ),
           };
@@ -106,7 +106,7 @@ const userReducer: Reducer<UserState, Action<UserPayload>> = (
       case UserActionType.REMOVE:
         if (action.payload?.user) {
           state = { ...state, users: new Map(state.users) };
-          state.users.delete(action.payload.user.uuid);
+          state.users.delete(action.payload.user.id);
         } else {
           throw new Error("No user removed");
         }
@@ -116,7 +116,7 @@ const userReducer: Reducer<UserState, Action<UserPayload>> = (
           state = {
             ...state,
             users: action.payload.users.reduce(
-              (prev, cur) => prev.set(cur.uuid, cur),
+              (prev, cur) => prev.set(cur.id, cur),
               new Map()
             ),
           };

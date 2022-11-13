@@ -29,7 +29,7 @@ userSchema.pre("save", function (next) {
 });
 
 // Duplicate the ID field.
-userSchema.virtual("uuid").get(function () {
+userSchema.virtual("id").get(function () {
   return this._id.toHexString();
 });
 

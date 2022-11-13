@@ -127,7 +127,7 @@ function UsersTableRow({ user }: { user: User }) {
               <Button
                 variant="outlined"
                 color="error"
-                onClick={() => remove(user.uuid)}
+                onClick={() => remove(user.id)}
               >
                 Delete
               </Button>

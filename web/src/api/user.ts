@@ -17,8 +17,8 @@ export function create(user: Partial<User>) {
   });
 }
 
-export function update(uuid: string, user: Partial<User>) {
-  return req<UserResponse>(`/user${uuid}`, {
+export function update(id: string, user: Partial<User>) {
+  return req<UserResponse>(`/user${id}`, {
     method: "PUT",
     body: JSON.stringify(user),
     headers: {
@@ -27,8 +27,8 @@ export function update(uuid: string, user: Partial<User>) {
   });
 }
 
-export function remove(uuid: string) {
-  return req<UserResponse>(`/user/${uuid}`, {
+export function remove(id: string) {
+  return req<UserResponse>(`/user/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -40,8 +40,8 @@ export function getList() {
   return req<User[]>("/user");
 }
 
-export function get(uuid: string) {
-  return req<UserResponse>(`/user/${uuid}`);
+export function get(id: string) {
+  return req<UserResponse>(`/user/${id}`);
 }
 
 export function auth(body: AuthRequest) {
