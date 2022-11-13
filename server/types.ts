@@ -89,17 +89,23 @@ export type AuthRequest = {
 
 export type AuthResponse = {
   success: boolean;
-  message: string;
+  msg: string;
   token: string;
   user: User;
 };
 
 export type UserResponse = {
-  message: string;
+  msg: string;
   success: boolean;
   user: User;
 };
 
 export type CreateUserResponse = UserResponse & {
   token: string;
+};
+
+export type CreateOrgResponse = {
+  success: boolean;
+  msg: string;
+  org: Org;
 };
