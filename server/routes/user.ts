@@ -3,9 +3,9 @@ import * as usersCtrl from "../controllers/user";
 
 const usersRouter = express.Router();
 
-usersRouter.route("/").get(usersCtrl.index).post(usersCtrl.create);
-
 usersRouter.post("/authenticate", usersCtrl.authenticate);
+
+usersRouter.route("/").get(usersCtrl.index).post(usersCtrl.create);
 
 usersRouter.use(usersCtrl.verifyToken);
 
