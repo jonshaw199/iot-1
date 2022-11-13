@@ -23,7 +23,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Box } from "@mui/system";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import { User } from "@backend/types";
+import { User } from "../serverTypes";
 import { GlobalUserContext } from "../state/user";
 import { useEffect } from "react";
 

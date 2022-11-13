@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { w3cwebsocket, w3cwebsocket as W3CWebSocket } from "websocket";
 
-import { InfoMessage, MessageType, TransportType } from "@backend/types";
+import { InfoMessage, MessageType, TransportType } from "../serverTypes";
 
 export default function WS({
   url,

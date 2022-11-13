@@ -1,4 +1,4 @@
-import { Nullable } from "@backend/types";
+import { Nullable } from "../serverTypes";
 
 export async function req<T>(path: string, options?: Nullable<RequestInit>) {
   const optionsInternal = {

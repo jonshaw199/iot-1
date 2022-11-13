@@ -1,4 +1,4 @@
-import { Message, User } from "@backend/types";
+import { Message, User } from "./serverTypes";
 
 export type GlobalContext = {
   messages: Message[];

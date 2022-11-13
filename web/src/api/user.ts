@@ -4,7 +4,7 @@ import {
   AuthResponse,
   AuthRequest,
   CreateUserResponse,
-} from "@backend/types";
+} from "../serverTypes";
 import { req } from "./api";
 
 export function create(user: Partial<User>) {

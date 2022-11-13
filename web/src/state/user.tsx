@@ -1,7 +1,7 @@
 import { Reducer, createContext } from "react";
 
 import { Action } from "../types";
-import { AuthRequest, User } from "@backend/types";
+import { AuthRequest, User } from "../serverTypes";
 import { getList, get, create, remove, update, auth } from "../api/user";
 import useReducerWithActions from "../hooks/useReducerWithActions";
 
