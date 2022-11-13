@@ -7,12 +7,12 @@ import Dashboard from "./components/Dashboard";
 import Messages from "./components/Messages";
 import theme from "./theme";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import WS from "./components/WS";
 import Users from "./components/Users";
 import Settings from "./components/Settings";
 import { GlobalUserContext, useUserState } from "./state/user";
 import { useMemo } from "react";
 import Login from "./components/Login";
+import useWebsocket from "./hooks/useWebsocket";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -44,8 +44,11 @@ function App() {
   const [open, setOpen] = useState(false);
   const userState = useUserState();
   const { token, loadToken } = userState;
-
   const loggedIn = useMemo(() => !!token, [token]);
+  useWebsocket({
+    url: `ws://127.0.0.1:3000/lights/ws?orgId=${orgId}&deviceId=${deviceId}`,
+    onRecv: (m) => console.log(m),
+  });
 
   useEffect(() => {
     loadToken();
@@ -71,9 +74,6 @@ function App() {
                     <Route path="settings/" element={<Settings />} />
                   </Routes>
                 </Main>
-                <WS
-                  url={`ws://127.0.0.1:3000/lights/ws?orgId=${orgId}&deviceId=${deviceId}`}
-                />
               </>
             ) : (
               <Login />
