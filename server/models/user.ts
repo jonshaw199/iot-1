@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema<User>({
   name: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  orgId: { type: mongoose.Schema.Types.ObjectId, ref: "Org" },
 });
 
 // adds a method to a user document object to create a hashed password

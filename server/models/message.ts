@@ -7,6 +7,7 @@ const messageSchema = new mongoose.Schema<Message>({
   senderID: { type: Number, required: true },
   type: { type: Number, required: true },
   transportType: { type: Number },
+  orgId: { type: mongoose.Schema.Types.ObjectId, ref: "Org" },
 });
 
 // Duplicate the ID field.
