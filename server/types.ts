@@ -67,12 +67,14 @@ export type Request = Req & {
   user: Nullable<Document<User>>;
 };
 
-// Model interfaces
-
 export type User = {
   name: string;
   email: string;
   password: string;
+  id: string;
+};
+
+export type Org = {
   id: string;
 };
 
