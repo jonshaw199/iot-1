@@ -1,12 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { w3cwebsocket, w3cwebsocket as W3CWebSocket } from "websocket";
 
-import {
-  InfoMessage,
-  MessageType,
-  TransportType,
-  Message,
-} from "../serverTypes";
+import { InfoMessage, MessageType, Message } from "../serverTypes";
 
 export default function useWebsocket({
   url,
