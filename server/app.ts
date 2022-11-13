@@ -12,7 +12,6 @@ const app = baseApp as unknown as Application;
 dotenv.config();
 
 import lightsRouter from "./routes/lights";
-import rcRouter from "./routes/rc";
 import usersRouter from "./routes/user";
 import Connections from "./connections";
 import { Request, WebSocket } from "./types";
@@ -61,8 +60,6 @@ app.ws("*", (w: WS, req: Request, next) => {
 app.use(express.json());
 
 app.use("/lights", lightsRouter);
-
-app.use("/rc", rcRouter);
 
 app.use("/user", usersRouter);
 

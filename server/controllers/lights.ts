@@ -1,7 +1,9 @@
+import { Response } from "express";
+
 import { MessageType, WebSocket, Request } from "../types";
 import Connections from "../connections";
 
-export const handleLightsReq = (ws: WebSocket, req: Request) => {
+export const handleLightsWSReq = (ws: WebSocket, req: Request) => {
   ws.on("message", (m) => {
     process.stdout.write("<");
     const msg = JSON.parse(m.toString());
@@ -33,4 +35,18 @@ export const handleLightsReq = (ws: WebSocket, req: Request) => {
   ws.on("close", () => {
     console.log("Closing /lights/ws");
   });
+};
+
+export const handleRcReq = (req: Request, res: Response) => {
+  if (req.body.type === MessageType.TYPE_CHANGE_STATE) {
+    console.log("Sending state change messages: " + req.body.state);
+    const msg = JSON.stringify(req.body);
+    const c = Connections.getLightsClients(req.params.orgId);
+    c.forEach((client: any) => {
+      client.send(msg);
+      console.log("sent");
+    });
+    return res.send(`/rc: state change notification messages sent`);
+  }
+  res.send("/rc: message type not recognized");
 };
