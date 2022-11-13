@@ -29,7 +29,7 @@ export const create = (req, res) => {
     const token = signToken(user);
     res.json({
       success: true,
-      message: "User created. Token attached.",
+      msg: "User created. Token attached.",
       token,
       user,
     });
@@ -41,7 +41,7 @@ export const update = (req, res) => {
   userModel.findById(req.params.id, (err, user) => {
     Object.assign(user, req.body);
     user.save((err, updatedUser) => {
-      res.json({ success: true, message: "User updated.", user });
+      res.json({ success: true, msg: "User updated.", user });
     });
   });
 };
@@ -49,7 +49,7 @@ export const update = (req, res) => {
 // delete an existing user
 export const destroy = (req, res) => {
   userModel.findByIdAndRemove(req.params.id, (err, user) => {
-    res.json({ success: true, message: "User deleted.", user });
+    res.json({ success: true, msg: "User deleted.", user });
   });
 };
 
@@ -60,11 +60,11 @@ export const authenticate = (req, res) => {
     // if there's no user or the password is invalid
     if (!user || !user.validPassword(req.body.password)) {
       // deny access
-      return res.json({ success: false, message: "Invalid credentials." });
+      return res.json({ success: false, msg: "Invalid credentials." });
     }
 
     const token = signToken(user);
-    res.json({ success: true, message: "Token attached.", token });
+    res.json({ success: true, msg: "Token attached.", token });
   });
 };
 
@@ -83,15 +83,15 @@ export function verifyToken(req: Request, res: Response, next) {
   // grab token from either headers, req.body, or query string
   const token = req.get("token") || req.body.token || req.query.token;
   // if no token present, deny access
-  if (!token) return res.json({ success: false, message: "No token provided" });
+  if (!token) return res.json({ success: false, msg: "No token provided" });
   // otherwise, try to verify token
   jwt.verify(token, JWT_SECRET, (err, decodedData) => {
     // if problem with token verification, deny access
-    if (err) return res.json({ success: false, message: "Invalid token." });
+    if (err) return res.json({ success: false, msg: "Invalid token." });
     // otherwise, search for user by id that was embedded in token
     userModel.findById(decodedData._id, (err, user) => {
       // if no user, deny access
-      if (!user) return res.json({ success: false, message: "Invalid token." });
+      if (!user) return res.json({ success: false, msg: "Invalid token." });
       // otherwise, add user to req object
       req.user = user;
       // go on to process the route:

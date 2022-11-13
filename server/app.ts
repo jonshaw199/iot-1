@@ -15,6 +15,8 @@ import lightsRouter from "./routes/lights";
 import usersRouter from "./routes/user";
 import Connections from "./connections";
 import { Request, WebSocket } from "./types";
+import orgRouter from "./routes/org";
+import messageRouter from "./routes/message";
 
 Connections.init(expressWs);
 
@@ -60,8 +62,9 @@ app.ws("*", (w: WS, req: Request, next) => {
 app.use(express.json());
 
 app.use("/lights", lightsRouter);
-
 app.use("/user", usersRouter);
+app.use("/org", orgRouter);
+app.use("/message", messageRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
