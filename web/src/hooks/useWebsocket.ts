@@ -26,11 +26,11 @@ export default function useWebsocket({
         console.log("WS connected");
         if (sendInfo) {
           const m: InfoMessage = {
-            state: -1,
             senderID: Number(process.env.REACT_APP_DEVICE_ID),
             type: MessageType.TYPE_INFO,
-            info: {},
-            transportType: TransportType.TRANSPORT_WEBSOCKET,
+            info: {
+              webClient: true,
+            },
           };
           client.current?.send(JSON.stringify(m));
         }

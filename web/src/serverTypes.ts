@@ -46,9 +46,9 @@ export type Info = {
 };
 
 export type Message = {
-  state: State | number;
+  state?: State | number;
   type: MessageType | number;
-  transportType: TransportType | number;
+  transportType?: TransportType | number;
   senderID: number;
 };
 
