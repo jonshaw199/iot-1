@@ -21,6 +21,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsIcon from "@mui/icons-material/Settings";
 import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
+import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import { Link } from "react-router-dom";
 import { GlobalUserContext } from "../state/user";
 
@@ -131,6 +132,7 @@ export default function Nav({
           <NavItem text="Messages" link="messages/" icon={<InboxIcon />} />
           <NavItem text="Settings" link="settings/" icon={<SettingsIcon />} />
           <NavItem text="Users" link="users/" icon={<GroupIcon />} />
+          <NavItem text="Orgs" link="orgs/" icon={<HomeWorkIcon />} />
         </List>
         <Divider />
         <List>

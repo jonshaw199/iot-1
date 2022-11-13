@@ -64,7 +64,7 @@ export const authenticate = (req, res) => {
     }
 
     const token = signToken(user);
-    res.json({ success: true, msg: "Token attached.", token });
+    res.json({ success: true, msg: "Token attached.", token, user });
   });
 };
 

@@ -1,7 +1,7 @@
 import { Reducer, createContext } from "react";
 
 import { Action } from "../types";
-import { AuthRequest, User } from "../serverTypes";
+import { AuthRequest, Nullable, User } from "../serverTypes";
 import { getList, get, create, remove, update, auth } from "../api/user";
 import useReducerWithActions from "../hooks/useReducerWithActions";
 
@@ -26,6 +26,7 @@ type UserState = {
   users: Map<string, User>;
   errorMsg: string;
   token: string;
+  currentUser?: Nullable<User>;
 };
 
 const initialUserState: UserState = {
@@ -72,9 +73,9 @@ const userActionCreators: UserActionCreators = {
       payload: { user },
     })),
   auth: (cred: AuthRequest) =>
-    auth(cred).then(({ token }) => ({
+    auth(cred).then(({ token, user }) => ({
       type: UserActionType.AUTH,
-      payload: { token },
+      payload: { token, user },
     })),
   logout: () => ({ type: UserActionType.LOGOUT }),
   loadToken: () => ({ type: UserActionType.LOAD_TOKEN }),
@@ -129,6 +130,7 @@ const userReducer: Reducer<UserState, Action<UserPayload>> = (
           state = {
             ...state,
             token: action.payload.token,
+            currentUser: action.payload.user,
           };
           localStorage.setItem("token", action.payload.token);
         } else {

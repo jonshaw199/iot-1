@@ -13,13 +13,13 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { Collapse, IconButton } from "@mui/material";
+
+import { Org } from "../serverTypes";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Box } from "@mui/system";
 
-import { Message } from "../serverTypes";
-
-function NewMessage() {
+function NewOrg() {
   return (
     <div>
       <Accordion>
@@ -28,7 +28,7 @@ function NewMessage() {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>New Message</Typography>
+          <Typography>New Org</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -41,7 +41,7 @@ function NewMessage() {
   );
 }
 
-function MessageTableRow({ message }: { message: Message }) {
+function MessageTableRow({ org }: { org: Org }) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -56,15 +56,13 @@ function MessageTableRow({ message }: { message: Message }) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {message.senderID}
+          {org.id}
         </TableCell>
-        <TableCell>{message.type}</TableCell>
-        <TableCell>{message.state}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>Message</Box>
+            <Box sx={{ margin: 1 }}>Org</Box>
           </Collapse>
         </TableCell>
       </TableRow>
@@ -72,8 +70,8 @@ function MessageTableRow({ message }: { message: Message }) {
   );
 }
 
-function MessageTable() {
-  const [messages] = useState<Message[]>([]);
+function OrgTable() {
+  const [orgs] = useState<Org[]>([{ id: "" }]);
 
   return (
     <TableContainer component={Paper}>
@@ -87,8 +85,8 @@ function MessageTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {messages.map((message, i) => (
-            <MessageTableRow message={message} key={i} />
+          {orgs.map((org, i) => (
+            <MessageTableRow org={org} key={i} />
           ))}
         </TableBody>
       </Table>
@@ -102,11 +100,11 @@ const Container = styled("div")(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-export default function Messages() {
+export default function Orgs() {
   return (
     <Container>
-      <NewMessage />
-      <MessageTable />
+      <NewOrg />
+      <OrgTable />
     </Container>
   );
 }

@@ -91,6 +91,7 @@ export type AuthResponse = {
   success: boolean;
   message: string;
   token: string;
+  user: User;
 };
 
 export type UserResponse = {
