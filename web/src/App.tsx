@@ -87,7 +87,7 @@ function App() {
     if (initialLoadRef.current) {
       initialLoadRef.current = false;
       authWithToken();
-      setTimeout(() => setLoadingInitially(false), 2000);
+      setTimeout(() => setLoadingInitially(false), 1000);
     }
   }, [authWithToken]);
 
