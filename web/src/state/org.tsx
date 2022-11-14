@@ -1,7 +1,7 @@
 import { Reducer, createContext } from "react";
 
 import { Action } from "../types";
-import { Nullable, Org } from "../serverTypes";
+import { Org } from "../serverTypes";
 import { getList, create } from "../api/org";
 import useReducerWithActions from "../hooks/useReducerWithActions";
 

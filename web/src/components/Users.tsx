@@ -25,7 +25,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import { User } from "../serverTypes";
 import { GlobalUserContext } from "../state/user";
-import { useEffect } from "react";
 
 const Error = styled("div")(({ theme }) => ({
   color: "red",
@@ -140,11 +139,7 @@ function UsersTableRow({ user }: { user: User }) {
 }
 
 function UsersTable() {
-  const { users: userMap, getList } = useContext(GlobalUserContext);
-
-  useEffect(() => {
-    getList();
-  }, [getList]);
+  const { users: userMap } = useContext(GlobalUserContext);
 
   const users = useMemo(() => Array.from(userMap.values()), [userMap]);
 

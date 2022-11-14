@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -106,11 +106,7 @@ function MessageTableRow({ org }: { org: Org }) {
 }
 
 function OrgTable() {
-  const { orgs: orgMap, getList } = useContext(GlobalOrgContext);
-
-  useEffect(() => {
-    getList();
-  }, [getList]);
+  const { orgs: orgMap } = useContext(GlobalOrgContext);
 
   const orgs = useMemo(() => Array.from(orgMap.values()), [orgMap]);
 

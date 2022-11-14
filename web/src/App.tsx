@@ -77,19 +77,24 @@ function LoggedIn() {
 
 function App() {
   const userState = useUserState();
-  const { token, currentUser, authWithToken } = userState;
+  const { token, currentUser, authWithToken, getList: getUserList } = userState;
   const loggedIn = useMemo(() => token && currentUser, [token, currentUser]);
   const orgState = useOrgState();
+  const { getList: getOrgList } = orgState;
   const initialLoadRef = useRef(true);
   const [loadingInitially, setLoadingInitially] = useState(true);
 
   useEffect(() => {
     if (initialLoadRef.current) {
       initialLoadRef.current = false;
-      authWithToken();
       setTimeout(() => setLoadingInitially(false), 1000);
+      authWithToken()?.then(() => {
+        getOrgList();
+        getUserList();
+      });
+      getUserList();
     }
-  }, [authWithToken]);
+  }, [authWithToken, getUserList, getOrgList]);
 
   return (
     <Router>
