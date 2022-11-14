@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { styled, ThemeProvider } from "@mui/material/styles";
 import { Types } from "mongoose";
 
@@ -16,6 +16,8 @@ import Login from "./components/Login";
 import { useAF1Websocket } from "./hooks/useWebsocket";
 import Orgs from "./components/Orgs";
 import { GlobalOrgContext, useOrgState } from "./state/org";
+import { Box } from "@mui/system";
+import { CircularProgress } from "@mui/material";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -78,9 +80,15 @@ function App() {
   const { token, currentUser, authWithToken } = userState;
   const loggedIn = useMemo(() => token && currentUser, [token, currentUser]);
   const orgState = useOrgState();
+  const initialLoadRef = useRef(true);
+  const [loadingInitially, setLoadingInitially] = useState(true);
 
   useEffect(() => {
-    authWithToken();
+    if (initialLoadRef.current) {
+      initialLoadRef.current = false;
+      authWithToken();
+      setTimeout(() => setLoadingInitially(false), 2000);
+    }
   }, [authWithToken]);
 
   return (
@@ -88,7 +96,22 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalOrgContext.Provider value={orgState}>
           <GlobalUserContext.Provider value={userState}>
-            <Outer>{loggedIn ? <LoggedIn /> : <Login />}</Outer>
+            <Outer>
+              {loadingInitially ? (
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  height={1}
+                >
+                  <CircularProgress />
+                </Box>
+              ) : loggedIn ? (
+                <LoggedIn />
+              ) : (
+                <Login />
+              )}
+            </Outer>
           </GlobalUserContext.Provider>
         </GlobalOrgContext.Provider>
       </ThemeProvider>
