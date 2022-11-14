@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-import { MessageType, WebSocket, Request, TransportType } from "../types";
+import { MessageType, WebSocket, Request } from "../types";
 import Connections from "../connections";
 import messageModel from "../models/message";
 
@@ -14,7 +14,6 @@ export const handleLightsWSReq = (ws: WebSocket, req: Request) => {
         orgId: ws.orgId,
         senderID: ws.deviceId,
         state: msg.state,
-        transportType: TransportType.TRANSPORT_WEBSOCKET,
         type: msg.type,
       },
       (err, m) => {

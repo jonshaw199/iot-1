@@ -18,12 +18,6 @@ export enum MessageType {
   TYPE_INFO,
 }
 
-export enum TransportType {
-  TRANSPORT_ESPNOW,
-  TRANSPORT_WEBSOCKET,
-  TRANSPORT_NONE,
-}
-
 export enum State {
   STATE_HOME = 0,
   STATE_PATTERN_TWINKLEFOX,
@@ -48,7 +42,6 @@ export type Info = {
 export type Message = {
   state?: State | number;
   type: MessageType | number;
-  transportType?: TransportType | number;
   senderID: number;
   orgId: Types.ObjectId;
   _id: Types.ObjectId;

@@ -7,7 +7,6 @@ const messageSchema = new mongoose.Schema<Message>(
     state: { type: Number },
     senderID: { type: Number, required: true },
     type: { type: Number, required: true },
-    transportType: { type: Number },
     orgId: { type: mongoose.Schema.Types.ObjectId, ref: "Org" },
   },
   { capped: { size: 1024 } }
