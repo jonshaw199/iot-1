@@ -87,7 +87,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <GlobalOrgContext.Provider value={orgState}>
           <GlobalUserContext.Provider value={userState}>
-            <Outer>{true ? <LoggedIn /> : <Login />}</Outer>
+            <Outer>{loggedIn ? <LoggedIn /> : <Login />}</Outer>
           </GlobalUserContext.Provider>
         </GlobalOrgContext.Provider>
       </ThemeProvider>

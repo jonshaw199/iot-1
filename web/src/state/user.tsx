@@ -86,14 +86,10 @@ const userActionCreators: UserActionCreators = {
     })),
   logout: () => ({ type: UserActionType.LOGOUT }),
   authWithToken: () =>
-    localStorage.getItem("token")
-      ? authWithToken({ token: localStorage.getItem("token")! }).then(
-          ({ token, user }) => ({
-            type: UserActionType.AUTH,
-            payload: { token, user },
-          })
-        )
-      : null,
+    authWithToken().then(({ token, user }) => ({
+      type: UserActionType.AUTH,
+      payload: { token, user },
+    })),
 };
 
 const userReducer: Reducer<UserState, Action<UserPayload>> = (

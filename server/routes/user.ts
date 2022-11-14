@@ -9,7 +9,7 @@ usersRouter.route("/").get(usersCtrl.index).post(usersCtrl.create);
 
 usersRouter.use(usersCtrl.verifyToken);
 
-usersRouter.post("authWithToken", usersCtrl.authWithToken);
+usersRouter.post("/authWithToken", usersCtrl.authWithToken);
 
 usersRouter
   .route("/:id")

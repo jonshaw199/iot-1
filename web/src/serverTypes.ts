@@ -67,6 +67,7 @@ export type WebSocket = WS & {
 
 export type Request = Req & {
   user: Nullable<Document<User>>;
+  token: Nullable<string>;
 };
 
 export type User = {
@@ -86,10 +87,6 @@ export type Org = {
 export type AuthRequest = {
   email: string;
   password: string;
-};
-
-export type AuthWithTokenRequest = {
-  token: string;
 };
 
 export type AuthResponse = {

@@ -69,7 +69,17 @@ export const authenticate = (req, res) => {
 };
 
 // Same logic as above, but this route goes through verifyToken middleware
-export const authWithToken = (req, res) => authenticate(req, res);
+export const authWithToken = (req, res) => {
+  // check if the user exists
+  userModel.findOne({ email: req.user?.email }, (err, user) => {
+    // if there's no user or the password is invalid
+    if (!user) {
+      // deny access
+      return res.json({ success: false, msg: "Token user not found." });
+    }
+    res.json({ success: true, msg: "Token attached.", token: req.token, user });
+  });
+};
 
 const { JWT_SECRET } = process.env;
 
@@ -85,6 +95,8 @@ export function signToken(user: Document<User>) {
 export function verifyToken(req: Request, res: Response, next) {
   // grab token from either headers, req.body, or query string
   const token = req.get("token") || req.body.token || req.query.token;
+  // Easy access later
+  req.token = token;
   // if no token present, deny access
   if (!token) return res.json({ success: false, msg: "No token provided" });
   // otherwise, try to verify token
