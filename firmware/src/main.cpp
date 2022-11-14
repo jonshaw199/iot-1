@@ -47,6 +47,7 @@ void setup()
       DynamicJsonDocument body(1024);
       body["type"] = TYPE_CHANGE_STATE;
       body["state"] = STATE_OTA;
+      body["orgId"] = ORG_ID;
       AF1::httpPost(REMOTE_URL, body); });
 
 #ifdef ARDUINO_M5Stick_C
