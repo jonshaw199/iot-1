@@ -37,35 +37,42 @@ export default function Login() {
       height="100%"
       width="100%"
     >
-      <Box
-        maxWidth={250}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gap={theme.spacing(1)}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          submit();
+        }}
       >
-        <Typography variant="h5">Login</Typography>
-        <TextField
-          required
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
-          required
-          label="Password"
-          type="password"
-          value={pass}
-          onChange={(e) => setPass(e.target.value)}
-        />
-        {error && <Error>{error}</Error>}
-        <Box pt={theme.spacing(1)}>
-          <Button variant="outlined" onClick={() => submit()}>
-            Submit
-          </Button>
+        <Box
+          maxWidth={250}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          gap={theme.spacing(1)}
+        >
+          <Typography variant="h5">Login</Typography>
+          <TextField
+            required
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            required
+            label="Password"
+            type="password"
+            value={pass}
+            onChange={(e) => setPass(e.target.value)}
+          />
+          {error && <Error>{error}</Error>}
+          <Box pt={theme.spacing(1)}>
+            <Button variant="outlined" type="submit">
+              Submit
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      </form>
     </Box>
   );
 }

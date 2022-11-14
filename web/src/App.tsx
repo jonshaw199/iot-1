@@ -92,7 +92,6 @@ function App() {
         getOrgList();
         getUserList();
       });
-      getUserList();
     }
   }, [authWithToken, getUserList, getOrgList]);
 

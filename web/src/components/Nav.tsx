@@ -130,12 +130,12 @@ export default function Nav({
         <List>
           <NavItem text="Dashboard" link="/" icon={<DashboardIcon />} />
           <NavItem text="Messages" link="messages/" icon={<InboxIcon />} />
-          <NavItem text="Settings" link="settings/" icon={<SettingsIcon />} />
           <NavItem text="Users" link="users/" icon={<GroupIcon />} />
           <NavItem text="Orgs" link="orgs/" icon={<HomeWorkIcon />} />
         </List>
         <Divider />
         <List>
+          <NavItem text="Settings" link="settings/" icon={<SettingsIcon />} />
           <ListItem disablePadding>
             <ListItemButton onClick={() => logout()}>
               <ListItemIcon>
