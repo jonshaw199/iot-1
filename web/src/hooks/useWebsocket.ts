@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
-import { w3cwebsocket, w3cwebsocket as W3CWebSocket } from "websocket";
-import { Schema } from "mongoose";
+import { w3cwebsocket } from "websocket";
+import { Types } from "mongoose";
 
 import { InfoMessage, MessageType, Message } from "../serverTypes";
 
@@ -17,7 +17,7 @@ export function useWebsocket({
 
   useEffect(() => {
     if (url && !client.current) {
-      client.current = new W3CWebSocket(url);
+      client.current = new w3cwebsocket(url);
       client.current.onopen = () => {
         console.log("WS connected");
         onOpen();
@@ -31,7 +31,7 @@ export function useWebsocket({
 
   const send = useCallback((m: Omit<Message, "_id">) => {
     if (client.current?.readyState === w3cwebsocket.OPEN) {
-      client.current.send(m);
+      client.current.send(JSON.stringify(m));
     } else {
       console.log("WS not connected; not sending msg");
     }
@@ -49,7 +49,7 @@ export function useAF1Websocket({
   onRecv = () => null,
 }: {
   url: string;
-  orgId: Schema.Types.ObjectId;
+  orgId: Types.ObjectId;
   onOpen?: () => void;
   onRecv?: (msg: Message) => void;
 }) {
@@ -60,7 +60,7 @@ export function useAF1Websocket({
       info: {
         webClient: true,
       },
-      orgId,
+      orgId: new Types.ObjectId(orgId),
     };
     ws.send(m);
     onOpen();

@@ -1,6 +1,6 @@
 import { WebSocket as WS } from "ws";
 import { Request as Req } from "express";
-import { Document, ObjectId } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export type Nullable<T> = null | undefined | T;
 
@@ -50,8 +50,8 @@ export type Message = {
   type: MessageType | number;
   transportType?: TransportType | number;
   senderID: number;
-  orgId: ObjectId;
-  _id: ObjectId;
+  orgId: Types.ObjectId;
+  _id: Types.ObjectId;
 };
 
 export type InfoMessage = Message & {
@@ -74,12 +74,12 @@ export type User = {
   name: string;
   email: string;
   password: string;
-  _id: ObjectId;
-  orgId: ObjectId;
+  _id: Types.ObjectId;
+  orgId: Types.ObjectId;
 };
 
 export type Org = {
-  _id: ObjectId;
+  _id: Types.ObjectId;
 };
 
 // API
