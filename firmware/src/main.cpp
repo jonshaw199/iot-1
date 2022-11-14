@@ -57,7 +57,7 @@ void setup()
 #endif
 
   AF1::setInitialState(INITIAL_STATE);
-  AF1::setDefaultWSClientInfo({SERVER_IP, LIGHTS_WS_PATH, SERVER_PORT, ""});
+  AF1::setDefaultWSClientInfo({SERVER_IP, String(LIGHTS_WS_PATH) + "?orgId=" + String(ORG_ID) + "&deviceId=" + String(JS_ID), SERVER_PORT, ""});
 
 #ifdef VS1053_CS_PIN
   AF1::registerStringHandler("audiostop", [](SHArg a)

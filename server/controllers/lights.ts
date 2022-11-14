@@ -44,9 +44,10 @@ export const handleRcReq = (req: Request, res: Response) => {
     const c = Connections.getLightsClients(req.params.orgId);
     c.forEach((client: any) => {
       client.send(msg);
-      console.log("sent");
     });
-    return res.send(`/rc: state change notification messages sent`);
+    return res.send(
+      `/lights/rc: state change notification messages sent (${c.length})`
+    );
   }
-  res.send("/rc: message type not recognized");
+  res.send("lights//rc: message type not recognized");
 };
