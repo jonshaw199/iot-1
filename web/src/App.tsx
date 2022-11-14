@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { styled, ThemeProvider } from "@mui/material/styles";
+import { Types } from "mongoose";
 
 import "./App.css";
 import Nav from "./components/Nav";
@@ -12,7 +13,7 @@ import Settings from "./components/Settings";
 import { GlobalUserContext, useUserState } from "./state/user";
 import { useMemo } from "react";
 import Login from "./components/Login";
-// import { useAF1Websocket } from "./hooks/useWebsocket";
+import { useAF1Websocket } from "./hooks/useWebsocket";
 import Orgs from "./components/Orgs";
 import { GlobalOrgContext, useOrgState } from "./state/org";
 
@@ -39,18 +40,18 @@ const Outer = styled("div")(({ theme }) => ({
   backgroundColor: theme.page.backgroundColor,
 }));
 
-//const orgId = 1; // to do
-//const deviceId = -1; // to do
+const orgId = "63714368a0c2aa037692b209"; // to do
+const deviceId = -1; // to do
 
 function LoggedIn() {
   const [open, setOpen] = useState(false);
-  //const { currentUser } = useUserState();
+  const { currentUser } = useContext(GlobalUserContext);
 
-  /*useAF1Websocket({
+  useAF1Websocket({
     url: `ws://127.0.0.1:3000/lights/ws?orgId=${orgId}&deviceId=${deviceId}`,
     onRecv: (m) => console.log(m),
-    orgId: orgId
-  });*/
+    orgId: new Types.ObjectId(currentUser?.orgId),
+  });
 
   return (
     <>

@@ -53,6 +53,8 @@ export function useAF1Websocket({
   onOpen?: () => void;
   onRecv?: (msg: Message) => void;
 }) {
+  const ws = useRef<{ send: (m: Omit<Message, "_id">) => void }>();
+
   const onOpenInternal = useCallback(() => {
     const m: Omit<InfoMessage, "_id"> = {
       senderID: Number(process.env.REACT_APP_DEVICE_ID),
@@ -62,11 +64,11 @@ export function useAF1Websocket({
       },
       orgId: new Types.ObjectId(orgId),
     };
-    ws.send(m);
+    ws.current?.send(m);
     onOpen();
   }, [orgId, onOpen]);
 
-  const ws = useWebsocket({ url, onOpen: onOpenInternal, onRecv });
+  ws.current = useWebsocket({ url, onOpen: onOpenInternal, onRecv });
 
   return ws;
 }
