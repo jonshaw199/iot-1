@@ -42,15 +42,12 @@ const Outer = styled("div")(({ theme }) => ({
   backgroundColor: theme.page.backgroundColor,
 }));
 
-const orgId = "63714368a0c2aa037692b209"; // to do
-const deviceId = -1; // to do
-
 function LoggedIn() {
   const [open, setOpen] = useState(false);
   const { currentUser } = useContext(GlobalUserContext);
 
   useAF1Websocket({
-    url: `ws://127.0.0.1:3000/lights/ws?orgId=${orgId}&deviceId=${deviceId}`,
+    url: `ws://127.0.0.1:3000/lights/ws?orgId=${currentUser?.orgId}&deviceId=${process.env.REACT_APP_DEVICE_ID}`,
     onRecv: (m) => console.log(m),
     orgId: new Types.ObjectId(currentUser?.orgId),
   });
