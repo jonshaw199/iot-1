@@ -43,7 +43,7 @@ type UserActionCreators = {
   remove: (id: string) => Promise<Action<UserPayload>>;
   auth: (cred: AuthRequest) => Promise<Action<UserPayload>>;
   logout: () => Action;
-  loadToken: () => Action;
+  authWithToken: () => Nullable<Promise<Action<UserPayload>>>;
 };
 
 const userActionCreators: UserActionCreators = {
@@ -73,12 +73,22 @@ const userActionCreators: UserActionCreators = {
       payload: { user },
     })),
   auth: (cred: AuthRequest) =>
-    auth(cred).then(({ token, user }) => ({
-      type: UserActionType.AUTH,
-      payload: { token, user },
-    })),
+    auth(cred.email ? cred : { token: localStorage.getItem("token") }).then(
+      ({ token, user }) => ({
+        type: UserActionType.AUTH,
+        payload: { token, user },
+      })
+    ),
   logout: () => ({ type: UserActionType.LOGOUT }),
-  loadToken: () => ({ type: UserActionType.LOAD_TOKEN }),
+  authWithToken: () =>
+    localStorage.getItem("token")
+      ? auth({ token: localStorage.getItem("token")! }).then(
+          ({ token, user }) => ({
+            type: UserActionType.AUTH,
+            payload: { token, user },
+          })
+        )
+      : null,
 };
 
 const userReducer: Reducer<UserState, Action<UserPayload>> = (
@@ -134,20 +144,13 @@ const userReducer: Reducer<UserState, Action<UserPayload>> = (
           };
           localStorage.setItem("token", action.payload.token);
         } else {
+          localStorage.removeItem("token");
           throw new Error("No token");
         }
         break;
       case UserActionType.LOGOUT:
         state = { ...state, token: "" };
         localStorage.removeItem("token");
-        break;
-      case UserActionType.LOAD_TOKEN:
-        if (!state.token && localStorage.getItem("token")) {
-          state = {
-            ...state,
-            token: localStorage.getItem("token")!,
-          };
-        }
         break;
     }
   } catch (e) {

@@ -74,13 +74,13 @@ function LoggedIn() {
 
 function App() {
   const userState = useUserState();
-  const { token, currentUser, loadToken } = userState;
+  const { token, currentUser, authWithToken } = userState;
   const loggedIn = useMemo(() => token && currentUser, [token, currentUser]);
   const orgState = useOrgState();
 
   useEffect(() => {
-    loadToken();
-  }, [loadToken]);
+    authWithToken();
+  }, [authWithToken]);
 
   return (
     <Router>
