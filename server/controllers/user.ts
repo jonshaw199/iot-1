@@ -68,6 +68,9 @@ export const authenticate = (req, res) => {
   });
 };
 
+// Same logic as above, but this route goes through verifyToken middleware
+export const authWithToken = (req, res) => authenticate(req, res);
+
 const { JWT_SECRET } = process.env;
 
 // function for creating tokens

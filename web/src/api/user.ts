@@ -3,6 +3,7 @@ import {
   User,
   AuthResponse,
   AuthRequest,
+  AuthWithTokenRequest,
   CreateUserResponse,
 } from "../serverTypes";
 import { req } from "./api";
@@ -46,6 +47,16 @@ export function get(id: string) {
 
 export function auth(body: AuthRequest) {
   return req<AuthResponse>("/user/authenticate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+}
+
+export function authWithToken(body: AuthWithTokenRequest) {
+  return req<AuthResponse>("/user/authWithToken", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

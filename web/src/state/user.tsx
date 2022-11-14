@@ -2,7 +2,15 @@ import { Reducer, createContext } from "react";
 
 import { Action } from "../types";
 import { AuthRequest, Nullable, User } from "../serverTypes";
-import { getList, get, create, remove, update, auth } from "../api/user";
+import {
+  getList,
+  get,
+  create,
+  remove,
+  update,
+  auth,
+  authWithToken,
+} from "../api/user";
 import useReducerWithActions from "../hooks/useReducerWithActions";
 
 enum UserActionType {
@@ -13,7 +21,6 @@ enum UserActionType {
   REMOVE = "REMOVE",
   AUTH = "AUTH",
   LOGOUT = "LOGOUT",
-  LOAD_TOKEN = "LOAD_TOKEN",
 }
 
 type UserPayload = {
@@ -73,16 +80,14 @@ const userActionCreators: UserActionCreators = {
       payload: { user },
     })),
   auth: (cred: AuthRequest) =>
-    auth(cred.email ? cred : { token: localStorage.getItem("token") }).then(
-      ({ token, user }) => ({
-        type: UserActionType.AUTH,
-        payload: { token, user },
-      })
-    ),
+    auth(cred).then(({ token, user }) => ({
+      type: UserActionType.AUTH,
+      payload: { token, user },
+    })),
   logout: () => ({ type: UserActionType.LOGOUT }),
   authWithToken: () =>
     localStorage.getItem("token")
-      ? auth({ token: localStorage.getItem("token")! }).then(
+      ? authWithToken({ token: localStorage.getItem("token")! }).then(
           ({ token, user }) => ({
             type: UserActionType.AUTH,
             payload: { token, user },

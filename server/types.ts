@@ -84,9 +84,12 @@ export type Org = {
 // API
 
 export type AuthRequest = {
-  email?: Nullable<string>;
-  password?: Nullable<string>;
-  token?: Nullable<string>;
+  email: string;
+  password: string;
+};
+
+export type AuthWithTokenRequest = {
+  token: string;
 };
 
 export type AuthResponse = {
