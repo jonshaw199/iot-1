@@ -194,7 +194,7 @@ void LightShowBase::loop()
   if (M5.BtnA.wasReleased())
   { // If the button A is pressed.  如果按键 A 被按下
     M5.Lcd.print('A');
-    DynamicJsonDocument body(1024);
+    StaticJsonDocument<225>body;
     body["type"] = TYPE_CHANGE_STATE;
     lastState = lastState == STATE_HOME ? STATE_PATTERN_NOISE : STATE_HOME;
     body["state"] = lastState;
@@ -225,10 +225,8 @@ void LightShowBase::loop()
     {
       motion = true;
       Serial.println("Local IR sensor motion begin");
-      AF1Msg msg;
-      msg.setState(getCurState());
-      msg.setType(TYPE_MOTION);
-      msg.getJson()["motion"] = true;
+      AF1Msg msg(TYPE_MOTION);
+      msg.getData()["motion"] = true;
       msg.setRecipients({255});
       pushOutbox(msg);
     }
@@ -239,10 +237,8 @@ void LightShowBase::loop()
     {
       motion = false;
       Serial.println("Local IR sensor motion end");
-      AF1Msg msg;
-      msg.setState(getCurState());
-      msg.setType(TYPE_MOTION);
-      msg.getJson()["motion"] = false;
+      AF1Msg msg(TYPE_MOTION);
+      msg.getData()["motion"] = false;
       msg.setRecipients({255});
       pushOutbox(msg);
     }
@@ -260,9 +256,9 @@ void LightShowBase::onConnectWSServer()
   sendMsgInfo({255});
 }
 
-DynamicJsonDocument LightShowBase::getInfo()
+StaticJsonDocument<225> LightShowBase::getInfo()
 {
-  DynamicJsonDocument i = Base::getInfo();
+  StaticJsonDocument<225> i = Base::getInfo();
 #ifdef ARDUINO_M5Stick_C
   i["arduinoM5StickC"] = true;
 #endif
@@ -291,7 +287,7 @@ msg_handler LightShowBase::getInboxHandler()
     {
     case TYPE_MOTION:
       Serial.print("Notification msg received: motion ");
-      if (m.getJson()["motion"] == true)
+      if (m.getData()["motion"] == true)
       {
         Serial.println(" begin...");
 #ifdef VS1053_CS_PIN

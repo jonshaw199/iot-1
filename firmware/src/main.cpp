@@ -44,7 +44,7 @@ void setup()
                              { AF1::setRequestedState(STATE_PATTERN_NOISE); });
   AF1::registerStringHandler("otaws", [](SHArg a)
                              {
-      DynamicJsonDocument body(1024);
+      StaticJsonDocument<225> body;
       body["type"] = TYPE_CHANGE_STATE;
       body["state"] = STATE_OTA;
       body["orgId"] = ORG_ID;
