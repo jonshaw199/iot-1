@@ -226,7 +226,7 @@ void LightShowBase::loop()
       motion = true;
       Serial.println("Local IR sensor motion begin");
       AF1Msg msg(TYPE_MOTION);
-      msg.getData()["motion"] = true;
+      msg.json()["motion"] = true;
       msg.setRecipients({255});
       pushOutbox(msg);
     }
@@ -238,7 +238,7 @@ void LightShowBase::loop()
       motion = false;
       Serial.println("Local IR sensor motion end");
       AF1Msg msg(TYPE_MOTION);
-      msg.getData()["motion"] = false;
+      msg.json()["motion"] = false;
       msg.setRecipients({255});
       pushOutbox(msg);
     }
@@ -287,7 +287,7 @@ msg_handler LightShowBase::getInboxHandler()
     {
     case TYPE_MOTION:
       Serial.print("Notification msg received: motion ");
-      if (m.getData()["motion"] == true)
+      if (m.json()["motion"] == true)
       {
         Serial.println(" begin...");
 #ifdef VS1053_CS_PIN
