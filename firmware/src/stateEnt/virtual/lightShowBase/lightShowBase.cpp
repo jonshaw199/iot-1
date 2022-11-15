@@ -194,7 +194,7 @@ void LightShowBase::loop()
   if (M5.BtnA.wasReleased())
   { // If the button A is pressed.  如果按键 A 被按下
     M5.Lcd.print('A');
-    StaticJsonDocument<225>body;
+    AF1JsonDoc body;
     body["type"] = TYPE_CHANGE_STATE;
     lastState = lastState == STATE_HOME ? STATE_PATTERN_NOISE : STATE_HOME;
     body["state"] = lastState;
@@ -256,9 +256,9 @@ void LightShowBase::onConnectWSServer()
   sendMsgInfo({255});
 }
 
-StaticJsonDocument<225> LightShowBase::getInfo()
+AF1JsonDoc LightShowBase::getInfo()
 {
-  StaticJsonDocument<225> i = Base::getInfo();
+  AF1JsonDoc i = Base::getInfo();
 #ifdef ARDUINO_M5Stick_C
   i["arduinoM5StickC"] = true;
 #endif
