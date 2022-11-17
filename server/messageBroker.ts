@@ -69,9 +69,6 @@ export default class MessageBroker {
       const subtopics = MessageBroker.getSubTopics(remainingTopic);
       if (subtopics.length) {
         nodes.forEach((node) => {
-          if (node.subtopic === WILDCARD_MULTI) {
-            node.subscribers.forEach((subscriber) => result.add(subscriber));
-          }
           if (node.subtopic === WILDCARD || node.subtopic === subtopics[0]) {
             if (subtopics.length === 1) {
               node.subscribers.forEach((subscriber) => result.add(subscriber));
@@ -82,6 +79,8 @@ export default class MessageBroker {
               );
               next.forEach((subscriber) => result.add(subscriber));
             }
+          } else if (node.subtopic === WILDCARD_MULTI) {
+            node.subscribers.forEach((subscriber) => result.add(subscriber));
           }
         });
       }
