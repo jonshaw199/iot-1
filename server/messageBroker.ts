@@ -67,10 +67,10 @@ export default class MessageBroker {
       const result = new Set<SubscriberId>();
       const subtopics = MessageBroker.getSubTopics(remainingTopic);
       nodes.forEach((node) => {
-        if (node.subtopic === WILDCARD_MULTI) {
-          node.subscribers.forEach((subscriber) => result.add(subscriber));
-        }
         if (subtopics.length) {
+          if (node.subtopic === WILDCARD_MULTI) {
+            node.subscribers.forEach((subscriber) => result.add(subscriber));
+          }
           if (subtopics.length === 1) {
             if (node.subtopic === WILDCARD || node.subtopic === subtopics[0]) {
               node.subscribers.forEach((subscriber) => result.add(subscriber));
