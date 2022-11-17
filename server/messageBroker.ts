@@ -1,4 +1,6 @@
 type SubscriberId = number | string;
+const WILDCARD = "*";
+const WILDCARD_MULTI = "#";
 
 class TopicNode {
   subtopic: string;
