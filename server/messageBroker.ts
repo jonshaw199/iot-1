@@ -1,6 +1,7 @@
 type SubscriberId = number | string;
 const WILDCARD = "*";
 const WILDCARD_MULTI = "#";
+const SUBTOPIC_SEPARATOR = "/";
 
 class TopicNode {
   subtopic: string;
@@ -22,7 +23,7 @@ export default class MessageBroker {
   private static topicTree: TopicTree = new TopicTree();
 
   private static getSubTopics(topic: string) {
-    return topic.split("/");
+    return topic.split(SUBTOPIC_SEPARATOR);
   }
 
   public static subscribe(subscriber: SubscriberId, topic: string) {
@@ -76,9 +77,10 @@ export default class MessageBroker {
               node.subscribers.forEach((subscriber) => result.add(subscriber));
             }
           } else {
-            const next = getSubscribersRec(subtopics.slice(1).join("/"), [
-              ...node.next.values(),
-            ]);
+            const next = getSubscribersRec(
+              subtopics.slice(1).join(SUBTOPIC_SEPARATOR),
+              [...node.next.values()]
+            );
             next.forEach((subscriber) => result.add(subscriber));
           }
         }
