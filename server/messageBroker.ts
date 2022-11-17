@@ -60,6 +60,32 @@ export default class MessageBroker {
   }
 
   public static getSubscribers(topic: string) {
-    // to do
+    function getSubscribersRec(
+      remainingTopic: string,
+      nodes: TopicNode[]
+    ): Set<SubscriberId> {
+      const result = new Set<SubscriberId>();
+      const subtopics = MessageBroker.getSubTopics(remainingTopic);
+      nodes.forEach((node) => {
+        if (node.subtopic === WILDCARD_MULTI) {
+          node.subscribers.forEach((subscriber) => result.add(subscriber));
+        }
+        if (subtopics.length) {
+          if (subtopics.length === 1) {
+            if (node.subtopic === WILDCARD || node.subtopic === subtopics[0]) {
+              node.subscribers.forEach((subscriber) => result.add(subscriber));
+            }
+          } else {
+            const next = getSubscribersRec(subtopics.slice(1).join("/"), [
+              ...node.next.values(),
+            ]);
+            next.forEach((subscriber) => result.add(subscriber));
+          }
+        }
+      });
+      return result;
+    }
+
+    return getSubscribersRec(topic, [...this.topicTree.heads.values()]);
   }
 }
