@@ -67,24 +67,24 @@ export default class MessageBroker {
     ): Set<SubscriberId> {
       const result = new Set<SubscriberId>();
       const subtopics = MessageBroker.getSubTopics(remainingTopic);
-      nodes.forEach((node) => {
-        if (subtopics.length) {
+      if (subtopics.length) {
+        nodes.forEach((node) => {
           if (node.subtopic === WILDCARD_MULTI) {
             node.subscribers.forEach((subscriber) => result.add(subscriber));
           }
-          if (subtopics.length === 1) {
-            if (node.subtopic === WILDCARD || node.subtopic === subtopics[0]) {
+          if (node.subtopic === WILDCARD || node.subtopic === subtopics[0]) {
+            if (subtopics.length === 1) {
               node.subscribers.forEach((subscriber) => result.add(subscriber));
+            } else {
+              const next = getSubscribersRec(
+                subtopics.slice(1).join(SUBTOPIC_SEPARATOR),
+                [...node.next.values()]
+              );
+              next.forEach((subscriber) => result.add(subscriber));
             }
-          } else {
-            const next = getSubscribersRec(
-              subtopics.slice(1).join(SUBTOPIC_SEPARATOR),
-              [...node.next.values()]
-            );
-            next.forEach((subscriber) => result.add(subscriber));
           }
-        }
-      });
+        });
+      }
       return result;
     }
 
