@@ -17,6 +17,10 @@ class TopicNode {
 
 class TopicTree {
   heads: Map<string, TopicNode>;
+
+  constructor() {
+    this.heads = new Map();
+  }
 }
 
 export default class MessageBroker {
