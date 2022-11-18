@@ -30,6 +30,10 @@ export default class MessageBroker {
     return topic.split(SUBTOPIC_SEPARATOR);
   }
 
+  public static clearTopicTree() {
+    this.topicTree = new TopicTree();
+  }
+
   public static subscribe(subscriber: SubscriberId, topic: string) {
     const subtopics = this.getSubTopics(topic);
     if (subtopics.length) {
