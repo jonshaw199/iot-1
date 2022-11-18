@@ -25,6 +25,8 @@ class TopicTree {
 
 export default class MessageBroker {
   private static topicTree: TopicTree = new TopicTree();
+  private static subscriberMap = new Map<SubscriberId, Set<string>>();
+  private static topicMap = new Map<string, Set<SubscriberId>>();
 
   private static getSubTopics(topic: string) {
     return topic.split(SUBTOPIC_SEPARATOR);
@@ -48,6 +50,14 @@ export default class MessageBroker {
         cur = cur.next.get(subtopics[i]);
       }
       cur.subscribers.add(subscriber);
+      if (!this.subscriberMap.has(subscriber)) {
+        this.subscriberMap.set(subscriber, new Set());
+      }
+      this.subscriberMap.get(subscriber).add(topic);
+      if (!this.topicMap.has(topic)) {
+        this.topicMap.set(topic, new Set());
+      }
+      this.topicMap.get(topic).add(subscriber);
     }
   }
 
@@ -64,6 +74,8 @@ export default class MessageBroker {
           }
         }
         cur.subscribers.delete(subscriber);
+        this.subscriberMap.get(subscriber).delete(topic);
+        this.topicMap.get(topic).delete(subscriber);
       }
     }
   }
