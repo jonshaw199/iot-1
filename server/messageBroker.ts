@@ -24,25 +24,33 @@ class TopicTree {
 }
 
 export default class MessageBroker {
-  private static topicTree: TopicTree = new TopicTree();
-  private static subscriberMap = new Map<SubscriberId, Set<string>>();
-  private static topicMap = new Map<string, Set<SubscriberId>>();
+  private static _topicTree: TopicTree = new TopicTree();
+  private static _subscriberMap = new Map<SubscriberId, Set<string>>();
+  private static _topicMap = new Map<string, Set<SubscriberId>>();
+
+  get subscriberMap() {
+    return new Map(MessageBroker._subscriberMap);
+  }
+
+  get topicMap() {
+    return new Map(MessageBroker._topicMap);
+  }
 
   private static getSubTopics(topic: string) {
     return topic.split(SUBTOPIC_SEPARATOR);
   }
 
   public static clearTopicTree() {
-    this.topicTree = new TopicTree();
+    this._topicTree = new TopicTree();
   }
 
   public static subscribe(subscriber: SubscriberId, topic: string) {
     const subtopics = this.getSubTopics(topic);
     if (subtopics.length) {
-      if (!this.topicTree.heads.has(subtopics[0])) {
-        this.topicTree.heads.set(subtopics[0], new TopicNode(subtopics[0]));
+      if (!this._topicTree.heads.has(subtopics[0])) {
+        this._topicTree.heads.set(subtopics[0], new TopicNode(subtopics[0]));
       }
-      let cur = this.topicTree.heads.get(subtopics[0]);
+      let cur = this._topicTree.heads.get(subtopics[0]);
       for (let i = 1; i < subtopics.length; i++) {
         if (!cur.next.has(subtopics[i])) {
           cur.next.set(subtopics[i], new TopicNode(subtopics[i]));
@@ -50,22 +58,22 @@ export default class MessageBroker {
         cur = cur.next.get(subtopics[i]);
       }
       cur.subscribers.add(subscriber);
-      if (!this.subscriberMap.has(subscriber)) {
-        this.subscriberMap.set(subscriber, new Set());
+      if (!this._subscriberMap.has(subscriber)) {
+        this._subscriberMap.set(subscriber, new Set());
       }
-      this.subscriberMap.get(subscriber).add(topic);
-      if (!this.topicMap.has(topic)) {
-        this.topicMap.set(topic, new Set());
+      this._subscriberMap.get(subscriber).add(topic);
+      if (!this._topicMap.has(topic)) {
+        this._topicMap.set(topic, new Set());
       }
-      this.topicMap.get(topic).add(subscriber);
+      this._topicMap.get(topic).add(subscriber);
     }
   }
 
   public static unsubscribe(subscriber: SubscriberId, topic: string) {
     const subtopics = this.getSubTopics(topic);
     if (subtopics.length) {
-      if (this.topicTree.heads.has(subtopics[0])) {
-        let cur = this.topicTree.heads.get(subtopics[0]);
+      if (this._topicTree.heads.has(subtopics[0])) {
+        let cur = this._topicTree.heads.get(subtopics[0]);
         for (let i = 1; i < subtopics.length; i++) {
           if (cur.next.has(subtopics[i])) {
             cur = cur.next.get(subtopics[i]);
@@ -74,8 +82,8 @@ export default class MessageBroker {
           }
         }
         cur.subscribers.delete(subscriber);
-        this.subscriberMap.get(subscriber).delete(topic);
-        this.topicMap.get(topic).delete(subscriber);
+        this._subscriberMap.get(subscriber).delete(topic);
+        this._topicMap.get(topic).delete(subscriber);
       }
     }
   }
@@ -107,6 +115,6 @@ export default class MessageBroker {
       return result;
     }
 
-    return getSubscribersRec(topic, [...this.topicTree.heads.values()]);
+    return getSubscribersRec(topic, [...this._topicTree.heads.values()]);
   }
 }
