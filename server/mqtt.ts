@@ -50,7 +50,9 @@ export default class MQTT {
         cur = cur.next.get(subtopics[i]);
       }
       cur.subscribers.add(subscriber);
+      return true;
     }
+    return false;
   }
 
   public static unsubscribe(subscriber: SubscriberId, topic: string) {
@@ -62,12 +64,14 @@ export default class MQTT {
           if (cur.next.has(subtopics[i])) {
             cur = cur.next.get(subtopics[i]);
           } else {
-            return;
+            return false;
           }
         }
         cur.subscribers.delete(subscriber);
+        return true;
       }
     }
+    return false;
   }
 
   public static getSubscribers(topic: string) {
