@@ -7,6 +7,7 @@
 
 class Pattern : public LightShowBase
 {
+public:
   void preStateChange(int s);
 };
 
