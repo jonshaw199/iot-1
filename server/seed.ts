@@ -31,13 +31,14 @@ async function deleteAllDocuments() {
 }
 
 async function insertDocuments() {
-  const org = new orgModel({ name: "root" });
+  const org = new orgModel({ name: "root", _id: "637aaaf75fc12653601830c2" });
 
   const devices = [
     new deviceModel({
       board: Board.BOARD_OTHER,
       name: "webclient",
       orgId: org.id,
+      _id: "637aab30382d30060fd5f4e3",
     }),
   ];
 
@@ -46,6 +47,7 @@ async function insertDocuments() {
       email: process.env.ROOT_EMAIL,
       password: process.env.ROOT_PASS,
       orgId: org.id,
+      _id: "637aab30382d30060fd5f4e4",
     }),
   ];
 
