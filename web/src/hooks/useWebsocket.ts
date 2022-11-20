@@ -54,14 +54,14 @@ export function useAF1Websocket({
   const ws = useRef<{ send: (m: Omit<Message, "_id">) => void }>();
 
   const onOpenInternal = useCallback(() => {
-    const m: Omit<InfoMessage, "_id"> = {
+    /*const m: Omit<InfoMessage, "_id"> = {
       senderID: new Types.ObjectId(process.env.REACT_APP_DEVICE_ID),
       type: MessageType.TYPE_INFO,
       info: {
         webClient: true,
       },
     };
-    ws.current?.send(m);
+    ws.current?.send(m);*/
     onOpen();
   }, [onOpen]);
 

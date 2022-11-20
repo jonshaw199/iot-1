@@ -37,10 +37,6 @@ export const handleLightsWSReq = (ws: WebSocket, req: Request) => {
           process.stdout.write(">");
         });*/
         break;
-      case MessageType.TYPE_INFO:
-        console.log(`Info msg: ${JSON.stringify(msg.info)}`);
-        // ws.info = msg.info;
-        break;
     }
   });
   ws.on("error", (err) => {
