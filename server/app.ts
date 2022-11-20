@@ -18,6 +18,7 @@ import orgRouter from "./routes/org";
 import messageRouter from "./routes/message";
 import deviceRouter from "./routes/device";
 import MessageBroker from "./messageBroker";
+import deviceModel from "./models/device";
 
 MessageBroker.init(expressWs);
 
@@ -52,12 +53,17 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.ws("*", (w: WS, req: Request, next) => {
+app.ws("*", async (w: WS, req: Request, next) => {
   const ws = w as WebSocket;
   ws.path = req.path;
-  ws.orgId = new Types.ObjectId("123ABC"); // req.query.orgId?.toString(); need to get from DB
-  ws.deviceId = new Types.ObjectId(req.query.deviceId?.toString());
-  next();
+  try {
+    ws.deviceId = new Types.ObjectId(req.query.deviceId?.toString());
+    const device = await deviceModel.findById(ws.deviceId);
+    ws.orgId = device.orgId;
+    next();
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.use(express.json());
