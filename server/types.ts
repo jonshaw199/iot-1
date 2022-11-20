@@ -117,3 +117,9 @@ export type CreateOrgResponse = {
   msg: string;
   org: Org;
 };
+
+export type DeviceResponse = {
+  success: boolean;
+  msg: string;
+  device: Device;
+};
