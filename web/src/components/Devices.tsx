@@ -16,6 +16,7 @@ import {
   Button,
   Collapse,
   IconButton,
+  MenuItem,
   TextField,
   useTheme,
 } from "@mui/material";
@@ -23,7 +24,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Box } from "@mui/system";
 
-import { Device } from "../serverTypes";
+import { Board, Device } from "../serverTypes";
 import { GlobalDeviceContext } from "../state/device";
 
 const Error = styled("div")(({ theme }) => ({
@@ -36,6 +37,7 @@ function NewDevice() {
   const { create } = useContext(GlobalDeviceContext);
   const [error, setError] = useState("");
   const [name, setName] = useState("");
+  const [board, setBoard] = useState("");
 
   const submit = useCallback(() => {
     try {
@@ -63,7 +65,17 @@ function NewDevice() {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            {/* Picker? */}
+            <TextField
+              label="Board"
+              value={board}
+              onChange={(e) => setBoard(e.target.value || Board.BOARD_OTHER)}
+              select
+              sx={{ minWidth: 100 }}
+            >
+              {Object.values(Board).map((b) => (
+                <MenuItem value={b}>{b}</MenuItem>
+              ))}
+            </TextField>
           </Box>
           {error && <Error>{error}</Error>}
           <Box pt={theme.spacing(1)}>
