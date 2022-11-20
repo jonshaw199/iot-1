@@ -74,8 +74,8 @@ export default class MQTT {
     return false;
   }
 
-  public static getSubscribers(topic: string) {
-    function getSubscribersRec(
+  public static getSubscriberIDs(topic: string) {
+    function getSubscriberIDsRec(
       remainingTopic: string,
       nodes: TopicNode[]
     ): Set<SubscriberId> {
@@ -87,7 +87,7 @@ export default class MQTT {
             if (subtopics.length === 1) {
               node.subscribers.forEach((subscriber) => result.add(subscriber));
             } else {
-              const next = getSubscribersRec(
+              const next = getSubscriberIDsRec(
                 subtopics.slice(1).join(SUBTOPIC_SEPARATOR),
                 [...node.next.values()]
               );
@@ -101,6 +101,6 @@ export default class MQTT {
       return result;
     }
 
-    return getSubscribersRec(topic, [...this.topicTree.heads.values()]);
+    return getSubscriberIDsRec(topic, [...this.topicTree.heads.values()]);
   }
 }

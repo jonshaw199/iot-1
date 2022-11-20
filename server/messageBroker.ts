@@ -19,18 +19,25 @@ export default class MessageBroker {
     MQTT.unsubscribe(subscriber, topic);
   }
 
-  public static getSubscribers(topic: string) {
-    return MQTT.getSubscribers(topic);
+  public static getSubscriberIDs(topic: string) {
+    return MQTT.getSubscriberIDs(topic);
   }
 
   public static clearTopicTree() {
     MQTT.clearTopicTree();
   }
 
-  public static getClients(orgId: Types.ObjectId, topic: string) {
-    const subscribers = this.getSubscribers(topic);
+  public static getSubscribers({
+    topic,
+    orgId,
+  }: {
+    topic?: string;
+    orgId?: Types.ObjectId;
+  }) {
+    const subscribers = this.getSubscriberIDs(topic);
     return Array.from(this.expressWsInstance.getWss().clients).filter(
-      (w: WebSocket) => w.orgId == orgId && subscribers.has(w.deviceId)
+      (w: WebSocket) =>
+        (!topic || subscribers.has(w.deviceId)) && (!orgId || w.orgId == orgId)
     );
   }
 }
