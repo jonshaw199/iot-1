@@ -34,6 +34,7 @@ export enum Board {
   BOARD_ESP32DEV = "esp32dev",
   BOARD_M5STICK_C = "m5stick-c",
   BOARD_ESP_WROVER_KIT = "esp-wrover-kit",
+  BOARD_OTHER = "BOARD_OTHER",
 }
 
 export type Info = {
