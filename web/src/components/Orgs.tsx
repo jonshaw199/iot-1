@@ -93,6 +93,9 @@ function MessageTableRow({ org }: { org: Org }) {
         <TableCell component="th" scope="row">
           {org._id.toString()}
         </TableCell>
+        <TableCell component="th" scope="row">
+          {org.name}
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -117,6 +120,7 @@ function OrgTable() {
           <TableRow>
             <TableCell />
             <TableCell>Org ID</TableCell>
+            <TableCell>Name</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
