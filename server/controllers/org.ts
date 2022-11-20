@@ -4,7 +4,7 @@ import { Request } from "../types";
 
 // list orgs
 export const index = (req: Request, res: Response) => {
-  orgModel.find({}, (err, orgs) => {
+  orgModel.find(req.body, (err, orgs) => {
     res.json(orgs);
   });
 };
