@@ -17,6 +17,7 @@ import Orgs from "./components/Orgs";
 import { GlobalOrgContext, useOrgState } from "./state/org";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
+import Devices from "./components/Devices";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -64,6 +65,7 @@ function LoggedIn() {
           <Route path="users/" element={<Users />} />
           <Route path="settings/" element={<Settings />} />
           <Route path="orgs/" element={<Orgs />} />
+          <Route path="devices/" element={<Devices />} />
         </Routes>
       </Main>
     </>
