@@ -28,6 +28,14 @@ export enum State {
   STATE_SYNC_TEST,
 }
 
+export enum Board {
+  BOARD_WEMOS_D1_MINI32 = "wemos_d1_mini32",
+  BOARD_HELTEC_WIFI_KIT_32 = "heltec_wifi_kit_32",
+  BOARD_ESP32DEV = "esp32dev",
+  BOARD_M5STICK_C = "m5stick-c",
+  BOARD_ESP_WROVER_KIT = "esp-wrover-kit",
+}
+
 export type Info = {
   arduinoM5StickC?: boolean;
   vs1053?: boolean;
@@ -70,6 +78,14 @@ export type User = {
 
 export type Org = {
   _id: Types.ObjectId;
+  name: string;
+};
+
+export type Device = {
+  _id: Types.ObjectId;
+  orgId: Types.ObjectId;
+  board: Board;
+  name: string;
 };
 
 // API
