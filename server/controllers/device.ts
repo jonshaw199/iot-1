@@ -1,17 +1,17 @@
 import { Response } from "express";
-import orgModel from "../models/org";
+import deviceModel from "../models/device";
 import { Request } from "../types";
 
-// list orgs
+// list devices
 export const index = (req: Request, res: Response) => {
-  orgModel.find({}, (err, orgs) => {
-    res.json(orgs);
+  deviceModel.find(req.body, (err, devices) => {
+    res.json(devices);
   });
 };
 
-// create a new org
+// create a new device
 export const create = (req: Request, res: Response) => {
-  orgModel.create(req.body, (err, org) => {
+  deviceModel.create(req.body, (err, org) => {
     if (err) return res.json({ success: false, code: err.code });
     res.json({
       success: true,

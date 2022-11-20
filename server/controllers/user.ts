@@ -5,9 +5,9 @@ import { Document } from "mongoose";
 
 import { User, Request } from "../types";
 
-// list all users
+// list users
 export const index = (req, res) => {
-  userModel.find({}, (err, users) => {
+  userModel.find(req.body, (err, users) => {
     res.json(users);
   });
 };

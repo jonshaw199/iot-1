@@ -16,6 +16,7 @@ import usersRouter from "./routes/user";
 import { Request, WebSocket } from "./types";
 import orgRouter from "./routes/org";
 import messageRouter from "./routes/message";
+import deviceRouter from "./routes/device";
 import MessageBroker from "./messageBroker";
 
 MessageBroker.init(expressWs);
@@ -65,6 +66,7 @@ app.use("/lights", lightsRouter);
 app.use("/user", usersRouter);
 app.use("/org", orgRouter);
 app.use("/message", messageRouter);
+app.use("/device", deviceRouter);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

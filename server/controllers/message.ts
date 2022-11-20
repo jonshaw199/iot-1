@@ -1,8 +1,8 @@
 import messageModel from "../models/message";
 
-// list all messages; To Do pagination
+// list messages
 export const index = (req, res) => {
-  messageModel.find({}, (err, messages) => {
+  messageModel.find(req.body, (err, messages) => {
     res.json(messages);
   });
 };
