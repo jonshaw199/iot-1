@@ -96,7 +96,7 @@ void NoisePlusPalette::setup()
   y = random16();
   z = random16();
 
-  set(Event(
+  addEvent(Event(
       "NoisePlusPalette_Loop", [](ECBArg a)
       { plebLoop(); },
       EVENT_TYPE_TEMP, 15));

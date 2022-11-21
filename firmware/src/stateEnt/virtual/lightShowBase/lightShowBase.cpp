@@ -175,7 +175,7 @@ void LightShowBase::setup()
     unsigned long autoShutoffSec = beginDaySec + AUTO_SHUTOFF_MIN * 60;
     Serial.print("Auto shutoff seconds: ");
     Serial.println(autoShutoffSec);
-    set(Event(
+    addEvent(Event(
         "LightShowBase_AutoShutoff",
         [](ECBArg a)
         {

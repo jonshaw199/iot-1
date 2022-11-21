@@ -32,14 +32,14 @@ void Noise::setup()
 
   currentPalette = CRGBPalette16(orange);
   setTargetPalette();
-  set(Event(
+  addEvent(Event(
       "Noise",
       [](ECBArg a)
       { fillNoise8();
         FastLED.show(); },
       EVENT_TYPE_TEMP, 1));
 
-  set(Event(
+  addEvent(Event(
       "Noise_Blend",
       [](ECBArg a)
       {
@@ -47,7 +47,7 @@ void Noise::setup()
         FastLED.show(); },
       EVENT_TYPE_TEMP, 10));
 
-  set(Event(
+  addEvent(Event(
       "Noise_MovingTarget",
       [](ECBArg a)
       { setTargetPalette(); },
