@@ -18,6 +18,7 @@ import { GlobalOrgContext, useOrgState } from "./state/org";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
 import Devices from "./components/Devices";
+import { GlobalDeviceContext, useDeviceState } from "./state/device";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -80,6 +81,8 @@ function App() {
   const { getList: getOrgList } = orgState;
   const initialLoadRef = useRef(true);
   const [loadingInitially, setLoadingInitially] = useState(true);
+  const deviceState = useDeviceState();
+  const { getList: getDeviceList } = deviceState;
 
   useEffect(() => {
     if (initialLoadRef.current) {
@@ -88,31 +91,34 @@ function App() {
       authWithToken()?.then(() => {
         getOrgList();
         getUserList();
+        getDeviceList();
       });
     }
-  }, [authWithToken, getUserList, getOrgList]);
+  }, [authWithToken, getUserList, getOrgList, getDeviceList]);
 
   return (
     <Router>
       <ThemeProvider theme={theme}>
         <GlobalOrgContext.Provider value={orgState}>
           <GlobalUserContext.Provider value={userState}>
-            <Outer>
-              {loadingInitially ? (
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  height={1}
-                >
-                  <CircularProgress />
-                </Box>
-              ) : loggedIn ? (
-                <LoggedIn />
-              ) : (
-                <Login />
-              )}
-            </Outer>
+            <GlobalDeviceContext.Provider value={deviceState}>
+              <Outer>
+                {loadingInitially ? (
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height={1}
+                  >
+                    <CircularProgress />
+                  </Box>
+                ) : loggedIn ? (
+                  <LoggedIn />
+                ) : (
+                  <Login />
+                )}
+              </Outer>
+            </GlobalDeviceContext.Provider>
           </GlobalUserContext.Provider>
         </GlobalOrgContext.Provider>
       </ThemeProvider>
