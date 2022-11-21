@@ -31,18 +31,18 @@ void setup()
   AF1::addWifiAP(JSSSID, JSPASS);
 #endif
   AF1::registerStateEnt(STATE_HOME, new Home());
-  AF1::setStringHandler("home", [](SHArg a)
+  AF1::addStringHandler("home", [](SHArg a)
                              { AF1::setRequestedState(STATE_HOME); });
   AF1::registerStateEnt(STATE_PATTERN_TWINKLEFOX, new Twinklefox());
-  AF1::setStringHandler("twinklefox", [](SHArg a)
+  AF1::addStringHandler("twinklefox", [](SHArg a)
                              { AF1::setRequestedState(STATE_PATTERN_TWINKLEFOX); });
   AF1::registerStateEnt(STATE_PATTERN_NOISEPLUSPALETTE, new NoisePlusPalette());
-  AF1::setStringHandler("noisepluspalette", [](SHArg a)
+  AF1::addStringHandler("noisepluspalette", [](SHArg a)
                              { AF1::setRequestedState(STATE_PATTERN_NOISEPLUSPALETTE); });
   AF1::registerStateEnt(STATE_PATTERN_NOISE, new Noise());
-  AF1::setStringHandler("noise", [](SHArg a)
+  AF1::addStringHandler("noise", [](SHArg a)
                              { AF1::setRequestedState(STATE_PATTERN_NOISE); });
-  AF1::setStringHandler("otaws", [](SHArg a)
+  AF1::addStringHandler("otaws", [](SHArg a)
                              {
       AF1JsonDoc body;
       body["type"] = TYPE_CHANGE_STATE;
@@ -60,11 +60,11 @@ void setup()
   AF1::setDefaultWSClientInfo({SERVER_IP, String(LIGHTS_WS_PATH) + "?deviceId=" + JS_ID, SERVER_PORT, ""});
 
 #ifdef VS1053_CS_PIN
-  AF1::setStringHandler("audiostop", [](SHArg a)
+  AF1::addStringHandler("audiostop", [](SHArg a)
                              { (static_cast<LightShowBase *>(AF1::getCurStateEnt()))->stopPlaying(); });
-  AF1::setStringHandler("audiopause", [](SHArg a)
+  AF1::addStringHandler("audiopause", [](SHArg a)
                              { (static_cast<LightShowBase *>(AF1::getCurStateEnt()))->pausePlaying(true); });
-  AF1::setStringHandler("audioresume", [](SHArg a)
+  AF1::addStringHandler("audioresume", [](SHArg a)
                              { (static_cast<LightShowBase *>(AF1::getCurStateEnt()))->pausePlaying(false); });
 #endif
 }
