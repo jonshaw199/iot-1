@@ -26,23 +26,23 @@ void setup()
 #endif
   AF1::begin(JS_ID);
 #ifdef JS_IP_A
-  AF1::registerWifiAP(JSSSID, JSPASS, JS_IP_A, JS_IP_B, JS_IP_C, JS_IP_D, 192, 168, 1, 254, 255, 255, 255, 0);
+  AF1::addWifiAP(JSSSID, JSPASS, JS_IP_A, JS_IP_B, JS_IP_C, JS_IP_D, 192, 168, 1, 254, 255, 255, 255, 0);
 #else
-  AF1::registerWifiAP(JSSSID, JSPASS);
+  AF1::addWifiAP(JSSSID, JSPASS);
 #endif
   AF1::registerStateEnt(STATE_HOME, new Home());
-  AF1::registerStringHandler("home", [](SHArg a)
+  AF1::setStringHandler("home", [](SHArg a)
                              { AF1::setRequestedState(STATE_HOME); });
   AF1::registerStateEnt(STATE_PATTERN_TWINKLEFOX, new Twinklefox());
-  AF1::registerStringHandler("twinklefox", [](SHArg a)
+  AF1::setStringHandler("twinklefox", [](SHArg a)
                              { AF1::setRequestedState(STATE_PATTERN_TWINKLEFOX); });
   AF1::registerStateEnt(STATE_PATTERN_NOISEPLUSPALETTE, new NoisePlusPalette());
-  AF1::registerStringHandler("noisepluspalette", [](SHArg a)
+  AF1::setStringHandler("noisepluspalette", [](SHArg a)
                              { AF1::setRequestedState(STATE_PATTERN_NOISEPLUSPALETTE); });
   AF1::registerStateEnt(STATE_PATTERN_NOISE, new Noise());
-  AF1::registerStringHandler("noise", [](SHArg a)
+  AF1::setStringHandler("noise", [](SHArg a)
                              { AF1::setRequestedState(STATE_PATTERN_NOISE); });
-  AF1::registerStringHandler("otaws", [](SHArg a)
+  AF1::setStringHandler("otaws", [](SHArg a)
                              {
       AF1JsonDoc body;
       body["type"] = TYPE_CHANGE_STATE;
@@ -60,11 +60,11 @@ void setup()
   AF1::setDefaultWSClientInfo({SERVER_IP, String(LIGHTS_WS_PATH) + "?deviceId=" + JS_ID, SERVER_PORT, ""});
 
 #ifdef VS1053_CS_PIN
-  AF1::registerStringHandler("audiostop", [](SHArg a)
+  AF1::setStringHandler("audiostop", [](SHArg a)
                              { (static_cast<LightShowBase *>(AF1::getCurStateEnt()))->stopPlaying(); });
-  AF1::registerStringHandler("audiopause", [](SHArg a)
+  AF1::setStringHandler("audiopause", [](SHArg a)
                              { (static_cast<LightShowBase *>(AF1::getCurStateEnt()))->pausePlaying(true); });
-  AF1::registerStringHandler("audioresume", [](SHArg a)
+  AF1::setStringHandler("audioresume", [](SHArg a)
                              { (static_cast<LightShowBase *>(AF1::getCurStateEnt()))->pausePlaying(false); });
 #endif
 }
