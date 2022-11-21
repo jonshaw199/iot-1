@@ -72,8 +72,10 @@ function NewDevice() {
               select
               sx={{ minWidth: 100 }}
             >
-              {Object.values(Board).map((b) => (
-                <MenuItem value={b}>{b}</MenuItem>
+              {Object.values(Board).map((b, i) => (
+                <MenuItem value={b} key={i}>
+                  {b}
+                </MenuItem>
               ))}
             </TextField>
           </Box>
