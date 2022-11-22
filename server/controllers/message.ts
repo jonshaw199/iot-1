@@ -4,6 +4,7 @@ import messageModel from "../models/message";
 // list messages
 export const index = (req, res) => {
   messageModel.find(req.body, (err, messages) => {
+    if (err) return res.status(500).json({ msg: err.message });
     res.json(messages);
   });
 };

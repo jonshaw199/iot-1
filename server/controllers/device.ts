@@ -6,6 +6,7 @@ import { Request } from "../types";
 // list devices
 export const index = (req: Request, res: Response) => {
   deviceModel.find(req.body, (err, devices) => {
+    if (err) return res.status(500).json({ msg: err.message });
     res.json(devices);
   });
 };
