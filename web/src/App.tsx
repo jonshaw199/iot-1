@@ -48,7 +48,7 @@ function LoggedIn() {
   const { currentUser } = useContext(GlobalUserContext);
 
   useAF1Websocket({
-    url: `ws://127.0.0.1:3000/lights/ws?orgId=${currentUser?.orgId}&deviceId=${process.env.REACT_APP_DEVICE_ID}`,
+    url: `ws://127.0.0.1:3000/lights/ws?deviceId=${process.env.REACT_APP_DEVICE_ID}`,
     onRecv: (m) => console.log(m),
   });
 
