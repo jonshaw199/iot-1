@@ -97,7 +97,6 @@ export type AuthRequest = {
 };
 
 export type AuthResponse = {
-  success: boolean;
   msg: string;
   token: string;
   user: User;
@@ -105,7 +104,6 @@ export type AuthResponse = {
 
 export type UserResponse = {
   msg: string;
-  success: boolean;
   user: User;
 };
 
@@ -114,13 +112,11 @@ export type CreateUserResponse = UserResponse & {
 };
 
 export type CreateOrgResponse = {
-  success: boolean;
   msg: string;
   org: Org;
 };
 
 export type DeviceResponse = {
-  success: boolean;
   msg: string;
   device: Device;
 };

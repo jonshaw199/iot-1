@@ -1,4 +1,5 @@
 import { Response } from "express";
+import { Error } from "mongoose";
 import orgModel from "../models/org";
 import { Request } from "../types";
 
@@ -11,10 +12,9 @@ export const index = (req: Request, res: Response) => {
 
 // create a new org
 export const create = (req: Request, res: Response) => {
-  orgModel.create(req.body, (err, org) => {
-    if (err) return res.json({ success: false, code: err.code });
+  orgModel.create(req.body, (err: Error, org) => {
+    if (err) return res.status(500).json({ msg: err.message });
     res.json({
-      success: true,
       msg: "Org created.",
       org,
     });

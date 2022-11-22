@@ -1,3 +1,4 @@
+import { Error } from "mongoose";
 import messageModel from "../models/message";
 
 // list messages
@@ -9,10 +10,9 @@ export const index = (req, res) => {
 
 // create a new message
 export const create = (req, res) => {
-  messageModel.create(req.body, (err, message) => {
-    if (err) return res.json({ success: false, code: err.code });
+  messageModel.create(req.body, (err: Error, message) => {
+    if (err) return res.status(500).json({ msg: err.message });
     res.json({
-      success: true,
       msg: "Message created.",
       message,
     });

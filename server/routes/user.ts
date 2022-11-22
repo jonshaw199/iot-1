@@ -5,9 +5,9 @@ const usersRouter = express.Router();
 
 usersRouter.post("/authenticate", usersCtrl.authenticate);
 
-usersRouter.route("/").get(usersCtrl.index).post(usersCtrl.create);
-
 usersRouter.use(usersCtrl.verifyToken);
+
+usersRouter.route("/").get(usersCtrl.index).post(usersCtrl.create);
 
 usersRouter.post("/authWithToken", usersCtrl.authWithToken);
 
