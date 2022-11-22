@@ -120,3 +120,8 @@ export type DeviceResponse = {
   msg: string;
   device: Device;
 };
+
+export type MessageResponse = {
+  msg: string;
+  message: Message;
+};
