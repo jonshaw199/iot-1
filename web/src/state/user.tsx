@@ -50,7 +50,7 @@ type UserActionCreators = {
   remove: (id: string) => Promise<Action<UserPayload>>;
   auth: (cred: AuthRequest) => Promise<Action<UserPayload>>;
   logout: () => Action;
-  authWithToken: () => Nullable<Promise<Action<UserPayload>>>;
+  authWithToken: () => Promise<Action<UserPayload>>;
 };
 
 const userActionCreators: UserActionCreators = {
@@ -92,7 +92,7 @@ const userActionCreators: UserActionCreators = {
           type: UserActionType.AUTH,
           payload: { token, user },
         }))
-      : null,
+      : Promise.reject(),
 };
 
 const userReducer: Reducer<UserState, Action<UserPayload>> = (
