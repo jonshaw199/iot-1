@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { styled, ThemeProvider } from "@mui/material/styles";
 
 import "./App.css";
@@ -88,13 +88,17 @@ function App() {
     if (initialLoadRef.current) {
       initialLoadRef.current = false;
       setTimeout(() => setLoadingInitially(false), 1000);
-      authWithToken()?.then(() => {
-        getOrgList();
-        getUserList();
-        getDeviceList();
-      });
+      authWithToken();
     }
-  }, [authWithToken, getUserList, getOrgList, getDeviceList]);
+  }, [authWithToken]);
+
+  useEffect(() => {
+    if (token) {
+      getOrgList();
+      getUserList();
+      getDeviceList();
+    }
+  }, [token, getOrgList, getUserList, getDeviceList]);
 
   return (
     <Router>
