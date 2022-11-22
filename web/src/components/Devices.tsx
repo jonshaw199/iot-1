@@ -110,6 +110,9 @@ function DeviceTableRow({ device }: { device: Device }) {
           {device._id.toString()}
         </TableCell>
         <TableCell component="th" scope="row">
+          {device.orgId.toString()}
+        </TableCell>
+        <TableCell component="th" scope="row">
           {device.name}
         </TableCell>
         <TableCell component="th" scope="row">
@@ -139,6 +142,7 @@ function DeviceTable() {
           <TableRow>
             <TableCell />
             <TableCell>Device ID</TableCell>
+            <TableCell>Org ID</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Board</TableCell>
           </TableRow>

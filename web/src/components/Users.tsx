@@ -115,6 +115,12 @@ function UsersTableRow({ user }: { user: User }) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
+          {user._id.toString()}
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {user.orgId.toString()}
+        </TableCell>
+        <TableCell component="th" scope="row">
           {user.name}
         </TableCell>
         <TableCell>{user.email}</TableCell>
@@ -150,6 +156,8 @@ function UsersTable() {
           <TableHead>
             <TableRow>
               <TableCell />
+              <TableCell>User ID</TableCell>
+              <TableCell>Org ID</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Email</TableCell>
             </TableRow>
