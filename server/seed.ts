@@ -46,6 +46,7 @@ async function insertDocuments() {
     new userModel({
       email: process.env.ROOT_EMAIL,
       password: process.env.ROOT_PASS,
+      name: process.env.ROOT_NAME,
       orgId: org.id,
       _id: "637aab30382d30060fd5f4e4",
     }),
