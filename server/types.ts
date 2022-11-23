@@ -39,6 +39,11 @@ export enum Board {
   BOARD_OTHER = "BOARD_OTHER",
 }
 
+export enum Topic {
+  HOME_LIGHTS = "/home/lights",
+  HOME_LIGHTS_STATE = "/home/lights/state",
+}
+
 export type Message = {
   state?: State | number;
   type: MessageType | number;

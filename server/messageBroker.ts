@@ -94,7 +94,7 @@ export default class MessageBroker {
           msg: {
             _id: new Types.ObjectId(),
             senderId: new Types.ObjectId(),
-            topic: "/lights/show",
+            topic: Topic.HOME_LIGHTS_STATE,
             type: MessageType.TYPE_MQTT_BROADCAST,
             state: State.STATE_PATTERN_NOISE,
           },

@@ -81,7 +81,7 @@ msg_handler LightsBase::getInboxHandler()
   {
     Base::handleInboxMsg(m);
     String topic = m.json()["topic"];
-    if (topic == "/lights/show")
+    if (topic == "/home/lights/state")
     {
       Serial.println("there");
     }
