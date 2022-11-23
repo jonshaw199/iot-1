@@ -13,7 +13,7 @@ enum custom_types
 {
   TYPE_MQTT_SUBSCRIBE = 0,
   TYPE_MQTT_UNSUBSCRIBE,
-  TYPE_MQTT_PAYLOAD,
+  TYPE_MQTT_BROADCAST,
 };
 
 #endif // STATE_H_

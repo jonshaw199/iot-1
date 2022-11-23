@@ -1,5 +1,5 @@
 import { Instance } from "express-ws";
-import { PayloadMessage, WebSocket } from "./types";
+import { BroadcastMessage, WebSocket } from "./types";
 
 import MQTT, { SubscriberId } from "./mqtt";
 import { Types } from "mongoose";
@@ -48,7 +48,7 @@ export default class MessageBroker {
   }: {
     topic?: string;
     orgId?: Types.ObjectId;
-    msg: PayloadMessage<any>;
+    msg: BroadcastMessage<any>;
   }) {
     this.getSubscribers({ topic, orgId }).forEach((subscriber) =>
       subscriber.send(msg)

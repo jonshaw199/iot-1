@@ -7,7 +7,7 @@ export type Nullable<T> = null | undefined | T;
 export enum MessageType {
   TYPE_MQTT_SUBSCRIBE = 0,
   TYPE_MQTT_UNSUBSCRIBE,
-  TYPE_MQTT_PAYLOAD,
+  TYPE_MQTT_BROADCAST,
   TYPE_NONE = 100,
   TYPE_HANDSHAKE_REQUEST,
   TYPE_HANDSHAKE_RESPONSE,
@@ -48,7 +48,7 @@ export type TopicMessage = Message & {
   topic: string;
 };
 
-export type PayloadMessage<T> = TopicMessage & {
+export type BroadcastMessage<T> = TopicMessage & {
   data: T;
 };
 

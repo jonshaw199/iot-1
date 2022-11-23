@@ -5,7 +5,7 @@ import MessageBroker from "../messageBroker";
 import messageModel from "../models/message";
 import {
   MessageType,
-  PayloadMessage,
+  BroadcastMessage,
   TopicMessage,
   WebSocket,
   Request,
@@ -48,13 +48,13 @@ export function handleMQTTMsg(
       );
       MessageBroker.unsubscribe(senderID, unsubscribeMsg.topic);
       break;
-    case MessageType.TYPE_MQTT_PAYLOAD:
-      const payloadMsg = msg as PayloadMessage<any>;
-      console.log(`Payload message for topic ${payloadMsg.topic}`);
+    case MessageType.TYPE_MQTT_BROADCAST:
+      const broadcastMsg = msg as BroadcastMessage<any>;
+      console.log(`Broadcast for topic ${broadcastMsg.topic}`);
       MessageBroker.broadcast({
-        topic: payloadMsg.topic,
+        topic: broadcastMsg.topic,
         orgId: orgID,
-        msg: payloadMsg,
+        msg: broadcastMsg,
       });
       break;
   }
