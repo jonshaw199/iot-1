@@ -71,7 +71,23 @@ bool LightsBase::doScanForPeersESPNow()
 void LightsBase::onConnectWSServer()
 {
   AF1Msg m(TYPE_MQTT_SUBSCRIBE);
-  m.json()["topic"] = "/some/topic/*";
+  m.json()["topic"] = LIGHTS_ROUTE;
   pushOutbox(m);
 }
 
+msg_handler LightsBase::getInboxHandler()
+{
+  return [](AF1Msg m)
+  {
+    Base::handleInboxMsg(m);
+    String topic = m.json()["topic"];
+    if (topic == "/lights/show")
+    {
+      Serial.println("there");
+    }
+    else
+    {
+      Serial.println("here");
+    }
+  };
+}
