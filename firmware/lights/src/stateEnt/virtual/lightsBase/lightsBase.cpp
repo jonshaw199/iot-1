@@ -17,23 +17,6 @@ void LightsBase::setup()
   M5.Lcd.setRotation(0);
   M5.Lcd.pushImage(0, 0, MOUNTAINS_WIDTH, MOUNTAINS_HEIGHT, (uint16_t *)mountains);
 #endif
-
-#define AUTO_SHUTOFF_MIN (24 * 60 /* EOD */ + 7 * 60 /* TZ Offset */)
-  if (timeClient.isTimeSet())
-  {
-    unsigned long curSec = timeClient.getEpochTime();
-    unsigned long beginDaySec = curSec - timeClient.getHours() * 60 * 60 - timeClient.getMinutes() * 60 - timeClient.getSeconds();
-    unsigned long autoShutoffSec = beginDaySec + AUTO_SHUTOFF_MIN * 60;
-    Serial.print("Auto shutoff seconds: ");
-    Serial.println(autoShutoffSec);
-    addEvent(Event(
-        "LightsBase_AutoShutoff",
-        [](ECBArg a)
-        {
-          setRequestedState(STATE_HOME);
-        },
-        EVENT_TYPE_TEMP, 0, 1, autoShutoffSec, START_EPOCH_SEC));
-  }
 }
 
 void LightsBase::loop()
