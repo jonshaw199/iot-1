@@ -51,10 +51,9 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use("/", rootRouter);
-
 app.use(express.json());
 
+app.use("/", rootRouter);
 app.use("/user", usersRouter);
 app.use("/org", orgRouter);
 app.use("/message", messageRouter);
