@@ -23,9 +23,11 @@ import {
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Box } from "@mui/system";
+import { Types } from "mongoose";
 
-import { Board, Device } from "../serverTypes";
+import { Board, Device, Org } from "../serverTypes";
 import { GlobalDeviceContext } from "../state/device";
+import { GlobalOrgContext } from "../state/org";
 
 const Error = styled("div")(({ theme }) => ({
   color: "red",
@@ -35,17 +37,23 @@ const Error = styled("div")(({ theme }) => ({
 function NewDevice() {
   const theme = useTheme();
   const { create } = useContext(GlobalDeviceContext);
+  const { orgs } = useContext(GlobalOrgContext);
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [board, setBoard] = useState("");
+  const [orgId, setOrgId] = useState("");
 
   const submit = useCallback(() => {
     try {
-      create({});
+      create({
+        name,
+        board: board as Board,
+        orgId: new Types.ObjectId(orgId),
+      });
     } catch (e) {
       setError(String(e));
     }
-  }, [create]);
+  }, [name, board, orgId, create]);
 
   return (
     <div>
@@ -75,6 +83,19 @@ function NewDevice() {
               {Object.values(Board).map((b, i) => (
                 <MenuItem value={b} key={i}>
                   {b}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              label="Org"
+              value={orgId}
+              onChange={(e) => setOrgId(e.target.value)}
+              select
+              sx={{ minWidth: 100 }}
+            >
+              {Array.from(orgs.values()).map((o: Org, i) => (
+                <MenuItem value={o._id.toString()} key={i}>
+                  {o.name}
                 </MenuItem>
               ))}
             </TextField>
