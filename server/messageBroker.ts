@@ -8,6 +8,7 @@ import {
   TopicMessage,
   WebSocket,
   State,
+  Topic,
 } from "./types";
 import MQTT, { SubscriberId } from "./mqtt";
 import messageModel from "./models/message";

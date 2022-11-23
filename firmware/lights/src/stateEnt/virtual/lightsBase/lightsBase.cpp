@@ -84,6 +84,7 @@ msg_handler LightsBase::getInboxHandler()
     if (topic == "/home/lights/state")
     {
       Serial.println("there");
+      setRequestedState(m.getState());
     }
     else
     {
