@@ -13,12 +13,13 @@ dotenv.config();
 
 import lightsRouter from "./routes/lights";
 import usersRouter from "./routes/user";
-import { Request, WebSocket } from "./types";
+import { MessageType, Request, WebSocket } from "./types";
 import orgRouter from "./routes/org";
 import messageRouter from "./routes/message";
 import deviceRouter from "./routes/device";
 import MessageBroker from "./messageBroker";
 import deviceModel from "./models/device";
+import messageModel from "./models/message";
 
 MessageBroker.init(expressWs);
 
@@ -60,10 +61,49 @@ app.ws("*", async (w: WS, req: Request, next) => {
     ws.deviceId = new Types.ObjectId(req.query.deviceId?.toString());
     const device = await deviceModel.findById(ws.deviceId);
     ws.orgId = device.orgId;
-    next();
   } catch (e) {
     next(e);
   }
+
+  ws.on("message", (m) => {
+    process.stdout.write("<");
+    const msg = JSON.parse(m.toString());
+
+    messageModel.create(
+      {
+        senderID: ws.deviceId,
+        state: msg.state,
+        type: msg.type,
+      },
+      (err, m) => {
+        if (err) {
+          console.log(`Error creating message: ${err}`);
+        }
+      }
+    );
+
+    switch (msg.type) {
+      case MessageType.TYPE_MQTT_SUBSCRIBE:
+        console.log("subscribe");
+        break;
+      case MessageType.TYPE_MQTT_UNSUBSCRIBE:
+        console.log("unsubscribe");
+        break;
+      case MessageType.TYPE_MQTT_DATA:
+        console.log("data");
+        break;
+    }
+  });
+
+  ws.on("error", (err) => {
+    console.log(`${ws.path} error: ` + err);
+  });
+
+  ws.on("close", () => {
+    console.log(`Closing connection at ${ws.path}`);
+  });
+
+  next();
 });
 
 app.use(express.json());

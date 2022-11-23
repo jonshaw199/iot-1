@@ -5,7 +5,10 @@ import { Document, Types } from "mongoose";
 export type Nullable<T> = null | undefined | T;
 
 export enum MessageType {
-  TYPE_MOTION = 0,
+  TYPE_MOTION = 0, // to do
+  TYPE_MQTT_SUBSCRIBE,
+  TYPE_MQTT_UNSUBSCRIBE,
+  TYPE_MQTT_DATA,
   TYPE_NONE = 100,
   TYPE_HANDSHAKE_REQUEST,
   TYPE_HANDSHAKE_RESPONSE,

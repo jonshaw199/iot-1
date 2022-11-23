@@ -253,6 +253,9 @@ bool LightShowBase::doScanForPeersESPNow()
 void LightShowBase::onConnectWSServer()
 {
   // sendMsgInfo({"255"}); // subscribe to topics?
+  AF1Msg m(TYPE_MQTT_SUBSCRIBE);
+  m.json()["topic"] = "/some/topic/*";
+  pushOutbox(m);
 }
 
 msg_handler LightShowBase::getInboxHandler()

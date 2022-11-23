@@ -5,22 +5,9 @@ import messageModel from "../models/message";
 
 export const handleLightsWSReq = (ws: WebSocket, req: Request) => {
   ws.on("message", (m) => {
-    process.stdout.write("<");
+    console.log(`Lights msg: ${m}`);
+    // To do
     const msg = JSON.parse(m.toString());
-
-    messageModel.create(
-      {
-        senderID: ws.deviceId,
-        state: msg.state,
-        type: msg.type,
-      },
-      (err, m) => {
-        if (err) {
-          console.log(`Error creating message: ${err}`);
-        }
-      }
-    );
-
     switch (msg.type) {
       case MessageType.TYPE_MOTION:
         console.log(`Motion ${msg.motion ? "begin" : "end"}`);
@@ -38,12 +25,6 @@ export const handleLightsWSReq = (ws: WebSocket, req: Request) => {
         });*/
         break;
     }
-  });
-  ws.on("error", (err) => {
-    console.log("/lights/ws err: " + err);
-  });
-  ws.on("close", () => {
-    console.log("Closing /lights/ws");
   });
 };
 
