@@ -13,11 +13,11 @@ export const index = (req: Request, res: Response) => {
 
 // create a new device
 export const create = (req: Request, res: Response) => {
-  deviceModel.create(req.body, (err: Error, org) => {
+  deviceModel.create(req.body, (err: Error, device) => {
     if (err) return res.status(500).json({ msg: err.message });
     res.json({
-      msg: "Org created.",
-      org,
+      msg: "Device created.",
+      device,
     });
   });
 };
