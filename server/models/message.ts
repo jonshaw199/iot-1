@@ -5,7 +5,7 @@ import { Message } from "../types";
 const messageSchema = new mongoose.Schema<Message>(
   {
     state: { type: Number },
-    senderID: { type: mongoose.Schema.Types.ObjectId, required: true },
+    senderId: { type: mongoose.Schema.Types.ObjectId, required: true },
     type: { type: Number, required: true },
   },
   { capped: { size: 1024 } }

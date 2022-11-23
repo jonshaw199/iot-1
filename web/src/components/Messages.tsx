@@ -60,7 +60,7 @@ function MessageTableRow({ message }: { message: Message }) {
           {message._id.toString()}
         </TableCell>
         <TableCell component="th" scope="row">
-          {message.senderID.toString()}
+          {message.senderId.toString()}
         </TableCell>
         <TableCell>{message.type}</TableCell>
         <TableCell>{message.state}</TableCell>

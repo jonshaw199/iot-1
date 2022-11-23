@@ -40,7 +40,7 @@ export enum Board {
 export type Message = {
   state?: State | number;
   type: MessageType | number;
-  senderID: Types.ObjectId;
+  senderId: Types.ObjectId;
   _id: Types.ObjectId;
 };
 
