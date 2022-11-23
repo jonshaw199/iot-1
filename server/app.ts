@@ -13,7 +13,13 @@ dotenv.config();
 
 import lightsRouter from "./routes/lights";
 import usersRouter from "./routes/user";
-import { MessageType, Request, WebSocket } from "./types";
+import {
+  MessageType,
+  PayloadMessage,
+  Request,
+  TopicMessage,
+  WebSocket,
+} from "./types";
 import orgRouter from "./routes/org";
 import messageRouter from "./routes/message";
 import deviceRouter from "./routes/device";
@@ -84,13 +90,23 @@ app.ws("*", async (w: WS, req: Request, next) => {
 
     switch (msg.type) {
       case MessageType.TYPE_MQTT_SUBSCRIBE:
-        console.log("subscribe");
+        const subscribeMsg = msg as TopicMessage;
+        console.log(
+          `Subscribe device ID: ${ws.deviceId}; topic: ${subscribeMsg.topic}`
+        );
+        MessageBroker.subscribe(ws.deviceId, subscribeMsg.topic);
         break;
       case MessageType.TYPE_MQTT_UNSUBSCRIBE:
-        console.log("unsubscribe");
+        const unsubscribeMsg = msg as TopicMessage;
+        console.log(
+          `Unsubscribe device ID: ${ws.deviceId}; topic: ${unsubscribeMsg.topic}`
+        );
+        MessageBroker.unsubscribe(ws.deviceId, unsubscribeMsg.topic);
         break;
-      case MessageType.TYPE_MQTT_DATA:
-        console.log("data");
+      case MessageType.TYPE_MQTT_PAYLOAD:
+        const payloadMsg = msg as PayloadMessage<any>;
+        console.log(`Payload message for topic ${payloadMsg.topic}`);
+        // Send to subscribers
         break;
     }
   });

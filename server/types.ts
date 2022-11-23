@@ -8,7 +8,7 @@ export enum MessageType {
   TYPE_MOTION = 0, // to do
   TYPE_MQTT_SUBSCRIBE,
   TYPE_MQTT_UNSUBSCRIBE,
-  TYPE_MQTT_DATA,
+  TYPE_MQTT_PAYLOAD,
   TYPE_NONE = 100,
   TYPE_HANDSHAKE_REQUEST,
   TYPE_HANDSHAKE_RESPONSE,
@@ -55,6 +55,14 @@ export type Message = {
   type: MessageType | number;
   senderID: Types.ObjectId;
   _id: Types.ObjectId;
+};
+
+export type TopicMessage = Message & {
+  topic: string;
+};
+
+export type PayloadMessage<T> = TopicMessage & {
+  data: T;
 };
 
 export type InfoMessage = Message & {
