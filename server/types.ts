@@ -40,7 +40,6 @@ export enum Board {
 }
 
 export enum Topic {
-  HOME_LIGHTS = "/home/lights",
   HOME_LIGHTS_STATE = "/home/lights/state",
 }
 
