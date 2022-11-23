@@ -105,7 +105,11 @@ app.ws("*", async (w: WS, req: Request, next) => {
       case MessageType.TYPE_MQTT_PAYLOAD:
         const payloadMsg = msg as PayloadMessage<any>;
         console.log(`Payload message for topic ${payloadMsg.topic}`);
-        // Send to subscribers
+        MessageBroker.broadcast({
+          topic: payloadMsg.topic,
+          orgId: ws.orgId,
+          msg: payloadMsg,
+        });
         break;
     }
   });

@@ -1,5 +1,5 @@
 import { Instance } from "express-ws";
-import { WebSocket } from "./types";
+import { PayloadMessage, WebSocket } from "./types";
 
 import MQTT, { SubscriberId } from "./mqtt";
 import { Types } from "mongoose";
@@ -38,6 +38,20 @@ export default class MessageBroker {
     return Array.from(this.expressWsInstance.getWss().clients).filter(
       (w: WebSocket) =>
         (!topic || subscribers.has(w.deviceId)) && (!orgId || w.orgId == orgId)
+    );
+  }
+
+  public static broadcast({
+    topic,
+    orgId,
+    msg,
+  }: {
+    topic?: string;
+    orgId?: Types.ObjectId;
+    msg: PayloadMessage<any>;
+  }) {
+    this.getSubscribers({ topic, orgId }).forEach((subscriber) =>
+      subscriber.send(msg)
     );
   }
 }
