@@ -5,7 +5,9 @@ import { Document, Types } from "mongoose";
 export type Nullable<T> = null | undefined | T;
 
 export enum MessageType {
-  TYPE_MOTION = 0,
+  TYPE_MQTT_SUBSCRIBE = 0,
+  TYPE_MQTT_UNSUBSCRIBE,
+  TYPE_MQTT_PAYLOAD,
   TYPE_NONE = 100,
   TYPE_HANDSHAKE_REQUEST,
   TYPE_HANDSHAKE_RESPONSE,
@@ -37,16 +39,6 @@ export enum Board {
   BOARD_OTHER = "BOARD_OTHER",
 }
 
-export type Info = {
-  arduinoM5StickC?: boolean;
-  vs1053?: boolean;
-  webClient?: boolean;
-  ir?: boolean;
-  staticIp?: string;
-  master?: boolean;
-  esp32?: boolean;
-};
-
 export type Message = {
   state?: State | number;
   type: MessageType | number;
@@ -54,8 +46,12 @@ export type Message = {
   _id: Types.ObjectId;
 };
 
-export type InfoMessage = Message & {
-  info: Info;
+export type TopicMessage = Message & {
+  topic: string;
+};
+
+export type PayloadMessage<T> = TopicMessage & {
+  data: T;
 };
 
 export type WebSocket = WS & {

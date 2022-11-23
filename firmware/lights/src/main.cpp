@@ -42,12 +42,6 @@ void setup()
   AF1::addStateEnt(STATE_PATTERN_NOISE, new Noise());
   AF1::addStringHandler("noise", [](SHArg a)
                              { AF1::setRequestedState(STATE_PATTERN_NOISE); });
-  AF1::addStringHandler("otaws", [](SHArg a)
-                             {
-      AF1JsonDoc body;
-      body["type"] = TYPE_CHANGE_STATE;
-      body["state"] = STATE_OTA;
-      AF1::httpPost(REMOTE_URL, body); });
 
 #ifdef ARDUINO_M5Stick_C
   delay(500);
@@ -58,15 +52,6 @@ void setup()
 
   AF1::setInitialState(INITIAL_STATE);
   AF1::setDefaultWSClientInfo({SERVER_IP, String(LIGHTS_WS_PATH) + "?deviceId=" + JS_ID, SERVER_PORT, ""});
-
-#ifdef VS1053_CS_PIN
-  AF1::addStringHandler("audiostop", [](SHArg a)
-                             { (static_cast<LightShowBase *>(AF1::getCurStateEnt()))->stopPlaying(); });
-  AF1::addStringHandler("audiopause", [](SHArg a)
-                             { (static_cast<LightShowBase *>(AF1::getCurStateEnt()))->pausePlaying(true); });
-  AF1::addStringHandler("audioresume", [](SHArg a)
-                             { (static_cast<LightShowBase *>(AF1::getCurStateEnt()))->pausePlaying(false); });
-#endif
 }
 
 void loop()

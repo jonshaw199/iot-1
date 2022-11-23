@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { w3cwebsocket } from "websocket";
-import { Types } from "mongoose";
 
-import { InfoMessage, MessageType, Message } from "../serverTypes";
+import { Message } from "../serverTypes";
 
 export function useWebsocket({
   url,
@@ -53,19 +52,7 @@ export function useAF1Websocket({
 }) {
   const ws = useRef<{ send: (m: Omit<Message, "_id">) => void }>();
 
-  const onOpenInternal = useCallback(() => {
-    /*const m: Omit<InfoMessage, "_id"> = {
-      senderID: new Types.ObjectId(process.env.REACT_APP_DEVICE_ID),
-      type: MessageType.TYPE_INFO,
-      info: {
-        webClient: true,
-      },
-    };
-    ws.current?.send(m);*/
-    onOpen();
-  }, [onOpen]);
-
-  ws.current = useWebsocket({ url, onOpen: onOpenInternal, onRecv });
+  ws.current = useWebsocket({ url, onOpen, onRecv });
 
   return ws;
 }

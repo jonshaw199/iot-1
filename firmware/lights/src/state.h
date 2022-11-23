@@ -11,8 +11,7 @@ enum custom_states
 
 enum custom_types
 {
-  TYPE_MOTION = 0,
-  TYPE_MQTT_SUBSCRIBE,
+  TYPE_MQTT_SUBSCRIBE = 0,
   TYPE_MQTT_UNSUBSCRIBE,
   TYPE_MQTT_DATA,
 };

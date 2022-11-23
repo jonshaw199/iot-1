@@ -11,12 +11,6 @@ public:
   void loop();
   bool doScanForPeersESPNow();
   void onConnectWSServer();
-  msg_handler getInboxHandler();
-#ifdef VS1053_CS_PIN
-  static void pausePlaying(bool p);
-  static void stopPlaying();
-  static bool playFile(String f);
-#endif
 };
 
 #endif
