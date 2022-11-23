@@ -4,12 +4,13 @@
 #ifdef ARDUINO_M5Stick_C
 #include <M5StickCPlus.h> // https://github.com/m5stack/M5Stack/issues/97
 #undef min
+
+#include "img/apple.h"
+#include "img/mountains.h"
 #endif
 
 #include "state.h"
 #include "stateEnt/home/home.h"
-#include "img/apple.h"
-#include "img/mountains.h"
 #include "stateEnt/pattern/twinklefox/twinklefox.h"
 #include "stateEnt/pattern/noisePlusPalette/noisePlusPalette.h"
 #include "stateEnt/pattern/noise/noise.h"
