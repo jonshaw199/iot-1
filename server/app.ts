@@ -1,8 +1,7 @@
-import express, { Response } from "express";
+import express from "express";
 import express_ws, { Application } from "express-ws";
 import dotenv from "dotenv";
-import mongoose, { Types } from "mongoose";
-import { WebSocket as WS } from "ws";
+import mongoose from "mongoose";
 import cors from "cors";
 
 const baseApp = express();
@@ -12,19 +11,12 @@ const app = baseApp as unknown as Application;
 dotenv.config();
 
 import usersRouter from "./routes/user";
-import {
-  MessageType,
-  PayloadMessage,
-  Request,
-  TopicMessage,
-  WebSocket,
-} from "./types";
 import orgRouter from "./routes/org";
 import messageRouter from "./routes/message";
 import deviceRouter from "./routes/device";
 import MessageBroker from "./messageBroker";
-import deviceModel from "./models/device";
-import messageModel from "./models/message";
+import { handleWS } from "./controllers/messageBroker";
+import rootRouter from "./routes/root";
 
 MessageBroker.init(expressWs);
 
@@ -59,71 +51,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.ws("/", async (w: WS, req: Request, next) => {
-  const ws = w as WebSocket;
-  ws.path = req.path;
-  try {
-    ws.deviceId = new Types.ObjectId(req.query.deviceId?.toString());
-    const device = await deviceModel.findById(ws.deviceId);
-    ws.orgId = device.orgId;
-  } catch (e) {
-    next(e);
-  }
-
-  ws.on("message", (m) => {
-    process.stdout.write("<");
-    const msg = JSON.parse(m.toString());
-
-    messageModel.create(
-      {
-        senderID: ws.deviceId,
-        state: msg.state,
-        type: msg.type,
-      },
-      (err, m) => {
-        if (err) {
-          console.log(`Error creating message: ${err}`);
-        }
-      }
-    );
-
-    switch (msg.type) {
-      case MessageType.TYPE_MQTT_SUBSCRIBE:
-        const subscribeMsg = msg as TopicMessage;
-        console.log(
-          `Subscribe device ID: ${ws.deviceId}; topic: ${subscribeMsg.topic}`
-        );
-        MessageBroker.subscribe(ws.deviceId, subscribeMsg.topic);
-        break;
-      case MessageType.TYPE_MQTT_UNSUBSCRIBE:
-        const unsubscribeMsg = msg as TopicMessage;
-        console.log(
-          `Unsubscribe device ID: ${ws.deviceId}; topic: ${unsubscribeMsg.topic}`
-        );
-        MessageBroker.unsubscribe(ws.deviceId, unsubscribeMsg.topic);
-        break;
-      case MessageType.TYPE_MQTT_PAYLOAD:
-        const payloadMsg = msg as PayloadMessage<any>;
-        console.log(`Payload message for topic ${payloadMsg.topic}`);
-        MessageBroker.broadcast({
-          topic: payloadMsg.topic,
-          orgId: ws.orgId,
-          msg: payloadMsg,
-        });
-        break;
-    }
-  });
-
-  ws.on("error", (err) => {
-    console.log(`${ws.path} error: ` + err);
-  });
-
-  ws.on("close", () => {
-    console.log(`Closing connection at ${ws.path}`);
-  });
-
-  next();
-});
+app.use("/", rootRouter);
 
 app.use(express.json());
 
