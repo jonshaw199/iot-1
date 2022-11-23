@@ -51,7 +51,7 @@ void setup()
 #endif
 
   AF1::setInitialState(INITIAL_STATE);
-  AF1::setDefaultWSClientInfo({SERVER_IP, String(LIGHTS_WS_PATH) + "?deviceId=" + JS_ID, SERVER_PORT, ""});
+  AF1::setDefaultWSClientInfo({SERVER_IP, String("/?deviceId=") + String(JS_ID), SERVER_PORT, ""});
 }
 
 void loop()

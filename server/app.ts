@@ -11,7 +11,6 @@ const app = baseApp as unknown as Application;
 
 dotenv.config();
 
-import lightsRouter from "./routes/lights";
 import usersRouter from "./routes/user";
 import {
   MessageType,
@@ -124,7 +123,6 @@ app.ws("*", async (w: WS, req: Request, next) => {
 
 app.use(express.json());
 
-app.use("/lights", lightsRouter);
 app.use("/user", usersRouter);
 app.use("/org", orgRouter);
 app.use("/message", messageRouter);
