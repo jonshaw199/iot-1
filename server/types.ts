@@ -20,6 +20,8 @@ export enum MessageType {
 export enum State {
   STATE_HOME = 0,
   STATE_PATTERN_TWINKLEFOX,
+  STATE_PATTERN_NOISEPLUSPALETTE,
+  STATE_PATTERN_NOISE,
   STATE_INIT = 100,
   STATE_PURG,
   STATE_OTA,
@@ -49,7 +51,7 @@ export type TopicMessage = Message & {
 };
 
 export type BroadcastMessage<T> = TopicMessage & {
-  data: T;
+  broadcastData?: T;
 };
 
 export type WebSocket = WS & {

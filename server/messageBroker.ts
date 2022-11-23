@@ -7,11 +7,10 @@ import {
   BroadcastMessage,
   TopicMessage,
   WebSocket,
-  Request,
+  State,
 } from "./types";
 import MQTT, { SubscriberId } from "./mqtt";
 import messageModel from "./models/message";
-import deviceModel from "./models/device";
 
 export default class MessageBroker {
   private static expressWsInstance: Instance;
@@ -43,10 +42,11 @@ export default class MessageBroker {
     topic?: string;
     orgId?: Types.ObjectId;
   }) {
-    const subscribers = this.getSubscriberIDs(topic);
+    const subscriberIds = this.getSubscriberIDs(topic);
     return Array.from(this.expressWsInstance.getWss().clients).filter(
       (w: WebSocket) =>
-        (!topic || subscribers.has(w.deviceId)) && (!orgId || w.orgId == orgId)
+        (!topic || subscriberIds.has(w.deviceId.toString())) &&
+        (!orgId || w.orgId == orgId)
     );
   }
 
@@ -58,7 +58,7 @@ export default class MessageBroker {
     msg: BroadcastMessage<any>;
   }) {
     this.getSubscribers({ topic: msg.topic, orgId }).forEach((subscriber) =>
-      subscriber.send(msg)
+      subscriber.send(JSON.stringify(msg))
     );
   }
 
@@ -89,6 +89,16 @@ export default class MessageBroker {
           `Subscribe device ID: ${msg.senderId}; topic: ${subscribeMsg.topic}`
         );
         this.subscribe(msg.senderId, subscribeMsg.topic);
+        this.broadcast({
+          orgId,
+          msg: {
+            _id: new Types.ObjectId(),
+            senderId: new Types.ObjectId(),
+            topic: "/lights/show",
+            type: MessageType.TYPE_MQTT_BROADCAST,
+            state: State.STATE_PATTERN_NOISE,
+          },
+        });
         break;
       case MessageType.TYPE_MQTT_UNSUBSCRIBE:
         const unsubscribeMsg = msg as TopicMessage;

@@ -49,7 +49,7 @@ export type TopicMessage = Message & {
 };
 
 export type BroadcastMessage<T> = TopicMessage & {
-  data: T;
+  broadcastData: T;
 };
 
 export type WebSocket = WS & {
