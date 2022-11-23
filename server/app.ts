@@ -59,7 +59,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.ws("*", async (w: WS, req: Request, next) => {
+app.ws("/", async (w: WS, req: Request, next) => {
   const ws = w as WebSocket;
   ws.path = req.path;
   try {
