@@ -89,7 +89,7 @@ export default class MessageBroker {
           `Subscribe device ID: ${msg.senderId}; topic: ${subscribeMsg.topic}`
         );
         this.subscribe(msg.senderId, subscribeMsg.topic);
-        this.broadcast({
+        /*this.broadcast({
           orgId,
           msg: {
             _id: new Types.ObjectId(),
@@ -98,7 +98,7 @@ export default class MessageBroker {
             type: MessageType.TYPE_MQTT_BROADCAST,
             state: State.STATE_PATTERN_NOISE,
           },
-        });
+        });*/
         break;
       case MessageType.TYPE_MQTT_UNSUBSCRIBE:
         const unsubscribeMsg = msg as TopicMessage;
