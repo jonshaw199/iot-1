@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -18,6 +18,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Box } from "@mui/system";
 
 import { Message } from "../serverTypes";
+import { GlobalMessageContext } from "../state/message";
 
 function NewMessage() {
   return (
@@ -76,7 +77,7 @@ function MessageTableRow({ message }: { message: Message }) {
 }
 
 function MessageTable() {
-  const [messages] = useState<Message[]>([]);
+  const { messages } = useContext(GlobalMessageContext);
 
   return (
     <TableContainer component={Paper}>
@@ -91,7 +92,7 @@ function MessageTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {messages.map((message, i) => (
+          {Array.from(messages.values()).map((message, i) => (
             <MessageTableRow message={message} key={i} />
           ))}
         </TableBody>

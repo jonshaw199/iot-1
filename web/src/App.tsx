@@ -19,6 +19,7 @@ import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
 import Devices from "./components/Devices";
 import { GlobalDeviceContext, useDeviceState } from "./state/device";
+import { GlobalMessageContext, useMessageState } from "./state/message";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -83,6 +84,8 @@ function App() {
   const [loadingInitially, setLoadingInitially] = useState(true);
   const deviceState = useDeviceState();
   const { getList: getDeviceList } = deviceState;
+  const messageState = useMessageState();
+  const { getList: getMessageList } = messageState;
 
   useEffect(() => {
     if (initialLoadRef.current) {
@@ -97,8 +100,9 @@ function App() {
       getOrgList();
       getUserList();
       getDeviceList();
+      getMessageList();
     }
-  }, [token, getOrgList, getUserList, getDeviceList]);
+  }, [token, getOrgList, getUserList, getDeviceList, getMessageList]);
 
   return (
     <Router>
@@ -106,22 +110,24 @@ function App() {
         <GlobalOrgContext.Provider value={orgState}>
           <GlobalUserContext.Provider value={userState}>
             <GlobalDeviceContext.Provider value={deviceState}>
-              <Outer>
-                {loadingInitially ? (
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    height={1}
-                  >
-                    <CircularProgress />
-                  </Box>
-                ) : loggedIn ? (
-                  <LoggedIn />
-                ) : (
-                  <Login />
-                )}
-              </Outer>
+              <GlobalMessageContext.Provider value={messageState}>
+                <Outer>
+                  {loadingInitially ? (
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      height={1}
+                    >
+                      <CircularProgress />
+                    </Box>
+                  ) : loggedIn ? (
+                    <LoggedIn />
+                  ) : (
+                    <Login />
+                  )}
+                </Outer>
+              </GlobalMessageContext.Provider>
             </GlobalDeviceContext.Provider>
           </GlobalUserContext.Provider>
         </GlobalOrgContext.Provider>
