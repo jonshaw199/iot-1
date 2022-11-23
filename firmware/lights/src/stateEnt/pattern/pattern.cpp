@@ -4,7 +4,7 @@
 
 void Pattern::preStateChange(int s)
 {
-  LightShowBase::preStateChange(s);
+  LightsBase::preStateChange(s);
   // Turn off lights
 #if CNT
   FastLED.showColor(CRGB::Black);

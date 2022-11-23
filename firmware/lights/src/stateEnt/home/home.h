@@ -1,9 +1,9 @@
 #ifndef STATEENT_HOME_HOME_H_
 #define STATEENT_HOME_HOME_H_
 
-#include "stateEnt/virtual/lightShowBase/lightShowBase.h"
+#include "stateEnt/virtual/lightsBase/lightsBase.h"
 
-class Home : public LightShowBase
+class Home : public LightsBase
 {
 public:
     String getName();

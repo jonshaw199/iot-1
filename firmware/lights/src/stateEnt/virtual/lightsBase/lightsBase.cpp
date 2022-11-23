@@ -1,4 +1,4 @@
-#include "lightShowBase.h"
+#include "lightsBase.h"
 #include "state.h"
 
 #ifdef ARDUINO_M5Stick_C
@@ -8,7 +8,7 @@
 #include "img/mountains.h"
 #endif
 
-void LightShowBase::setup()
+void LightsBase::setup()
 {
   Base::setup();
 
@@ -27,7 +27,7 @@ void LightShowBase::setup()
     Serial.print("Auto shutoff seconds: ");
     Serial.println(autoShutoffSec);
     addEvent(Event(
-        "LightShowBase_AutoShutoff",
+        "LightsBase_AutoShutoff",
         [](ECBArg a)
         {
           setRequestedState(STATE_HOME);
@@ -36,7 +36,7 @@ void LightShowBase::setup()
   }
 }
 
-void LightShowBase::loop()
+void LightsBase::loop()
 {
   Base::loop();
 
@@ -63,12 +63,12 @@ void LightShowBase::loop()
 #endif
 }
 
-bool LightShowBase::doScanForPeersESPNow()
+bool LightsBase::doScanForPeersESPNow()
 {
   return false;
 }
 
-void LightShowBase::onConnectWSServer()
+void LightsBase::onConnectWSServer()
 {
   AF1Msg m(TYPE_MQTT_SUBSCRIBE);
   m.json()["topic"] = "/some/topic/*";
