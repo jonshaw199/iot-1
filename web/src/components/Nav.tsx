@@ -103,7 +103,7 @@ export default function Nav({
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            AF1LS
+            AF1SH
           </Typography>
         </Toolbar>
       </AppBar>
