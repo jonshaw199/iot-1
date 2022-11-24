@@ -40,7 +40,7 @@ export default class MessageBroker {
     return Array.from(this.expressWsInstance.getWss().clients).filter(
       (w: WebSocket) =>
         (!topic || subscriberIds.has(w.deviceId.toString())) &&
-        (!orgId || w.orgId == orgId)
+        (!orgId || w.orgId.equals(orgId))
     );
   }
 
