@@ -2,6 +2,7 @@ import iro from "@jaames/iro";
 import { IroColorPicker } from "@jaames/iro/dist/ColorPicker";
 import { useRef, useEffect, useCallback } from "react";
 import _throttle from "lodash/throttle";
+import { Box } from "@mui/system";
 
 export default function ColorPicker({
   initial,
@@ -43,5 +44,9 @@ export default function ColorPicker({
     }
   }, [initial, onChange]);
 
-  return <div ref={pickerDivRef} />;
+  return (
+    <Box width={1} overflow="hidden" display="flex" justifyContent="center">
+      <div ref={pickerDivRef} />
+    </Box>
+  );
 }
