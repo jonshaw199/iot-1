@@ -2,14 +2,7 @@ import { Instance } from "express-ws";
 import { WebSocket as WS } from "ws";
 import { Types } from "mongoose";
 
-import {
-  MessageType,
-  BroadcastMessage,
-  TopicMessage,
-  WebSocket,
-  State,
-  Topic,
-} from "./types";
+import { MessageType, TopicMessage, WebSocket } from "./types";
 import MQTT, { SubscriberId } from "./mqtt";
 import messageModel from "./models/message";
 
@@ -56,7 +49,7 @@ export default class MessageBroker {
     msg,
   }: {
     orgId?: Types.ObjectId;
-    msg: BroadcastMessage<any>;
+    msg: TopicMessage;
   }) {
     this.getSubscribers({ topic: msg.topic, orgId }).forEach((subscriber) =>
       subscriber.send(JSON.stringify(msg))
@@ -109,7 +102,7 @@ export default class MessageBroker {
         this.unsubscribe(msg.senderId, unsubscribeMsg.topic);
         break;
       case MessageType.TYPE_MQTT_BROADCAST:
-        const broadcastMsg = msg as BroadcastMessage<any>;
+        const broadcastMsg = msg as TopicMessage;
         console.log(`Broadcast for topic ${broadcastMsg.topic}`);
         this.broadcast({
           orgId,

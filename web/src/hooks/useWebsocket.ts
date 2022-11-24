@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, createContext } from "react";
 import { w3cwebsocket } from "websocket";
 
 import { Message } from "../serverTypes";
@@ -54,5 +54,9 @@ export function useAF1Websocket({
 
   ws.current = useWebsocket({ url, onOpen, onRecv });
 
-  return ws;
+  return ws.current;
 }
+
+export const GlobalWebsocketContext = createContext({
+  send: (m: Omit<Message, "_id">) => {},
+});

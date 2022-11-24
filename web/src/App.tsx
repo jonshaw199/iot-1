@@ -12,7 +12,7 @@ import Settings from "./components/Settings";
 import { GlobalUserContext, useUserState } from "./state/user";
 import { useMemo } from "react";
 import Login from "./components/Login";
-import { useAF1Websocket } from "./hooks/useWebsocket";
+import { GlobalWebsocketContext, useAF1Websocket } from "./hooks/useWebsocket";
 import Orgs from "./components/Orgs";
 import { GlobalOrgContext, useOrgState } from "./state/org";
 import { Box } from "@mui/system";
@@ -48,29 +48,31 @@ const Outer = styled("div")(({ theme }) => ({
 function LoggedIn() {
   const [open, setOpen] = useState(false);
 
-  useAF1Websocket({
-    url: `ws://127.0.0.1:3000/lights/ws?deviceId=${process.env.REACT_APP_DEVICE_ID}`,
+  const ws = useAF1Websocket({
+    url: `ws://127.0.0.1:3000/?deviceId=${process.env.REACT_APP_DEVICE_ID}`,
     onRecv: (m) => console.log(m),
   });
 
   return (
     <>
-      <Nav
-        open={open}
-        onOpen={() => setOpen(true)}
-        onClose={() => setOpen(false)}
-      />
-      <Main open={open}>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="messages/" element={<Messages />} />
-          <Route path="users/" element={<Users />} />
-          <Route path="settings/" element={<Settings />} />
-          <Route path="orgs/" element={<Orgs />} />
-          <Route path="devices/" element={<Devices />} />
-          <Route path="lights/" element={<Lights />} />
-        </Routes>
-      </Main>
+      <GlobalWebsocketContext.Provider value={ws}>
+        <Nav
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+        />
+        <Main open={open}>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="messages/" element={<Messages />} />
+            <Route path="users/" element={<Users />} />
+            <Route path="settings/" element={<Settings />} />
+            <Route path="orgs/" element={<Orgs />} />
+            <Route path="devices/" element={<Devices />} />
+            <Route path="lights/" element={<Lights />} />
+          </Routes>
+        </Main>
+      </GlobalWebsocketContext.Provider>
     </>
   );
 }

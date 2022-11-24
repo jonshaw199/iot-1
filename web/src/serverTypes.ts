@@ -55,8 +55,11 @@ export type TopicMessage = Message & {
   topic: string;
 };
 
-export type BroadcastMessage<T> = TopicMessage & {
-  broadcastData?: T;
+export type TopicMessageColor = TopicMessage & {
+  h: Nullable<number>;
+  s: Nullable<number>;
+  l: Nullable<number>;
+  a?: Nullable<number>;
 };
 
 export type WebSocket = WS & {
