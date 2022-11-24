@@ -20,8 +20,10 @@ export default function ColorPicker({
   const pickerRef = useRef<IroColorPicker | null>(null);
 
   const throttled = useCallback(
-    (c: iro.Color) =>
-      throttle && _throttle(() => onChangeThrottled(c), throttle),
+    _throttle((c: iro.Color) => {
+      console.log(c);
+      onChangeThrottled(c);
+    }, throttle || undefined),
     [throttle, onChangeThrottled]
   );
 
