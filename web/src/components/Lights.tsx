@@ -15,7 +15,7 @@ export default function Lights() {
       >
         <Typography>Color Picker</Typography>
         <HuePicker
-          color={color?.hex}
+          color={color?.rgb}
           onChange={(c) => setColor(c)}
           width="100%"
         />
