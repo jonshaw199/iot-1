@@ -47,7 +47,6 @@ const Outer = styled("div")(({ theme }) => ({
 
 function LoggedIn() {
   const [open, setOpen] = useState(false);
-  const { currentUser } = useContext(GlobalUserContext);
 
   useAF1Websocket({
     url: `ws://127.0.0.1:3000/lights/ws?deviceId=${process.env.REACT_APP_DEVICE_ID}`,
