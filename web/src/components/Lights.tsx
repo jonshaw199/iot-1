@@ -1,7 +1,9 @@
+import iro from "@jaames/iro";
+import { IroColorPicker } from "@jaames/iro/dist/ColorPicker";
 import { Paper, Box, useTheme, Typography } from "@mui/material";
 import { Types } from "mongoose";
-import { useState, useContext, useCallback } from "react";
-import { HuePicker, AlphaPicker, ColorResult } from "react-color";
+import { useState, useContext, useCallback, useRef, useEffect } from "react";
+import { HuePicker, AlphaPicker, ColorResult, Color } from "react-color";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
 import { MessageType, Topic, TopicMessageColor } from "../serverTypes";
 
@@ -9,6 +11,19 @@ export default function Lights() {
   const theme = useTheme();
   const [color, setColor] = useState<ColorResult>();
   const { send } = useContext(GlobalWebsocketContext);
+  const pickerDivRef = useRef(null);
+  const pickerRef = useRef<IroColorPicker | null>(null);
+
+  useEffect(() => {
+    if (!pickerRef.current) {
+      pickerRef.current = iro.ColorPicker(pickerDivRef.current!, {});
+      pickerRef.current.on("color:change", (c: Color) => {
+        console.log(c);
+      });
+    }
+  }, []);
+
+  console.log(pickerRef.current);
 
   const submitColor = useCallback(
     (c: ColorResult) => {
@@ -47,6 +62,7 @@ export default function Lights() {
           onChangeComplete={(c) => submitColor(c)}
           width="100%"
         />
+        <div ref={pickerDivRef} />
       </Box>
     </Paper>
   );
