@@ -20,6 +20,7 @@ import { CircularProgress } from "@mui/material";
 import Devices from "./components/Devices";
 import { GlobalDeviceContext, useDeviceState } from "./state/device";
 import { GlobalMessageContext, useMessageState } from "./state/message";
+import Lights from "./components/Lights";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -68,6 +69,7 @@ function LoggedIn() {
           <Route path="settings/" element={<Settings />} />
           <Route path="orgs/" element={<Orgs />} />
           <Route path="devices/" element={<Devices />} />
+          <Route path="lights/" element={<Lights />} />
         </Routes>
       </Main>
     </>

@@ -23,6 +23,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import DevicesIcon from "@mui/icons-material/Devices";
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import { Link } from "react-router-dom";
 import { GlobalUserContext } from "../state/user";
 
@@ -130,13 +131,14 @@ export default function Nav({
         <Divider />
         <List>
           <NavItem text="Dashboard" link="/" icon={<DashboardIcon />} />
+          <NavItem text="Lights" link="lights/" icon={<LightbulbIcon />} />
+        </List>
+        <Divider />
+        <List>
           <NavItem text="Messages" link="messages/" icon={<InboxIcon />} />
           <NavItem text="Users" link="users/" icon={<GroupIcon />} />
           <NavItem text="Orgs" link="orgs/" icon={<HomeWorkIcon />} />
           <NavItem text="Devices" link="devices/" icon={<DevicesIcon />} />
-        </List>
-        <Divider />
-        <List>
           <NavItem text="Settings" link="settings/" icon={<SettingsIcon />} />
           <ListItem disablePadding>
             <ListItemButton onClick={() => logout()}>
