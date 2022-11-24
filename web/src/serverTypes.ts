@@ -40,8 +40,8 @@ export enum Board {
 }
 
 export enum Topic {
-  HOME_LIGHTS = "/home/lights",
-  HOME_LIGHTS_STATE = "/home/lights/state",
+  LIGHTS_PATTERN = "/lights/pattern",
+  LIGHTS_COLOR = "/lights/color",
 }
 
 export type Message = {

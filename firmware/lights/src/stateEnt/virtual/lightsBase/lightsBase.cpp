@@ -64,14 +64,18 @@ msg_handler LightsBase::getInboxHandler()
   {
     Base::handleInboxMsg(m);
     String topic = m.json()["topic"];
-    if (topic == "/home/lights/state")
+    if (topic == "/lights/pattern")
     {
-      Serial.println("there");
+      Serial.println("Pattern msg");
       setRequestedState(m.getState());
+    }
+    else if (topic == "/lights/color")
+    {
+      Serial.println("Color msg");
     }
     else
     {
-      Serial.println("here");
+      Serial.println("Other Msg");
     }
   };
 }
