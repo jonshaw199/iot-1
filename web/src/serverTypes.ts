@@ -39,7 +39,7 @@ export enum Board {
   BOARD_OTHER = "BOARD_OTHER",
 }
 
-export enum Topic {
+export enum Topics {
   LIGHTS_PATTERN = "/lights/pattern",
   LIGHTS_COLOR = "/lights/color",
 }
@@ -51,8 +51,17 @@ export type Message = {
   _id: Types.ObjectId;
 };
 
+export type SubscriberId = number | string | Types.ObjectId;
+export type QOS = number;
+export type Topic = string;
+export type Subscriber = {
+  id: SubscriberId;
+  qos: QOS;
+};
+
 export type TopicMessage = Message & {
-  topic: string;
+  topic: Topic;
+  qos?: QOS;
 };
 
 export type TopicMessageLightsColor = TopicMessage & {

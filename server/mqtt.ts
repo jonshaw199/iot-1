@@ -1,24 +1,23 @@
-import { Types } from "mongoose";
+import { Topic, SubscriberId, Subscriber, QOS } from "./types";
 
-export type SubscriberId = number | string | Types.ObjectId;
 const WILDCARD = "*";
 const WILDCARD_MULTI = "#";
 const SUBTOPIC_SEPARATOR = "/";
 
 class TopicNode {
-  subtopic: string;
-  subscribers: Set<SubscriberId>;
-  next: Map<string, TopicNode>;
+  subtopic: Topic;
+  subscribers: Map<SubscriberId, Subscriber>;
+  next: Map<Topic, TopicNode>;
 
-  constructor(subtopic: string) {
+  constructor(subtopic: Topic) {
     this.subtopic = subtopic;
-    this.subscribers = new Set();
+    this.subscribers = new Map();
     this.next = new Map();
   }
 }
 
 class TopicTree {
-  heads: Map<string, TopicNode>;
+  heads: Map<Topic, TopicNode>;
 
   constructor() {
     this.heads = new Map();
@@ -28,7 +27,7 @@ class TopicTree {
 export default class MQTT {
   private static topicTree: TopicTree = new TopicTree();
 
-  private static getSubTopics(topic: string) {
+  private static getSubTopics(topic: Topic) {
     return topic.split(SUBTOPIC_SEPARATOR);
   }
 
@@ -36,7 +35,11 @@ export default class MQTT {
     this.topicTree = new TopicTree();
   }
 
-  public static subscribe(subscriber: SubscriberId, topic: string) {
+  public static subscribe(
+    subscriberId: SubscriberId,
+    topic: Topic,
+    qos: QOS = 0
+  ) {
     const subtopics = this.getSubTopics(topic);
     if (subtopics.length) {
       if (!this.topicTree.heads.has(subtopics[0])) {
@@ -49,13 +52,13 @@ export default class MQTT {
         }
         cur = cur.next.get(subtopics[i]);
       }
-      cur.subscribers.add(subscriber);
+      cur.subscribers.set(subscriberId, { id: subscriberId, qos });
       return true;
     }
     return false;
   }
 
-  public static unsubscribe(subscriber: SubscriberId, topic: string) {
+  public static unsubscribe(subscriberId: SubscriberId, topic: Topic) {
     const subtopics = this.getSubTopics(topic);
     if (subtopics.length) {
       if (this.topicTree.heads.has(subtopics[0])) {
@@ -67,40 +70,46 @@ export default class MQTT {
             return false;
           }
         }
-        cur.subscribers.delete(subscriber);
+        cur.subscribers.delete(subscriberId);
         return true;
       }
     }
     return false;
   }
 
-  public static getSubscriberIDs(topic: string) {
-    function getSubscriberIDsRec(
-      remainingTopic: string,
+  public static getSubscribers(topic: Topic) {
+    function getSubscribersRec(
+      remainingTopic: Topic,
       nodes: TopicNode[]
-    ): Set<SubscriberId> {
-      const result = new Set<SubscriberId>();
+    ): Map<SubscriberId, Subscriber> {
+      const result = new Map<SubscriberId, Subscriber>();
       const subtopics = MQTT.getSubTopics(remainingTopic);
       if (subtopics.length) {
         nodes.forEach((node) => {
           if (node.subtopic === WILDCARD || node.subtopic === subtopics[0]) {
             if (subtopics.length === 1) {
-              node.subscribers.forEach((subscriber) => result.add(subscriber));
+              node.subscribers.forEach((subscriber) =>
+                result.set(subscriber.id, subscriber)
+              );
             } else {
-              const next = getSubscriberIDsRec(
+              const next = getSubscribersRec(
                 subtopics.slice(1).join(SUBTOPIC_SEPARATOR),
                 [...node.next.values()]
               );
-              next.forEach((subscriber) => result.add(subscriber));
+              next.forEach((subscriber) =>
+                result.set(subscriber.id, subscriber)
+              );
             }
           } else if (node.subtopic === WILDCARD_MULTI) {
-            node.subscribers.forEach((subscriber) => result.add(subscriber));
+            node.subscribers.forEach((subscriber) =>
+              result.set(subscriber.id, subscriber)
+            );
           }
         });
       }
       return result;
     }
 
-    return getSubscriberIDsRec(topic, [...this.topicTree.heads.values()]);
+    return getSubscribersRec(topic, [...this.topicTree.heads.values()]);
   }
 }
