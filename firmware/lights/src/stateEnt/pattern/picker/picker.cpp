@@ -52,8 +52,7 @@ void Picker::setup()
   addEvent(Event(
       "Picker_Blend",
       [](ECBArg a)
-      {
-        nblendPaletteTowardPalette(currentPalette, targetPalette, 5);          // Blend towards the target palette over 48 iterations.
+      { nblendPaletteTowardPalette(currentPalette, targetPalette, 1); },
       EVENT_TYPE_TEMP, 10));
 #endif
 }
