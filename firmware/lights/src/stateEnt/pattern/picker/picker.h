@@ -7,8 +7,10 @@
 
 class Picker : public Pattern
 {
-  CRGB *leds;
-  CHSV targetColor;
+private:
+  static CRGB *leds;
+  static CRGBPalette16 currentPalette;
+  static CRGBPalette16 targetPalette;
 public:
   String getName();
   msg_handler getInboxHandler();
