@@ -55,11 +55,10 @@ export type TopicMessage = Message & {
   topic: string;
 };
 
-export type TopicMessageColor = TopicMessage & {
+export type TopicMessageLightsColor = TopicMessage & {
   h: Nullable<number>;
   s: Nullable<number>;
-  l: Nullable<number>;
-  a?: Nullable<number>;
+  v: Nullable<number>;
 };
 
 export type WebSocket = WS & {

@@ -3,7 +3,7 @@ import { Paper, Box, useTheme, Typography } from "@mui/material";
 import { Types } from "mongoose";
 import { useState, useContext, useCallback, useRef, useEffect } from "react";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
-import { MessageType, Topic, TopicMessageColor } from "../serverTypes";
+import { MessageType, Topic, TopicMessageLightsColor } from "../serverTypes";
 import ColorPicker from "./ColorPicker";
 
 export default function Lights() {
@@ -13,14 +13,13 @@ export default function Lights() {
 
   const submitColor = useCallback(
     (c: iro.Color) => {
-      const msg: Omit<TopicMessageColor, "_id"> = {
+      const msg: Omit<TopicMessageLightsColor, "_id"> = {
         senderId: new Types.ObjectId(process.env.REACT_APP_DEVICE_ID),
         type: MessageType.TYPE_MQTT_BROADCAST,
         topic: Topic.LIGHTS_COLOR,
-        h: c.hsl.h,
-        s: c.hsl.s,
-        l: c.hsl.l,
-        a: c.hsl.a,
+        h: c.hsv.h,
+        s: c.hsv.s,
+        v: c.hsv.v,
       };
       send(msg);
     },
@@ -36,7 +35,7 @@ export default function Lights() {
         flexDirection="column"
         alignItems="center"
       >
-        <ColorPicker />
+        <ColorPicker throttle={333} onChangeThrottled={submitColor} />
       </Box>
     </Paper>
   );
