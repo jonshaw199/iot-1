@@ -1,14 +1,13 @@
 import iro from "@jaames/iro";
-import { Paper, Box, useTheme, Typography } from "@mui/material";
+import { Paper, Box, useTheme } from "@mui/material";
 import { Types } from "mongoose";
-import { useState, useContext, useCallback, useRef, useEffect } from "react";
+import { useContext, useCallback } from "react";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
 import { MessageType, Topic, TopicMessageLightsColor } from "../serverTypes";
 import ColorPicker from "./ColorPicker";
 
 export default function Lights() {
   const theme = useTheme();
-  const [color, setColor] = useState<iro.Color>();
   const { send } = useContext(GlobalWebsocketContext);
 
   const submitColor = useCallback(
