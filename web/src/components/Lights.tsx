@@ -16,9 +16,9 @@ export default function Lights() {
         senderId: new Types.ObjectId(process.env.REACT_APP_DEVICE_ID),
         type: MessageType.TYPE_MQTT_BROADCAST,
         topic: Topic.LIGHTS_COLOR,
-        h: c.hsv.h,
-        s: c.hsv.s,
-        v: c.hsv.v,
+        h: ((c.hsv.h || 0) * 255) / 360,
+        s: ((c.hsv.s || 0) * 255) / 100,
+        v: ((c.hsv.v || 0) * 255) / 100,
       };
       send(msg);
     },
