@@ -1,6 +1,6 @@
 #include "picker.h"
 
-CRGB* Picker::leds;
+CRGB *Picker::leds;
 CRGBPalette16 Picker::currentPalette;
 CRGBPalette16 Picker::targetPalette;
 
@@ -42,16 +42,24 @@ void Picker::setup()
 #endif
 
   addEvent(Event(
+      "Picker_UpdateLeds",
+      [](ECBArg a)
+      { 
+        fill_solid(leds, CNT, ColorFromPalette(currentPalette, 0));
+        FastLED.show(); },
+      EVENT_TYPE_TEMP, 1));
+
+  addEvent(Event(
       "Picker_Blend",
       [](ECBArg a)
       {
         nblendPaletteTowardPalette(currentPalette, targetPalette, 5);          // Blend towards the target palette over 48 iterations.
-        FastLED.show(); },
       EVENT_TYPE_TEMP, 10));
 #endif
 }
 
-void Picker::preStateChange(int s) {
+void Picker::preStateChange(int s)
+{
   Pattern::preStateChange(s);
   delete[] leds;
 }
