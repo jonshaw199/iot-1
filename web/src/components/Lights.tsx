@@ -3,7 +3,7 @@ import { Paper, Box, useTheme } from "@mui/material";
 import { Types } from "mongoose";
 import { useContext, useCallback } from "react";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
-import { MessageType, Topic, TopicMessageLightsColor } from "../serverTypes";
+import { MessageType, Topics, TopicMessageLightsColor } from "../serverTypes";
 import ColorPicker from "./ColorPicker";
 
 export default function Lights() {
