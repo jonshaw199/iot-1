@@ -17,10 +17,10 @@ class TopicNode {
 }
 
 class TopicTree {
-  heads: Map<Topic, TopicNode>;
+  head: TopicNode;
 
   constructor() {
-    this.heads = new Map();
+    this.head = new TopicNode("");
   }
 }
 
@@ -42,11 +42,8 @@ export default class MQTT {
   ) {
     const subtopics = this.getSubTopics(topic);
     if (subtopics.length) {
-      if (!this.topicTree.heads.has(subtopics[0])) {
-        this.topicTree.heads.set(subtopics[0], new TopicNode(subtopics[0]));
-      }
-      let cur = this.topicTree.heads.get(subtopics[0]);
-      for (let i = 1; i < subtopics.length; i++) {
+      let cur = this.topicTree.head;
+      for (let i = 0; i < subtopics.length; i++) {
         if (!cur.next.has(subtopics[i])) {
           cur.next.set(subtopics[i], new TopicNode(subtopics[i]));
         }
@@ -61,18 +58,16 @@ export default class MQTT {
   public static unsubscribe(subscriberId: SubscriberId, topic: Topic) {
     const subtopics = this.getSubTopics(topic);
     if (subtopics.length) {
-      if (this.topicTree.heads.has(subtopics[0])) {
-        let cur = this.topicTree.heads.get(subtopics[0]);
-        for (let i = 1; i < subtopics.length; i++) {
-          if (cur.next.has(subtopics[i])) {
-            cur = cur.next.get(subtopics[i]);
-          } else {
-            return false;
-          }
+      let cur = this.topicTree.head;
+      for (let i = 0; i < subtopics.length; i++) {
+        if (cur.next.has(subtopics[i])) {
+          cur = cur.next.get(subtopics[i]);
+        } else {
+          return false;
         }
-        cur.subscribers.delete(subscriberId);
-        return true;
       }
+      cur.subscribers.delete(subscriberId);
+      return true;
     }
     return false;
   }
@@ -110,6 +105,6 @@ export default class MQTT {
       return result;
     }
 
-    return getSubscribersRec(topic, [...this.topicTree.heads.values()]);
+    return getSubscribersRec(topic, [...this.topicTree.head.next.values()]);
   }
 }
