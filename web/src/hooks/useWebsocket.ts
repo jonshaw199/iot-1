@@ -28,7 +28,7 @@ export function useWebsocket({
     }
   }, [url, onOpen, onRecv]);
 
-  const send = useCallback((m: Omit<Message, "_id">) => {
+  const send = useCallback((m: Message) => {
     if (client.current?.readyState === w3cwebsocket.OPEN) {
       client.current.send(JSON.stringify(m));
     } else {
@@ -50,7 +50,7 @@ export function useAF1Websocket({
   onOpen?: () => void;
   onRecv?: (msg: Message) => void;
 }) {
-  const ws = useRef<{ send: (m: Omit<Message, "_id">) => void }>();
+  const ws = useRef<{ send: (m: Message) => void }>();
 
   ws.current = useWebsocket({ url, onOpen, onRecv });
 
@@ -58,5 +58,5 @@ export function useAF1Websocket({
 }
 
 export const GlobalWebsocketContext = createContext({
-  send: (m: Omit<Message, "_id">) => {},
+  send: (m: Message) => {},
 });

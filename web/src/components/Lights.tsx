@@ -3,7 +3,7 @@ import { Paper, Box, useTheme } from "@mui/material";
 import { Types } from "mongoose";
 import { useContext, useCallback } from "react";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
-import { MessageType, Topics, TopicMessageLightsColor } from "../serverTypes";
+import { MessageType, Topics, PacketLightsColor } from "../serverTypes";
 import ColorPicker from "./ColorPicker";
 
 export default function Lights() {
@@ -12,7 +12,7 @@ export default function Lights() {
 
   const submitColor = useCallback(
     (c: iro.Color) => {
-      const msg: Omit<TopicMessageLightsColor, "_id"> = {
+      const packet: PacketLightsColor = {
         senderId: new Types.ObjectId(process.env.REACT_APP_DEVICE_ID),
         type: MessageType.TYPE_MQTT_PUBLISH,
         topic: Topics.LIGHTS_COLOR,
@@ -20,7 +20,7 @@ export default function Lights() {
         s: ((c.hsv.s || 0) * 255) / 100,
         v: ((c.hsv.v || 0) * 255) / 100,
       };
-      send(msg);
+      send(packet);
     },
     [send]
   );

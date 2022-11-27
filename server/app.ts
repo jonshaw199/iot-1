@@ -12,7 +12,6 @@ dotenv.config();
 
 import usersRouter from "./routes/user";
 import orgRouter from "./routes/org";
-import messageRouter from "./routes/message";
 import deviceRouter from "./routes/device";
 import MessageBroker from "./messageBroker";
 import { handleWS } from "./controllers/messageBroker";
@@ -56,7 +55,6 @@ app.use(express.json());
 app.use("/", rootRouter);
 app.use("/user", usersRouter);
 app.use("/org", orgRouter);
-app.use("/message", messageRouter);
 app.use("/device", deviceRouter);
 
 app.use((err, req, res, next) => {

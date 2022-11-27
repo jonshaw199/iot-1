@@ -3,14 +3,13 @@ import { Types } from "mongoose";
 
 import {
   MessageType,
-  TopicMessage,
+  Packet,
   WebSocket,
   QOS,
   SubscriberId,
   Topic,
 } from "./types";
 import MQTT from "./mqtt";
-import messageModel from "./models/message";
 
 export default class MessageBroker {
   private static expressWsInstance: Instance;
@@ -52,54 +51,41 @@ export default class MessageBroker {
 
   private static publish({
     orgId,
-    msg,
+    packet,
   }: {
     orgId?: Types.ObjectId;
-    msg: TopicMessage;
+    packet: Packet;
   }) {
-    this.getSubscriberClients({ topic: msg.topic, orgId }).forEach(
-      (subscriber) => subscriber.send(JSON.stringify(msg))
+    this.getSubscriberClients({ topic: packet.topic, orgId }).forEach(
+      (subscriber) => subscriber.send(JSON.stringify(packet))
     );
   }
 
-  public static handleMQTTMsg({
+  public static handlePacket({
     orgId,
-    msg,
+    packet,
   }: {
     orgId?: Types.ObjectId;
-    msg: TopicMessage;
+    packet: Packet;
   }) {
-    messageModel.create(
-      {
-        senderId: msg.senderId,
-        state: msg.state,
-        type: msg.type,
-      },
-      (err, m) => {
-        if (err) {
-          console.log(`Error creating message: ${err}`);
-        }
-      }
-    );
-
-    switch (msg.type) {
+    switch (packet.type) {
       case MessageType.TYPE_MQTT_SUBSCRIBE:
         console.log(
-          `Subscribe device ID: ${msg.senderId}; topic: ${msg.topic}; qos: ${msg.qos}`
+          `Subscribe device ID: ${packet.senderId}; topic: ${packet.topic}; qos: ${packet.qos}`
         );
-        this.subscribe(msg.senderId, msg.topic, msg.qos);
+        this.subscribe(packet.senderId, packet.topic, packet.qos);
         break;
       case MessageType.TYPE_MQTT_UNSUBSCRIBE:
         console.log(
-          `Unsubscribe device ID: ${msg.senderId}; topic: ${msg.topic}`
+          `Unsubscribe device ID: ${packet.senderId}; topic: ${packet.topic}`
         );
-        this.unsubscribe(msg.senderId, msg.topic);
+        this.unsubscribe(packet.senderId, packet.topic);
         break;
       case MessageType.TYPE_MQTT_PUBLISH:
-        console.log(`Publish topic ${msg.topic}`);
+        console.log(`Publish topic ${packet.topic}`);
         this.publish({
           orgId,
-          msg,
+          packet,
         });
         break;
     }

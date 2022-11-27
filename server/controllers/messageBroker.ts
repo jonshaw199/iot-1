@@ -18,8 +18,8 @@ export async function handleWS(w: WS, req: Request, next) {
 
   ws.on("message", (m) => {
     process.stdout.write("<");
-    const msg = JSON.parse(m.toString());
-    MessageBroker.handleMQTTMsg({ msg, orgId: ws.orgId });
+    const packet = JSON.parse(m.toString());
+    MessageBroker.handlePacket({ packet, orgId: ws.orgId });
   });
 
   ws.on("error", (err) => {

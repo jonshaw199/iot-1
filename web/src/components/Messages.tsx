@@ -57,9 +57,6 @@ function MessageTableRow({ message }: { message: Message }) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {message._id.toString()}
-        </TableCell>
-        <TableCell component="th" scope="row">
           {message.senderId.toString()}
         </TableCell>
         <TableCell>{message.type}</TableCell>
@@ -85,7 +82,6 @@ function MessageTable() {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Message ID</TableCell>
             <TableCell>Sender ID</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>State</TableCell>

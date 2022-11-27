@@ -88,7 +88,6 @@ function App() {
   const deviceState = useDeviceState();
   const { getList: getDeviceList } = deviceState;
   const messageState = useMessageState();
-  const { getList: getMessageList } = messageState;
 
   useEffect(() => {
     if (initialLoadRef.current) {
@@ -103,9 +102,8 @@ function App() {
       getOrgList();
       getUserList();
       getDeviceList();
-      getMessageList();
     }
-  }, [token, getOrgList, getUserList, getDeviceList, getMessageList]);
+  }, [token, getOrgList, getUserList, getDeviceList]);
 
   return (
     <Router>

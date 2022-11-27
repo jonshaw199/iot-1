@@ -52,13 +52,6 @@ export enum Topics {
   LIGHTS_COLOR = "/lights/color",
 }
 
-export type Message = {
-  state?: State | number;
-  type: MessageType | number;
-  senderId: Types.ObjectId;
-  _id: Types.ObjectId;
-};
-
 export type SubscriberId = number | string | Types.ObjectId;
 export type QOS = number;
 export type Topic = string;
@@ -67,12 +60,19 @@ export type Subscriber = {
   qos: QOS;
 };
 
-export type TopicMessage = Message & {
-  topic: Topic;
-  qos?: QOS;
+export type Message = {
+  type: MessageType | number;
+  senderId: Types.ObjectId;
+  state?: State | number;
 };
 
-export type TopicMessageLightsColor = TopicMessage & {
+export type Packet = Message & {
+  topic: Topic;
+  qos?: QOS;
+  packetId?: number;
+};
+
+export type PacketLightsColor = Packet & {
   h: Nullable<number>;
   s: Nullable<number>;
   v: Nullable<number>;
