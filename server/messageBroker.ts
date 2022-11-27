@@ -84,25 +84,22 @@ export default class MessageBroker {
 
     switch (msg.type) {
       case MessageType.TYPE_MQTT_SUBSCRIBE:
-        const subscribeMsg = msg as TopicMessage;
         console.log(
-          `Subscribe device ID: ${msg.senderId}; topic: ${subscribeMsg.topic}; qos: ${subscribeMsg.qos}`
+          `Subscribe device ID: ${msg.senderId}; topic: ${msg.topic}; qos: ${msg.qos}`
         );
-        this.subscribe(msg.senderId, subscribeMsg.topic, subscribeMsg.qos);
+        this.subscribe(msg.senderId, msg.topic, msg.qos);
         break;
       case MessageType.TYPE_MQTT_UNSUBSCRIBE:
-        const unsubscribeMsg = msg as TopicMessage;
         console.log(
-          `Unsubscribe device ID: ${msg.senderId}; topic: ${unsubscribeMsg.topic}`
+          `Unsubscribe device ID: ${msg.senderId}; topic: ${msg.topic}`
         );
-        this.unsubscribe(msg.senderId, unsubscribeMsg.topic);
+        this.unsubscribe(msg.senderId, msg.topic);
         break;
       case MessageType.TYPE_MQTT_PUBLISH:
-        const publishMsg = msg as TopicMessage;
-        console.log(`Publish topic ${publishMsg.topic}`);
+        console.log(`Publish topic ${msg.topic}`);
         this.publish({
           orgId,
-          msg: publishMsg,
+          msg,
         });
         break;
     }
