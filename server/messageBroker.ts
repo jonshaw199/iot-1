@@ -50,7 +50,7 @@ export default class MessageBroker {
     );
   }
 
-  private static broadcast({
+  private static publish({
     orgId,
     msg,
   }: {
@@ -97,12 +97,12 @@ export default class MessageBroker {
         );
         this.unsubscribe(msg.senderId, unsubscribeMsg.topic);
         break;
-      case MessageType.TYPE_MQTT_BROADCAST:
-        const broadcastMsg = msg as TopicMessage;
-        console.log(`Broadcast for topic ${broadcastMsg.topic}`);
-        this.broadcast({
+      case MessageType.TYPE_MQTT_PUBLISH:
+        const publishMsg = msg as TopicMessage;
+        console.log(`Publish topic ${publishMsg.topic}`);
+        this.publish({
           orgId,
-          msg: broadcastMsg,
+          msg: publishMsg,
         });
         break;
     }

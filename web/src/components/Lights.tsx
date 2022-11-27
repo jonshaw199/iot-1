@@ -14,7 +14,7 @@ export default function Lights() {
     (c: iro.Color) => {
       const msg: Omit<TopicMessageLightsColor, "_id"> = {
         senderId: new Types.ObjectId(process.env.REACT_APP_DEVICE_ID),
-        type: MessageType.TYPE_MQTT_BROADCAST,
+        type: MessageType.TYPE_MQTT_PUBLISH,
         topic: Topics.LIGHTS_COLOR,
         h: ((c.hsv.h || 0) * 255) / 360,
         s: ((c.hsv.s || 0) * 255) / 100,

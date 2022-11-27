@@ -7,7 +7,7 @@ export type Nullable<T> = null | undefined | T;
 export enum MessageType {
   TYPE_MQTT_SUBSCRIBE = 0,
   TYPE_MQTT_UNSUBSCRIBE,
-  TYPE_MQTT_BROADCAST,
+  TYPE_MQTT_PUBLISH,
   TYPE_NONE = 100,
   TYPE_HANDSHAKE_REQUEST,
   TYPE_HANDSHAKE_RESPONSE,
