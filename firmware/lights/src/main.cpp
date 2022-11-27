@@ -56,7 +56,7 @@ void setup()
 #endif
 
   AF1::setInitialState(INITIAL_STATE);
-  AF1::setDefaultWSClientInfo({SERVER_IP, String("/?deviceId=") + String(JS_ID), SERVER_PORT, ""});
+  AF1::setDefaultWS(SERVER_IP, String("/?deviceId=") + String(JS_ID), SERVER_PORT);
 }
 
 void loop()
