@@ -5,7 +5,6 @@ import {
   MessageType,
   Packet,
   WebSocket,
-  QOS,
   SubscriberId,
   Topic,
   PacketId,
@@ -47,10 +46,8 @@ export default class MessageBroker {
     orgId?: Types.ObjectId;
   }) {
     const subscribers = this.getSubscriberIds(topic);
-    const subscriberStrs = new Set<string>();
-    subscribers.forEach((s) => subscriberStrs.add(s.toString()));
     return this.getOrgClients(orgId).filter(
-      (w: WebSocket) => !topic || subscriberStrs.has(w.deviceId.toString())
+      (w: WebSocket) => !topic || subscribers.has(w.deviceId.toString())
     );
   }
 
@@ -120,7 +117,7 @@ export default class MessageBroker {
       subscriber.send(JSON.stringify(packet));
       // QOS for subscriber
       const subscriberQos = this.subscriberMap
-        .get(subscriber.deviceId)
+        .get(subscriber.deviceId.toString())
         .subscriptions.get(topic).qos;
       const subscriberQosInternal =
         subscriberQos == null ? DEFAULT_QOS : subscriberQos;

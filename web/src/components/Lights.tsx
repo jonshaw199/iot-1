@@ -1,6 +1,5 @@
 import iro from "@jaames/iro";
 import { Paper, Box, useTheme } from "@mui/material";
-import { Types } from "mongoose";
 import { useContext, useCallback } from "react";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
 import { MessageType, Topics, PacketLightsColor } from "../serverTypes";
@@ -13,7 +12,7 @@ export default function Lights() {
   const submitColor = useCallback(
     (c: iro.Color) => {
       const packet: PacketLightsColor = {
-        senderId: new Types.ObjectId(process.env.REACT_APP_DEVICE_ID),
+        senderId: process.env.REACT_APP_DEVICE_ID || "",
         type: MessageType.TYPE_MQTT_PUBLISH,
         topic: Topics.LIGHTS_COLOR,
         h: ((c.hsv.h || 0) * 255) / 360,

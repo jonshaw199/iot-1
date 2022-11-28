@@ -5,7 +5,7 @@ import MessageBroker from "./messageBroker";
 import { MessageType, Packet } from "./types";
 
 const sub: Packet = {
-  senderId: new Types.ObjectId(),
+  senderId: "",
   topic: "home/lights",
   type: MessageType.TYPE_MQTT_SUBSCRIBE,
 };
