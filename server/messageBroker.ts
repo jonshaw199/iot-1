@@ -118,6 +118,7 @@ export default class MessageBroker {
     const clients = this.getSubscriberClients({ topic: topic, orgId });
     clients.forEach((subscriber) => {
       subscriber.send(JSON.stringify(packet));
+      // QOS for subscriber
       const subscriberQos = this.subscriberMap
         .get(subscriber.deviceId)
         .subscriptions.get(topic).qos;
@@ -129,6 +130,7 @@ export default class MessageBroker {
       }
     });
 
+    // QOS for publisher
     if (qosInternal) {
       let res = packet;
       switch (qosInternal) {
@@ -137,7 +139,6 @@ export default class MessageBroker {
           this.getSubscriberClient(packet.senderId)?.send(JSON.stringify(res));
           break;
         case 2:
-          const { packetId, senderId } = packet;
           if (packetId) {
             this.subscriberMap
               .get(senderId)
