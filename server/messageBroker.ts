@@ -13,6 +13,8 @@ import {
 } from "./types";
 import MQTT from "./mqtt";
 
+const DEFAULT_QOS = 1;
+
 export default class MessageBroker {
   private static expressWsInstance: Instance;
   private static subscriberMap: Map<
@@ -45,23 +47,19 @@ export default class MessageBroker {
     orgId?: Types.ObjectId;
   }) {
     const subscribers = this.getSubscriberIds(topic);
+    const subscriberStrs = new Set<string>();
+    subscribers.forEach((s) => subscriberStrs.add(s.toString()));
     return this.getOrgClients(orgId).filter(
-      (w: WebSocket) => !topic || subscribers.has(w.deviceId.toString())
+      (w: WebSocket) => !topic || subscriberStrs.has(w.deviceId.toString())
     );
   }
 
   public static getSubscriberClient(subscriberId: SubscriberId) {
-    return this.getOrgClients().find((w) => w.deviceId === subscriberId);
-  }
-
-  private static subAck(packet: Packet) {
-    const res = packet;
-    res.type = MessageType.TYPE_MQTT_SUBACK;
-    this.getSubscriberClient(packet.senderId)?.send(JSON.stringify(res));
+    return this.getOrgClients().find((w) => w.deviceId.equals(subscriberId));
   }
 
   public static subscribe(packet: Packet) {
-    const { senderId, topic, qos, packetId } = packet;
+    const { senderId, topic, qos } = packet;
     console.log(
       `Subscribe device ID: ${senderId}; topic: ${topic}; qos: ${qos}`
     );
@@ -75,14 +73,10 @@ export default class MessageBroker {
         this.subscriberMap.set(senderId, { unackedPackets, subscriptions });
       }
       this.subscriberMap.get(senderId).subscriptions.set(topic, { topic, qos });
-      this.subAck(packet);
+      const res = packet;
+      res.type = MessageType.TYPE_MQTT_SUBACK;
+      this.getSubscriberClient(packet.senderId)?.send(JSON.stringify(res));
     }
-  }
-
-  private static unsubAck(packet: Packet) {
-    const res = packet;
-    res.type = MessageType.TYPE_MQTT_UNSUBACK;
-    this.getSubscriberClient(packet.senderId)?.send(JSON.stringify(res));
   }
 
   public static unsubscribe(packet: Packet) {
@@ -90,13 +84,25 @@ export default class MessageBroker {
     console.log(`Unsubscribe device ID: ${senderId}; topic: ${topic}`);
     if (MQTT.unsubscribe(senderId, topic)) {
       this.subscriberMap.get(senderId).subscriptions.delete(topic);
-      this.unsubAck(packet);
+      const res = packet;
+      res.type = MessageType.TYPE_MQTT_UNSUBACK;
+      this.getSubscriberClient(packet.senderId)?.send(JSON.stringify(res));
     }
   }
 
   public static clearTopicTree() {
     MQTT.clearTopicTree();
     this.subscriberMap = new Map();
+  }
+
+  private static pubRel(packet: Packet) {
+    const { packetId, senderId } = packet;
+    if (packetId) {
+      this.subscriberMap.get(senderId).unackedPackets.delete(packetId);
+    }
+    const res = packet;
+    res.type = MessageType.TYPE_MQTT_PUBCOMP;
+    this.getSubscriberClient(senderId)?.send(JSON.stringify(res));
   }
 
   private static publish({
@@ -106,21 +112,42 @@ export default class MessageBroker {
     orgId?: Types.ObjectId;
     packet: Packet;
   }) {
-    const { topic, qos, packetId } = packet;
+    const { topic, qos, packetId, senderId } = packet;
     console.log(`Publish topic ${topic}`);
-    this.getSubscriberClients({ topic: topic, orgId }).forEach((subscriber) => {
+    const qosInternal = qos == null ? DEFAULT_QOS : qos;
+    const clients = this.getSubscriberClients({ topic: topic, orgId });
+    clients.forEach((subscriber) => {
       subscriber.send(JSON.stringify(packet));
-      const subscriptionQos = this.subscriberMap
+      const subscriberQos = this.subscriberMap
         .get(subscriber.deviceId)
         .subscriptions.get(topic).qos;
-      const minQos = Math.min(qos, subscriptionQos);
-      if (minQos && packetId) {
-        // to do, only do this for certain packet types like subscribe and publish?
-        this.subscriberMap
-          .get(subscriber.deviceId)
-          .unackedPackets.set(packetId, packet);
+      const subscriberQosInternal =
+        subscriberQos == null ? DEFAULT_QOS : subscriberQos;
+      const minQos = Math.min(qosInternal, subscriberQosInternal);
+      if (minQos === 2 && packetId) {
+        this.subscriberMap.get(senderId).unackedPackets.set(packetId, packet);
       }
     });
+
+    if (qosInternal) {
+      let res = packet;
+      switch (qosInternal) {
+        case 1:
+          res.type = MessageType.TYPE_MQTT_PUBACK;
+          this.getSubscriberClient(packet.senderId)?.send(JSON.stringify(res));
+          break;
+        case 2:
+          const { packetId, senderId } = packet;
+          if (packetId) {
+            this.subscriberMap
+              .get(senderId)
+              .unackedPackets.set(packetId, packet);
+          }
+          res.type = MessageType.TYPE_MQTT_PUBREC;
+          this.getSubscriberClient(senderId)?.send(JSON.stringify(res));
+          break;
+      }
+    }
   }
 
   public static handlePacket({
@@ -143,6 +170,11 @@ export default class MessageBroker {
           packet,
         });
         break;
+      case MessageType.TYPE_MQTT_PUBREL:
+        this.pubRel(packet);
+        break;
+      default:
+        console.log("Unknown packet type");
     }
   }
 }
