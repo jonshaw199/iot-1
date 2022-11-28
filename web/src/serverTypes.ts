@@ -52,7 +52,7 @@ export enum Topics {
   LIGHTS_COLOR = "/lights/color",
 }
 
-export type SubscriberId = number | string | Types.ObjectId;
+export type SubscriberId = Types.ObjectId;
 export type PacketId = number;
 export type QOS = number;
 export type Topic = string;
