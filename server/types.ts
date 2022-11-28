@@ -53,11 +53,12 @@ export enum Topics {
 }
 
 export type SubscriberId = number | string | Types.ObjectId;
+export type PacketId = number;
 export type QOS = number;
 export type Topic = string;
-export type Subscriber = {
-  id: SubscriberId;
-  qos: QOS;
+export type Subscription = {
+  topic: Topic;
+  qos?: QOS;
 };
 
 export type Message = {
@@ -69,7 +70,7 @@ export type Message = {
 export type Packet = Message & {
   topic: Topic;
   qos?: QOS;
-  packetId?: number;
+  packetId?: PacketId;
 };
 
 export type PacketLightsColor = Packet & {

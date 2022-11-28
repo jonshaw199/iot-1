@@ -1,4 +1,4 @@
-import { Topic, SubscriberId, Subscriber, QOS } from "./types";
+import { Topic, SubscriberId, QOS } from "./types";
 
 const WILDCARD = "*";
 const WILDCARD_MULTI = "#";
@@ -6,12 +6,12 @@ const SUBTOPIC_SEPARATOR = "/";
 
 class TopicNode {
   subtopic: Topic;
-  subscribers: Map<SubscriberId, Subscriber>;
+  subscriberIds: Set<SubscriberId>;
   next: Map<Topic, TopicNode>;
 
   constructor(subtopic: Topic) {
     this.subtopic = subtopic;
-    this.subscribers = new Map();
+    this.subscriberIds = new Set();
     this.next = new Map();
   }
 }
@@ -49,7 +49,7 @@ export default class MQTT {
         }
         cur = cur.next.get(subtopics[i]);
       }
-      cur.subscribers.set(subscriberId, { id: subscriberId, qos });
+      cur.subscriberIds.add(subscriberId);
       return true;
     }
     return false;
@@ -66,39 +66,33 @@ export default class MQTT {
           return false;
         }
       }
-      cur.subscribers.delete(subscriberId);
+      cur.subscriberIds.delete(subscriberId);
       return true;
     }
     return false;
   }
 
-  public static getSubscribers(topic: Topic) {
+  public static getSubscriberIds(topic: Topic) {
     function getSubscribersRec(
       remainingTopic: Topic,
       nodes: TopicNode[]
-    ): Map<SubscriberId, Subscriber> {
-      const result = new Map<SubscriberId, Subscriber>();
+    ): Set<SubscriberId> {
+      const result = new Set<SubscriberId>();
       const subtopics = MQTT.getSubTopics(remainingTopic);
       if (subtopics.length) {
         nodes.forEach((node) => {
           if (node.subtopic === WILDCARD || node.subtopic === subtopics[0]) {
             if (subtopics.length === 1) {
-              node.subscribers.forEach((subscriber) =>
-                result.set(subscriber.id, subscriber)
-              );
+              node.subscriberIds.forEach((i) => result.add(i));
             } else {
               const next = getSubscribersRec(
                 subtopics.slice(1).join(SUBTOPIC_SEPARATOR),
                 [...node.next.values()]
               );
-              next.forEach((subscriber) =>
-                result.set(subscriber.id, subscriber)
-              );
+              next.forEach((i) => result.add(i));
             }
           } else if (node.subtopic === WILDCARD_MULTI) {
-            node.subscribers.forEach((subscriber) =>
-              result.set(subscriber.id, subscriber)
-            );
+            node.subscriberIds.forEach((i) => result.add(i));
           }
         });
       }
