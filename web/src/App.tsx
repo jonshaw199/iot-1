@@ -16,7 +16,6 @@ import Orgs from "./components/Orgs";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
 import Devices from "./components/Devices";
-import { GlobalMessageContext, useMessageState } from "./state/message";
 import Lights from "./components/Lights";
 import { useDispatch, useSelector } from "./state/store";
 import {
@@ -91,8 +90,6 @@ function App() {
   const initialLoadRef = useRef(true);
   const [loadingInitially, setLoadingInitially] = useState(true);
 
-  const messageState = useMessageState();
-
   const loggedIn = useMemo(() => token && currentUser, [token, currentUser]);
 
   useEffect(() => {
@@ -114,24 +111,22 @@ function App() {
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <GlobalMessageContext.Provider value={messageState}>
-          <Outer>
-            {loadingInitially ? (
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                height={1}
-              >
-                <CircularProgress />
-              </Box>
-            ) : loggedIn ? (
-              <LoggedIn />
-            ) : (
-              <Login />
-            )}
-          </Outer>
-        </GlobalMessageContext.Provider>
+        <Outer>
+          {loadingInitially ? (
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height={1}
+            >
+              <CircularProgress />
+            </Box>
+          ) : loggedIn ? (
+            <LoggedIn />
+          ) : (
+            <Login />
+          )}
+        </Outer>
       </ThemeProvider>
     </Router>
   );
