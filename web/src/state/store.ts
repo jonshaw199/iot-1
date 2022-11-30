@@ -7,11 +7,13 @@ import {
 
 import userReducer from "./userSlice";
 import orgReducer from "./orgSlice";
+import deviceReducer from "./deviceSlice";
 
 const store = configureStore({
   reducer: {
     users: userReducer,
     orgs: orgReducer,
+    devices: deviceReducer,
   },
 });
 

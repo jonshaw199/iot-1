@@ -1,7 +1,11 @@
-import { Device, DeviceResponse } from "../serverTypes";
+import {
+  CreateDeviceRequest,
+  DeviceResponse,
+  DeviceListResponse,
+} from "../serverTypes";
 import { req } from "./api";
 
-export function create(device: Partial<Device>) {
+export function createDevice(device: CreateDeviceRequest) {
   return req<DeviceResponse>("/device", {
     method: "POST",
     body: JSON.stringify(device),
@@ -11,6 +15,6 @@ export function create(device: Partial<Device>) {
   });
 }
 
-export function getList() {
-  return req<Device[]>("/device");
+export function getDeviceList() {
+  return req<DeviceListResponse>("/device");
 }

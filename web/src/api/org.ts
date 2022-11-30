@@ -1,5 +1,5 @@
 import {
-  CreateOrgResponse,
+  OrgResponse,
   OrgListResponse,
   Org,
   CreateOrgRequest,
@@ -7,7 +7,7 @@ import {
 import { req } from "./api";
 
 export function createOrg(org: CreateOrgRequest) {
-  return req<CreateOrgResponse>("/org", {
+  return req<OrgResponse>("/org", {
     method: "POST",
     body: JSON.stringify(org),
     headers: {

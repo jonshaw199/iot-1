@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   Org,
   CreateOrgRequest,
-  CreateOrgResponse,
+  OrgResponse,
   OrgListResponse,
 } from "../serverTypes";
 import {
@@ -35,7 +35,7 @@ const getOrgListThunk = createAsyncThunk("org/getList", () => getOrgListApi());
 
 const createOrgReducer = (
   state: OrgState,
-  action: PayloadAction<CreateOrgResponse>
+  action: PayloadAction<OrgResponse>
 ) => {
   state.orgs = new Map(state.orgs).set(
     action.payload.org._id.toString(),

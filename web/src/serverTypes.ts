@@ -140,7 +140,7 @@ export type UserListResponse = {
 
 export type CreateOrgRequest = Omit<Org, "_id">;
 
-export type CreateOrgResponse = {
+export type OrgResponse = {
   msg: string;
   org: Org;
 };
@@ -149,9 +149,15 @@ export type OrgListResponse = {
   orgs: Org[];
 };
 
+export type CreateDeviceRequest = Omit<Device, "_id">;
+
 export type DeviceResponse = {
   msg: string;
   device: Device;
+};
+
+export type DeviceListResponse = {
+  devices: Device[];
 };
 
 export type MessageResponse = {
