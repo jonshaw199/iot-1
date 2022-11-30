@@ -24,7 +24,13 @@ import { Box } from "@mui/system";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import { User } from "../serverTypes";
-import { GlobalUserContext } from "../state/user";
+import {
+  getListThunk,
+  users as usersSelector,
+  createThunk,
+  removeThunk,
+} from "../state/userSlice";
+import { AppDispatch, useDispatch, useSelector } from "../state/store";
 
 const Error = styled("div")(({ theme }) => ({
   color: "red",
@@ -33,7 +39,7 @@ const Error = styled("div")(({ theme }) => ({
 
 function NewUser() {
   const theme = useTheme();
-  const { create } = useContext(GlobalUserContext);
+  const dispatch = useDispatch();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -44,14 +50,14 @@ function NewUser() {
     if (name && email && pass) {
       setError("");
       try {
-        create({ email, name, password: pass });
+        dispatch(createThunk({ email, name, password: pass }));
       } catch (e) {
         setError(String(e));
       }
     } else {
       setError("Please fill out all required fields");
     }
-  }, [name, email, pass, create]);
+  }, [name, email, pass, createThunk]);
 
   return (
     <div>
@@ -100,7 +106,7 @@ function NewUser() {
 
 function UsersTableRow({ user }: { user: User }) {
   const [open, setOpen] = useState(false);
-  const { remove } = useContext(GlobalUserContext);
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -132,7 +138,7 @@ function UsersTableRow({ user }: { user: User }) {
               <Button
                 variant="outlined"
                 color="error"
-                onClick={() => remove(user._id.toString())}
+                onClick={() => dispatch(removeThunk(user._id.toString()))}
               >
                 Delete
               </Button>
@@ -145,7 +151,7 @@ function UsersTableRow({ user }: { user: User }) {
 }
 
 function UsersTable() {
-  const { users: userMap } = useContext(GlobalUserContext);
+  const userMap = useSelector(usersSelector);
 
   const users = useMemo(() => Array.from(userMap.values()), [userMap]);
 

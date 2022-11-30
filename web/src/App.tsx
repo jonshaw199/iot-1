@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { styled, ThemeProvider } from "@mui/material/styles";
+import { Provider } from "react-redux";
 
 import "./App.css";
 import Nav from "./components/Nav";
@@ -21,6 +22,7 @@ import Devices from "./components/Devices";
 import { GlobalDeviceContext, useDeviceState } from "./state/device";
 import { GlobalMessageContext, useMessageState } from "./state/message";
 import Lights from "./components/Lights";
+import store from "./state/store";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -108,30 +110,32 @@ function App() {
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <GlobalOrgContext.Provider value={orgState}>
-          <GlobalUserContext.Provider value={userState}>
-            <GlobalDeviceContext.Provider value={deviceState}>
-              <GlobalMessageContext.Provider value={messageState}>
-                <Outer>
-                  {loadingInitially ? (
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      height={1}
-                    >
-                      <CircularProgress />
-                    </Box>
-                  ) : loggedIn ? (
-                    <LoggedIn />
-                  ) : (
-                    <Login />
-                  )}
-                </Outer>
-              </GlobalMessageContext.Provider>
-            </GlobalDeviceContext.Provider>
-          </GlobalUserContext.Provider>
-        </GlobalOrgContext.Provider>
+        <Provider store={store}>
+          <GlobalOrgContext.Provider value={orgState}>
+            <GlobalUserContext.Provider value={userState}>
+              <GlobalDeviceContext.Provider value={deviceState}>
+                <GlobalMessageContext.Provider value={messageState}>
+                  <Outer>
+                    {loadingInitially ? (
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        height={1}
+                      >
+                        <CircularProgress />
+                      </Box>
+                    ) : loggedIn ? (
+                      <LoggedIn />
+                    ) : (
+                      <Login />
+                    )}
+                  </Outer>
+                </GlobalMessageContext.Provider>
+              </GlobalDeviceContext.Provider>
+            </GlobalUserContext.Provider>
+          </GlobalOrgContext.Provider>
+        </Provider>
       </ThemeProvider>
     </Router>
   );

@@ -35,6 +35,8 @@ const initialState: UserState = {
   token: "",
 };
 
+// Thunks
+
 const createThunk = createAsyncThunk(
   "user/create",
   (userReq: CreateUserRequest) => createUser(userReq)
@@ -60,6 +62,8 @@ const authThunk = createAsyncThunk("user/auth", (body: AuthRequest) =>
 const authWithTokenThunk = createAsyncThunk("user/authWithToken", () =>
   authWithToken()
 );
+
+// Reducers
 
 const createReducer = (
   state: UserState,
@@ -147,6 +151,15 @@ export const { auth, create, get, getList, logout, remove, update } =
   userSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-// export const selectCount = (state: RootState) => state.counter.value;
+export const users = (state: RootState) => state.users.users;
+
+export {
+  authThunk,
+  createThunk,
+  getThunk,
+  getListThunk,
+  removeThunk,
+  updateThunk,
+};
 
 export default userSlice.reducer;
