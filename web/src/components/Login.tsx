@@ -1,6 +1,6 @@
 import { TextField, styled, Button, Typography } from "@mui/material";
 import { Box, useTheme } from "@mui/system";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useDispatch } from "../state/store";
 import { authThunk } from "../state/userSlice";
@@ -29,7 +29,7 @@ export default function Login() {
     } else {
       setError("Please fill out all required fields");
     }
-  }, [email, pass, authThunk]);
+  }, [email, pass, dispatch]);
 
   return (
     <Box

@@ -105,7 +105,7 @@ function App() {
       setTimeout(() => setLoadingInitially(false), 1000);
       dispatch(authWithTokenThunk());
     }
-  }, [authWithTokenThunk]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (token) {
@@ -113,7 +113,7 @@ function App() {
       dispatch(getListThunk());
       getDeviceList();
     }
-  }, [token, getOrgList, getListThunk, getDeviceList]);
+  }, [token, getOrgList, getDeviceList, dispatch]);
 
   return (
     <Router>

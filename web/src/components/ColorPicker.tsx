@@ -1,6 +1,6 @@
 import iro from "@jaames/iro";
 import { IroColorPicker } from "@jaames/iro/dist/ColorPicker";
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import _throttle from "lodash/throttle";
 import { Box } from "@mui/system";
 
@@ -20,13 +20,10 @@ export default function ColorPicker({
   const pickerDivRef = useRef(null);
   const pickerRef = useRef<IroColorPicker | null>(null);
 
-  const throttled = useCallback(
-    _throttle((c: iro.Color) => {
-      console.log(c);
-      onChangeThrottled(c);
-    }, throttle || undefined),
-    [throttle, onChangeThrottled]
-  );
+  const throttled = _throttle((c: iro.Color) => {
+    console.log(c);
+    onChangeThrottled(c);
+  }, throttle || undefined);
 
   useEffect(() => {
     if (!pickerRef.current) {
@@ -42,7 +39,7 @@ export default function ColorPicker({
         onEnd(c);
       });
     }
-  }, [initial, onChange]);
+  }, [initial, onChange, onEnd, throttled]);
 
   return (
     <Box width={1} overflow="hidden" display="flex" justifyContent="center">

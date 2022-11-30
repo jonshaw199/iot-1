@@ -14,6 +14,7 @@ import {
   Button,
   Collapse,
   IconButton,
+  MenuItem,
   TextField,
   Typography,
   useTheme,
@@ -23,14 +24,15 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Box } from "@mui/system";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import { User } from "../serverTypes";
+import { Org, User } from "../serverTypes";
 import {
-  getListThunk,
   users as usersSelector,
   createThunk,
   removeThunk,
 } from "../state/userSlice";
-import { AppDispatch, useDispatch, useSelector } from "../state/store";
+import { useDispatch, useSelector } from "../state/store";
+import { GlobalOrgContext } from "../state/org";
+import { Types } from "mongoose";
 
 const Error = styled("div")(({ theme }) => ({
   color: "red",
@@ -45,19 +47,29 @@ function NewUser() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
+  const [orgId, setOrgId] = useState("");
+
+  const { orgs } = useContext(GlobalOrgContext);
 
   const submit = useCallback(() => {
     if (name && email && pass) {
       setError("");
       try {
-        dispatch(createThunk({ email, name, password: pass }));
+        dispatch(
+          createThunk({
+            email,
+            name,
+            password: pass,
+            orgId: new Types.ObjectId(orgId),
+          })
+        );
       } catch (e) {
         setError(String(e));
       }
     } else {
       setError("Please fill out all required fields");
     }
-  }, [name, email, pass, createThunk]);
+  }, [name, email, pass, orgId, dispatch]);
 
   return (
     <div>
@@ -91,6 +103,19 @@ function NewUser() {
               value={pass}
               onChange={(e) => setPass(e.target.value)}
             />
+            <TextField
+              label="Org"
+              value={orgId}
+              onChange={(e) => setOrgId(e.target.value)}
+              select
+              sx={{ minWidth: 100 }}
+            >
+              {Array.from(orgs.values()).map((o: Org, i) => (
+                <MenuItem value={o._id.toString()} key={i}>
+                  {o.name}
+                </MenuItem>
+              ))}
+            </TextField>
           </Box>
           {error && <Error>{error}</Error>}
           <Box pt={theme.spacing(1)}>
