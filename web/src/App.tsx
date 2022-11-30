@@ -10,7 +10,6 @@ import theme from "./theme";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Users from "./components/Users";
 import Settings from "./components/Settings";
-import { GlobalUserContext, useUserState } from "./state/user";
 import { useMemo } from "react";
 import Login from "./components/Login";
 import { GlobalWebsocketContext, useAF1Websocket } from "./hooks/useWebsocket";
@@ -22,7 +21,13 @@ import Devices from "./components/Devices";
 import { GlobalDeviceContext, useDeviceState } from "./state/device";
 import { GlobalMessageContext, useMessageState } from "./state/message";
 import Lights from "./components/Lights";
-import store from "./state/store";
+import store, { useDispatch, useSelector } from "./state/store";
+import {
+  authWithTokenThunk,
+  currentUser as currentUserSelector,
+  getListThunk,
+  token as tokenSelector,
+} from "./state/userSlice";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -80,9 +85,10 @@ function LoggedIn() {
 }
 
 function App() {
-  const userState = useUserState();
-  const { token, currentUser, authWithToken, getList: getUserList } = userState;
-  const loggedIn = useMemo(() => token && currentUser, [token, currentUser]);
+  const dispatch = useDispatch();
+  const currentUser = useSelector(currentUserSelector);
+  const token = useSelector(tokenSelector);
+
   const orgState = useOrgState();
   const { getList: getOrgList } = orgState;
   const initialLoadRef = useRef(true);
@@ -91,49 +97,49 @@ function App() {
   const { getList: getDeviceList } = deviceState;
   const messageState = useMessageState();
 
+  const loggedIn = useMemo(() => token && currentUser, [token, currentUser]);
+
   useEffect(() => {
     if (initialLoadRef.current) {
       initialLoadRef.current = false;
       setTimeout(() => setLoadingInitially(false), 1000);
-      authWithToken();
+      dispatch(authWithTokenThunk());
     }
-  }, [authWithToken]);
+  }, [authWithTokenThunk]);
 
   useEffect(() => {
     if (token) {
       getOrgList();
-      getUserList();
+      dispatch(getListThunk());
       getDeviceList();
     }
-  }, [token, getOrgList, getUserList, getDeviceList]);
+  }, [token, getOrgList, getListThunk, getDeviceList]);
 
   return (
     <Router>
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <GlobalOrgContext.Provider value={orgState}>
-            <GlobalUserContext.Provider value={userState}>
-              <GlobalDeviceContext.Provider value={deviceState}>
-                <GlobalMessageContext.Provider value={messageState}>
-                  <Outer>
-                    {loadingInitially ? (
-                      <Box
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        height={1}
-                      >
-                        <CircularProgress />
-                      </Box>
-                    ) : loggedIn ? (
-                      <LoggedIn />
-                    ) : (
-                      <Login />
-                    )}
-                  </Outer>
-                </GlobalMessageContext.Provider>
-              </GlobalDeviceContext.Provider>
-            </GlobalUserContext.Provider>
+            <GlobalDeviceContext.Provider value={deviceState}>
+              <GlobalMessageContext.Provider value={messageState}>
+                <Outer>
+                  {loadingInitially ? (
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      height={1}
+                    >
+                      <CircularProgress />
+                    </Box>
+                  ) : loggedIn ? (
+                    <LoggedIn />
+                  ) : (
+                    <Login />
+                  )}
+                </Outer>
+              </GlobalMessageContext.Provider>
+            </GlobalDeviceContext.Provider>
           </GlobalOrgContext.Provider>
         </Provider>
       </ThemeProvider>

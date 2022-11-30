@@ -25,7 +25,8 @@ import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import DevBoardIcon from "@mui/icons-material/DeveloperBoard";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import { Link } from "react-router-dom";
-import { GlobalUserContext } from "../state/user";
+import { useDispatch } from "../state/store";
+import { logout } from "../state/userSlice";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -86,7 +87,7 @@ export default function Nav({
   onClose: () => void;
 }) {
   const theme = useTheme();
-  const { logout } = useContext(GlobalUserContext);
+  const dispatch = useDispatch();
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -141,7 +142,7 @@ export default function Nav({
           <NavItem text="Devices" link="devices/" icon={<DevBoardIcon />} />
           <NavItem text="Settings" link="settings/" icon={<SettingsIcon />} />
           <ListItem disablePadding>
-            <ListItemButton onClick={() => logout()}>
+            <ListItemButton onClick={() => dispatch(logout())}>
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>

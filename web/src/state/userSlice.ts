@@ -152,6 +152,8 @@ export const { auth, create, get, getList, logout, remove, update } =
 
 // Other code such as selectors can use the imported `RootState` type
 export const users = (state: RootState) => state.users.users;
+export const currentUser = (state: RootState) => state.users.currentUser;
+export const token = (state: RootState) => state.users.token;
 
 export {
   authThunk,
@@ -160,6 +162,7 @@ export {
   getListThunk,
   removeThunk,
   updateThunk,
+  authWithTokenThunk,
 };
 
 export default userSlice.reducer;

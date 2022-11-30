@@ -1,7 +1,9 @@
 import { TextField, styled, Button, Typography } from "@mui/material";
 import { Box, useTheme } from "@mui/system";
 import { useCallback, useContext, useState } from "react";
-import { GlobalUserContext } from "../state/user";
+
+import { useDispatch } from "../state/store";
+import { authThunk } from "../state/userSlice";
 
 const Error = styled("div")(({ theme }) => ({
   color: "red",
@@ -10,7 +12,7 @@ const Error = styled("div")(({ theme }) => ({
 
 export default function Login() {
   const theme = useTheme();
-  const { auth } = useContext(GlobalUserContext);
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
@@ -20,14 +22,14 @@ export default function Login() {
     if (email && pass) {
       setError("");
       try {
-        auth({ email, password: pass });
+        dispatch(authThunk({ email, password: pass }));
       } catch (e) {
         setError(String(e));
       }
     } else {
       setError("Please fill out all required fields");
     }
-  }, [email, pass, auth]);
+  }, [email, pass, authThunk]);
 
   return (
     <Box
