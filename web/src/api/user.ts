@@ -4,10 +4,12 @@ import {
   AuthResponse,
   AuthRequest,
   CreateUserResponse,
+  UserRequest,
+  UserListResponse,
 } from "../serverTypes";
 import { req } from "./api";
 
-export function create(user: Partial<User>) {
+export function createUser(user: UserRequest) {
   return req<CreateUserResponse>("/user", {
     method: "POST",
     body: JSON.stringify(user),
@@ -17,7 +19,7 @@ export function create(user: Partial<User>) {
   });
 }
 
-export function update(id: string, user: Partial<User>) {
+export function updateUser(id: string, user: Partial<User>) {
   return req<UserResponse>(`/user${id}`, {
     method: "PUT",
     body: JSON.stringify(user),
@@ -27,7 +29,7 @@ export function update(id: string, user: Partial<User>) {
   });
 }
 
-export function remove(id: string) {
+export function removeUser(id: string) {
   return req<UserResponse>(`/user/${id}`, {
     method: "DELETE",
     headers: {
@@ -36,11 +38,11 @@ export function remove(id: string) {
   });
 }
 
-export function getList() {
-  return req<User[]>("/user");
+export function getUserList() {
+  return req<UserListResponse>("/user");
 }
 
-export function get(id: string) {
+export function getUser(id: string) {
   return req<UserResponse>(`/user/${id}`);
 }
 

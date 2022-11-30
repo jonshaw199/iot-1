@@ -123,6 +123,8 @@ export type AuthResponse = {
   user: User;
 };
 
+export type UserRequest = Omit<User, "_id">;
+
 export type UserResponse = {
   msg: string;
   user: User;
@@ -130,6 +132,10 @@ export type UserResponse = {
 
 export type CreateUserResponse = UserResponse & {
   token: string;
+};
+
+export type UserListResponse = {
+  users: User[];
 };
 
 export type CreateOrgResponse = {
