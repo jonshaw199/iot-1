@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useRef, createContext } from "react";
 import { w3cwebsocket } from "websocket";
 
-import { Message } from "../serverTypes";
+import { Message, Packet } from "../serverTypes";
 
-export function useWebsocket({
+export function useWebsocket<T>({
   url,
   onOpen = () => null,
   onRecv = () => null,
 }: {
   url: string;
   onOpen?: () => void;
-  onRecv?: (msg: Message) => void;
+  onRecv?: (msg: T) => void;
 }) {
   const client = useRef<w3cwebsocket>();
 
@@ -41,22 +41,22 @@ export function useWebsocket({
   };
 }
 
-export function useAF1Websocket({
+export function useAF1Websocket<T extends Message>({
   url,
   onOpen = () => null,
   onRecv = () => null,
 }: {
   url: string;
   onOpen?: () => void;
-  onRecv?: (msg: Message) => void;
+  onRecv?: (msg: T) => void;
 }) {
-  const ws = useRef<{ send: (m: Message) => void }>();
+  const ws = useRef<{ send: (m: T) => void }>();
 
-  ws.current = useWebsocket({ url, onOpen, onRecv });
+  ws.current = useWebsocket<T>({ url, onOpen, onRecv });
 
   return ws.current;
 }
 
 export const GlobalWebsocketContext = createContext({
-  send: (m: Message) => {},
+  send: (m: Packet) => {},
 });

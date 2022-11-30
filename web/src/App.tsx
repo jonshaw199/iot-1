@@ -26,6 +26,8 @@ import {
 } from "./state/userSlice";
 import { getOrgListThunk } from "./state/orgSlice";
 import { getDeviceListThunk } from "./state/deviceSlice";
+import { recvMessage } from "./state/messageSlice";
+import { MessageType, Packet } from "./serverTypes";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -51,11 +53,21 @@ const Outer = styled("div")(({ theme }) => ({
 }));
 
 function LoggedIn() {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
-  const ws = useAF1Websocket({
+  const ws = useAF1Websocket<Packet>({
     url: `ws://127.0.0.1:3000/?deviceId=${process.env.REACT_APP_DEVICE_ID}`,
-    onRecv: (m) => console.log(m),
+    onOpen: () => {
+      ws.send({
+        senderId: process.env.REACT_APP_DEVICE_ID!,
+        topic: "lights/#",
+        type: MessageType.TYPE_MQTT_SUBSCRIBE,
+      });
+    },
+    onRecv: (m) => {
+      dispatch(recvMessage(m));
+    },
   });
 
   return (
