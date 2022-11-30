@@ -6,7 +6,8 @@ import {
   UserResponse,
   UserListResponse,
   AuthResponse,
-  UserRequest,
+  CreateUserRequest,
+  AuthRequest,
 } from "../serverTypes";
 import {
   getUserList,
@@ -34,63 +35,111 @@ const initialState: UserState = {
   token: "",
 };
 
-const createThunk = createAsyncThunk("user/create", (userReq: UserRequest) =>
-  createUser(userReq)
+const createThunk = createAsyncThunk(
+  "user/create",
+  (userReq: CreateUserRequest) => createUser(userReq)
 );
 
-const updateThunk = createAsyncThunk("user/update", (userReq: UserRequest) =>
-  updateUser(userReq)
+const updateThunk = createAsyncThunk(
+  "user/update",
+  ({ id, user }: { id: string; user: Partial<User> }) => updateUser(id, user)
 );
+
+const getThunk = createAsyncThunk("user/get", (id: string) => getUser(id));
+
+const removeThunk = createAsyncThunk("user/remove", (id: string) =>
+  removeUser(id)
+);
+
+const getListThunk = createAsyncThunk("user/getList", () => getUserList());
+
+const authThunk = createAsyncThunk("user/auth", (body: AuthRequest) =>
+  authApi(body)
+);
+
+const authWithTokenThunk = createAsyncThunk("user/authWithToken", () =>
+  authWithToken()
+);
+
+const createReducer = (
+  state: UserState,
+  action: PayloadAction<CreateUserResponse>
+) => {
+  state.users = new Map(state.users).set(
+    action.payload.user._id.toString(),
+    action.payload.user
+  );
+};
+
+const updateReducer = (
+  state: UserState,
+  action: PayloadAction<UserResponse>
+) => {
+  state.users = new Map(state.users).set(
+    action.payload.user._id.toString(),
+    action.payload.user
+  );
+};
+
+const getReducer = (state: UserState, action: PayloadAction<UserResponse>) => {
+  state.users = new Map(state.users).set(
+    action.payload.user._id.toString(),
+    action.payload.user
+  );
+};
+
+const removeReducer = (
+  state: UserState,
+  action: PayloadAction<UserResponse>
+) => {
+  state.users = new Map(state.users).set(
+    action.payload.user._id.toString(),
+    action.payload.user
+  );
+};
+
+const getListReducer = (
+  state: UserState,
+  action: PayloadAction<UserListResponse>
+) => {
+  state.users = action.payload.users.reduce(
+    (prev, cur) => prev.set(cur._id, cur),
+    new Map()
+  );
+};
+
+const authReducer = (state: UserState, action: PayloadAction<AuthResponse>) => {
+  state.token = action.payload.token;
+  state.currentUser = action.payload.user;
+  localStorage.setItem("token", state.token);
+};
+
+const logoutReducer = (state: UserState, action: PayloadAction) => {
+  state.token = "";
+  localStorage.removeItem("token");
+};
 
 export const userSlice = createSlice({
   name: "user",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    create: (state, action: PayloadAction<CreateUserResponse>) => {
-      state.users = new Map(state.users).set(
-        action.payload.user._id.toString(),
-        action.payload.user
-      );
-    },
-    update: (state, action: PayloadAction<UserResponse>) => {
-      state.users = new Map(state.users).set(
-        action.payload.user._id.toString(),
-        action.payload.user
-      );
-    },
-    get: (state, action: PayloadAction<UserResponse>) => {
-      state.users = new Map(state.users).set(
-        action.payload.user._id.toString(),
-        action.payload.user
-      );
-    },
-    remove: (state, action: PayloadAction<UserResponse>) => {
-      state.users = new Map(state.users).set(
-        action.payload.user._id.toString(),
-        action.payload.user
-      );
-    },
-    getList: (state, action: PayloadAction<UserListResponse>) => {
-      state.users = action.payload.users.reduce(
-        (prev, cur) => prev.set(cur._id, cur),
-        new Map()
-      );
-    },
-    auth: (state, action: PayloadAction<AuthResponse>) => {
-      state.token = action.payload.token;
-      state.currentUser = action.payload.user;
-      localStorage.setItem("token", state.token);
-    },
-    logout: (state, action: PayloadAction) => {
-      state.token = "";
-      localStorage.removeItem("token");
-    },
+    create: createReducer,
+    update: updateReducer,
+    get: getReducer,
+    remove: removeReducer,
+    getList: getListReducer,
+    auth: authReducer,
+    logout: logoutReducer,
   },
   extraReducers: (builder) => {
-    builder.addCase(createThunk.fulfilled, (state, action) => {
-      state.users.set(action.payload.user._id.toString(), action.payload.user);
-    });
+    builder.addCase(createThunk.fulfilled, createReducer);
+    builder.addCase(updateThunk.fulfilled, updateReducer);
+    builder.addCase(getThunk.fulfilled, getReducer);
+    builder.addCase(removeThunk.fulfilled, removeReducer);
+    builder.addCase(getListThunk.fulfilled, getListReducer);
+    builder.addCase(authThunk.fulfilled, authReducer);
+    builder.addCase(authWithTokenThunk.fulfilled, authReducer);
   },
 });
 

@@ -4,12 +4,12 @@ import {
   AuthResponse,
   AuthRequest,
   CreateUserResponse,
-  UserRequest,
+  CreateUserRequest,
   UserListResponse,
 } from "../serverTypes";
 import { req } from "./api";
 
-export function createUser(user: UserRequest) {
+export function createUser(user: CreateUserRequest) {
   return req<CreateUserResponse>("/user", {
     method: "POST",
     body: JSON.stringify(user),

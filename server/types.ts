@@ -123,7 +123,7 @@ export type AuthResponse = {
   user: User;
 };
 
-export type UserRequest = Omit<User, "_id">;
+export type CreateUserRequest = Omit<User, "_id">;
 
 export type UserResponse = {
   msg: string;
