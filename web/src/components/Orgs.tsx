@@ -25,7 +25,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "../state/store";
-import { createOrgThunk, orgs as orgsSelector } from "../state/orgSlice";
+import { createOrgThunk, orgsSelector } from "../state/orgSlice";
 
 const Error = styled("div")(({ theme }) => ({
   color: "red",

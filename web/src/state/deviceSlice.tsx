@@ -76,7 +76,7 @@ export const deviceSlice = createSlice({
 export const { createDevice, getDeviceList } = deviceSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const devices = (state: RootState) => state.devices.devices;
+export const devicesSelector = (state: RootState) => state.devices.devices;
 
 export { createDeviceThunk, getDeviceListThunk };
 

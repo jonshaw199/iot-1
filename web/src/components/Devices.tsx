@@ -26,12 +26,9 @@ import { Box } from "@mui/system";
 import { Types } from "mongoose";
 
 import { Board, Device, Org } from "../serverTypes";
-import { orgs as orgsSelector } from "../state/orgSlice";
+import { orgsSelector } from "../state/orgSlice";
 import { useDispatch, useSelector } from "../state/store";
-import {
-  createDeviceThunk,
-  devices as devicesSelector,
-} from "../state/deviceSlice";
+import { createDeviceThunk, devicesSelector } from "../state/deviceSlice";
 
 const Error = styled("div")(({ theme }) => ({
   color: "red",

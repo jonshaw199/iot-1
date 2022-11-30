@@ -151,9 +151,10 @@ export const { auth, create, get, getList, logout, remove, update } =
   userSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const users = (state: RootState) => state.users.users;
-export const currentUser = (state: RootState) => state.users.currentUser;
-export const token = (state: RootState) => state.users.token;
+export const usersSelector = (state: RootState) => state.users.users;
+export const currentUserSelector = (state: RootState) =>
+  state.users.currentUser;
+export const tokenSelector = (state: RootState) => state.users.token;
 
 export {
   authThunk,

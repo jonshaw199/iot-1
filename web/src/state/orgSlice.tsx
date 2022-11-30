@@ -73,7 +73,7 @@ export const orgSlice = createSlice({
 export const { createOrg, getOrgList } = orgSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const orgs = (state: RootState) => state.orgs.orgs;
+export const orgsSelector = (state: RootState) => state.orgs.orgs;
 
 export { createOrgThunk, getOrgListThunk };
 

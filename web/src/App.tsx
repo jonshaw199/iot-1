@@ -20,9 +20,9 @@ import Lights from "./components/Lights";
 import { useDispatch, useSelector } from "./state/store";
 import {
   authWithTokenThunk,
-  currentUser as currentUserSelector,
+  currentUserSelector,
   getUserListThunk,
-  token as tokenSelector,
+  tokenSelector,
 } from "./state/userSlice";
 import { getOrgListThunk } from "./state/orgSlice";
 import { getDeviceListThunk } from "./state/deviceSlice";

@@ -26,6 +26,6 @@ export const messageSlice = createSlice({
 export const { recvMessage } = messageSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const messages = (state: RootState) => state.messages.messages;
+export const messagesSelector = (state: RootState) => state.messages.messages;
 
 export default messageSlice.reducer;

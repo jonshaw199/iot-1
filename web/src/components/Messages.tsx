@@ -19,7 +19,7 @@ import { Box } from "@mui/system";
 
 import { Message } from "../serverTypes";
 import { useSelector } from "../state/store";
-import { messages as messageSelector } from "../state/messageSlice";
+import { messagesSelector } from "../state/messageSlice";
 
 function NewMessage() {
   return (
@@ -75,7 +75,7 @@ function MessageTableRow({ message }: { message: Message }) {
 }
 
 function MessageTable() {
-  const messages = useSelector(messageSelector);
+  const messages = useSelector(messagesSelector);
 
   return (
     <TableContainer component={Paper}>

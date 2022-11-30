@@ -26,11 +26,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import { Org, User } from "../serverTypes";
 import {
-  users as usersSelector,
+  usersSelector,
   createUserThunk,
   removeUserThunk,
 } from "../state/userSlice";
-import { orgs as orgsSelector } from "../state/orgSlice";
+import { orgsSelector } from "../state/orgSlice";
 import { useDispatch, useSelector } from "../state/store";
 import { Types } from "mongoose";
 
