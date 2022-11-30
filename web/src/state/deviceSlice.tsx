@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  OrgListResponse,
   Device,
   CreateDeviceRequest,
   DeviceResponse,

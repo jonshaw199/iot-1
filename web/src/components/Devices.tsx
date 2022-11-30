@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -26,9 +26,12 @@ import { Box } from "@mui/system";
 import { Types } from "mongoose";
 
 import { Board, Device, Org } from "../serverTypes";
-import { GlobalDeviceContext } from "../state/device";
 import { orgs as orgsSelector } from "../state/orgSlice";
-import { useSelector } from "../state/store";
+import { useDispatch, useSelector } from "../state/store";
+import {
+  createDeviceThunk,
+  devices as devicesSelector,
+} from "../state/deviceSlice";
 
 const Error = styled("div")(({ theme }) => ({
   color: "red",
@@ -37,7 +40,8 @@ const Error = styled("div")(({ theme }) => ({
 
 function NewDevice() {
   const theme = useTheme();
-  const { create } = useContext(GlobalDeviceContext);
+  const dispatch = useDispatch();
+
   const orgs = useSelector(orgsSelector);
   const [error, setError] = useState("");
   const [name, setName] = useState("");
@@ -46,15 +50,17 @@ function NewDevice() {
 
   const submit = useCallback(() => {
     try {
-      create({
-        name,
-        board: board as Board,
-        orgId: new Types.ObjectId(orgId),
-      });
+      dispatch(
+        createDeviceThunk({
+          name,
+          board: board as Board,
+          orgId: new Types.ObjectId(orgId),
+        })
+      );
     } catch (e) {
       setError(String(e));
     }
-  }, [name, board, orgId, create]);
+  }, [name, board, orgId, dispatch]);
 
   return (
     <div>
@@ -153,7 +159,7 @@ function DeviceTableRow({ device }: { device: Device }) {
 }
 
 function DeviceTable() {
-  const { devices: deviceMap } = useContext(GlobalDeviceContext);
+  const deviceMap = useSelector(devicesSelector);
 
   const devices = useMemo(() => Array.from(deviceMap.values()), [deviceMap]);
 

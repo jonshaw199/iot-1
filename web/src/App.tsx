@@ -16,7 +16,6 @@ import Orgs from "./components/Orgs";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
 import Devices from "./components/Devices";
-import { GlobalDeviceContext, useDeviceState } from "./state/device";
 import { GlobalMessageContext, useMessageState } from "./state/message";
 import Lights from "./components/Lights";
 import { useDispatch, useSelector } from "./state/store";
@@ -27,6 +26,7 @@ import {
   token as tokenSelector,
 } from "./state/userSlice";
 import { getOrgListThunk } from "./state/orgSlice";
+import { getDeviceListThunk } from "./state/deviceSlice";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -90,8 +90,7 @@ function App() {
 
   const initialLoadRef = useRef(true);
   const [loadingInitially, setLoadingInitially] = useState(true);
-  const deviceState = useDeviceState();
-  const { getList: getDeviceList } = deviceState;
+
   const messageState = useMessageState();
 
   const loggedIn = useMemo(() => token && currentUser, [token, currentUser]);
@@ -108,33 +107,31 @@ function App() {
     if (token) {
       dispatch(getOrgListThunk());
       dispatch(getUserListThunk());
-      getDeviceList();
+      dispatch(getDeviceListThunk());
     }
-  }, [token, getDeviceList, dispatch]);
+  }, [token, dispatch]);
 
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <GlobalDeviceContext.Provider value={deviceState}>
-          <GlobalMessageContext.Provider value={messageState}>
-            <Outer>
-              {loadingInitially ? (
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  height={1}
-                >
-                  <CircularProgress />
-                </Box>
-              ) : loggedIn ? (
-                <LoggedIn />
-              ) : (
-                <Login />
-              )}
-            </Outer>
-          </GlobalMessageContext.Provider>
-        </GlobalDeviceContext.Provider>
+        <GlobalMessageContext.Provider value={messageState}>
+          <Outer>
+            {loadingInitially ? (
+              <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                height={1}
+              >
+                <CircularProgress />
+              </Box>
+            ) : loggedIn ? (
+              <LoggedIn />
+            ) : (
+              <Login />
+            )}
+          </Outer>
+        </GlobalMessageContext.Provider>
       </ThemeProvider>
     </Router>
   );
