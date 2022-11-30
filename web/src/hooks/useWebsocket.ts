@@ -28,7 +28,7 @@ export function useWebsocket<T>({
     }
   }, [url, onOpen, onRecv]);
 
-  const send = useCallback((m: Message) => {
+  const send = useCallback((m: T) => {
     if (client.current?.readyState === w3cwebsocket.OPEN) {
       client.current.send(JSON.stringify(m));
     } else {
@@ -41,6 +41,7 @@ export function useWebsocket<T>({
   };
 }
 
+/*
 export function useAF1Websocket<T extends Message>({
   url,
   onOpen = () => null,
@@ -56,6 +57,7 @@ export function useAF1Websocket<T extends Message>({
 
   return ws.current;
 }
+*/
 
 export const GlobalWebsocketContext = createContext({
   send: (m: Packet) => {},

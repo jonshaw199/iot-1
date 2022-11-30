@@ -11,7 +11,7 @@ import Users from "./components/Users";
 import Settings from "./components/Settings";
 import { useMemo } from "react";
 import Login from "./components/Login";
-import { GlobalWebsocketContext, useAF1Websocket } from "./hooks/useWebsocket";
+import { GlobalWebsocketContext, useWebsocket } from "./hooks/useWebsocket";
 import Orgs from "./components/Orgs";
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
@@ -56,7 +56,7 @@ function LoggedIn() {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
-  const ws = useAF1Websocket<Packet>({
+  const ws = useWebsocket<Packet>({
     url: `ws://127.0.0.1:3000/?deviceId=${process.env.REACT_APP_DEVICE_ID}`,
     onOpen: () => {
       ws.send({
