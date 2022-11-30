@@ -8,12 +8,14 @@ import {
 import userReducer from "./userSlice";
 import orgReducer from "./orgSlice";
 import deviceReducer from "./deviceSlice";
+import messageRouter from "./messageSlice";
 
 const store = configureStore({
   reducer: {
     users: userReducer,
     orgs: orgReducer,
     devices: deviceReducer,
+    messages: messageRouter,
   },
 });
 
