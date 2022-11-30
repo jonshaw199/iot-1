@@ -27,7 +27,8 @@ import { Types } from "mongoose";
 
 import { Board, Device, Org } from "../serverTypes";
 import { GlobalDeviceContext } from "../state/device";
-import { GlobalOrgContext } from "../state/org";
+import { orgs as orgsSelector } from "../state/orgSlice";
+import { useSelector } from "../state/store";
 
 const Error = styled("div")(({ theme }) => ({
   color: "red",
@@ -37,7 +38,7 @@ const Error = styled("div")(({ theme }) => ({
 function NewDevice() {
   const theme = useTheme();
   const { create } = useContext(GlobalDeviceContext);
-  const { orgs } = useContext(GlobalOrgContext);
+  const orgs = useSelector(orgsSelector);
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [board, setBoard] = useState("");

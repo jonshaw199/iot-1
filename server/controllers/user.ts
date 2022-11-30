@@ -9,7 +9,7 @@ import { User, Request } from "../types";
 export const index = (req, res) => {
   userModel.find(req.body, (err: Error, users) => {
     if (err) return res.status(500).json({ msg: err.message });
-    res.json(users);
+    res.json({ users });
   });
 };
 
@@ -19,7 +19,7 @@ export const show = (req, res) => {
   console.log(req.user);
   userModel.findById(req.params.id, (err: Error, user) => {
     if (err) return res.status(500).json({ msg: err.message });
-    res.json(user);
+    res.json({ user });
   });
 };
 

@@ -6,10 +6,12 @@ import {
 } from "react-redux";
 
 import userReducer from "./userSlice";
+import orgReducer from "./orgSlice";
 
 const store = configureStore({
   reducer: {
     users: userReducer,
+    orgs: orgReducer,
   },
 });
 

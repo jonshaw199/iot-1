@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -24,7 +24,8 @@ import { Org } from "../serverTypes";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Box } from "@mui/system";
-import { GlobalOrgContext } from "../state/org";
+import { useDispatch, useSelector } from "../state/store";
+import { createOrgThunk, orgs as orgsSelector } from "../state/orgSlice";
 
 const Error = styled("div")(({ theme }) => ({
   color: "red",
@@ -33,17 +34,9 @@ const Error = styled("div")(({ theme }) => ({
 
 function NewOrg() {
   const theme = useTheme();
-  const { create } = useContext(GlobalOrgContext);
-  const [error, setError] = useState("");
+  const [error] = useState("");
   const [name, setName] = useState("");
-
-  const submit = useCallback(() => {
-    try {
-      create({});
-    } catch (e) {
-      setError(String(e));
-    }
-  }, [create]);
+  const dispatch = useDispatch();
 
   return (
     <div>
@@ -66,7 +59,10 @@ function NewOrg() {
           </Box>
           {error && <Error>{error}</Error>}
           <Box pt={theme.spacing(1)}>
-            <Button variant="outlined" onClick={() => submit()}>
+            <Button
+              variant="outlined"
+              onClick={() => dispatch(createOrgThunk({ name }))}
+            >
               Submit
             </Button>
           </Box>
@@ -109,7 +105,7 @@ function MessageTableRow({ org }: { org: Org }) {
 }
 
 function OrgTable() {
-  const { orgs: orgMap } = useContext(GlobalOrgContext);
+  const orgMap = useSelector(orgsSelector);
 
   const orgs = useMemo(() => Array.from(orgMap.values()), [orgMap]);
 

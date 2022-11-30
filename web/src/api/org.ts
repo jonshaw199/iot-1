@@ -1,7 +1,12 @@
-import { CreateOrgResponse, Org } from "../serverTypes";
+import {
+  CreateOrgResponse,
+  OrgListResponse,
+  Org,
+  CreateOrgRequest,
+} from "../serverTypes";
 import { req } from "./api";
 
-export function create(org: Partial<Org>) {
+export function createOrg(org: CreateOrgRequest) {
   return req<CreateOrgResponse>("/org", {
     method: "POST",
     body: JSON.stringify(org),
@@ -11,6 +16,6 @@ export function create(org: Partial<Org>) {
   });
 }
 
-export function getList() {
-  return req<Org[]>("/org");
+export function getOrgList() {
+  return req<OrgListResponse>("/org");
 }

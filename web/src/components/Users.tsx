@@ -27,11 +27,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Org, User } from "../serverTypes";
 import {
   users as usersSelector,
-  createThunk,
-  removeThunk,
+  createUserThunk,
+  removeUserThunk,
 } from "../state/userSlice";
+import { orgs as orgsSelector } from "../state/orgSlice";
 import { useDispatch, useSelector } from "../state/store";
-import { GlobalOrgContext } from "../state/org";
 import { Types } from "mongoose";
 
 const Error = styled("div")(({ theme }) => ({
@@ -49,14 +49,14 @@ function NewUser() {
   const [error, setError] = useState("");
   const [orgId, setOrgId] = useState("");
 
-  const { orgs } = useContext(GlobalOrgContext);
+  const orgs = useSelector(orgsSelector);
 
   const submit = useCallback(() => {
     if (name && email && pass) {
       setError("");
       try {
         dispatch(
-          createThunk({
+          createUserThunk({
             email,
             name,
             password: pass,
@@ -163,7 +163,7 @@ function UsersTableRow({ user }: { user: User }) {
               <Button
                 variant="outlined"
                 color="error"
-                onClick={() => dispatch(removeThunk(user._id.toString()))}
+                onClick={() => dispatch(removeUserThunk(user._id.toString()))}
               >
                 Delete
               </Button>

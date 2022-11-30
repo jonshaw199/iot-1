@@ -37,23 +37,23 @@ const initialState: UserState = {
 
 // Thunks
 
-const createThunk = createAsyncThunk(
+const createUserThunk = createAsyncThunk(
   "user/create",
   (userReq: CreateUserRequest) => createUser(userReq)
 );
 
-const updateThunk = createAsyncThunk(
+const updateUserThunk = createAsyncThunk(
   "user/update",
   ({ id, user }: { id: string; user: Partial<User> }) => updateUser(id, user)
 );
 
-const getThunk = createAsyncThunk("user/get", (id: string) => getUser(id));
+const getUserThunk = createAsyncThunk("user/get", (id: string) => getUser(id));
 
-const removeThunk = createAsyncThunk("user/remove", (id: string) =>
+const removeUserThunk = createAsyncThunk("user/remove", (id: string) =>
   removeUser(id)
 );
 
-const getListThunk = createAsyncThunk("user/getList", () => getUserList());
+const getUserListThunk = createAsyncThunk("user/getList", () => getUserList());
 
 const authThunk = createAsyncThunk("user/auth", (body: AuthRequest) =>
   authApi(body)
@@ -137,11 +137,11 @@ export const userSlice = createSlice({
     logout: logoutReducer,
   },
   extraReducers: (builder) => {
-    builder.addCase(createThunk.fulfilled, createReducer);
-    builder.addCase(updateThunk.fulfilled, updateReducer);
-    builder.addCase(getThunk.fulfilled, getReducer);
-    builder.addCase(removeThunk.fulfilled, removeReducer);
-    builder.addCase(getListThunk.fulfilled, getListReducer);
+    builder.addCase(createUserThunk.fulfilled, createReducer);
+    builder.addCase(updateUserThunk.fulfilled, updateReducer);
+    builder.addCase(getUserThunk.fulfilled, getReducer);
+    builder.addCase(removeUserThunk.fulfilled, removeReducer);
+    builder.addCase(getUserListThunk.fulfilled, getListReducer);
     builder.addCase(authThunk.fulfilled, authReducer);
     builder.addCase(authWithTokenThunk.fulfilled, authReducer);
   },
@@ -157,11 +157,11 @@ export const token = (state: RootState) => state.users.token;
 
 export {
   authThunk,
-  createThunk,
-  getThunk,
-  getListThunk,
-  removeThunk,
-  updateThunk,
+  createUserThunk,
+  getUserThunk,
+  getUserListThunk,
+  removeUserThunk,
+  updateUserThunk,
   authWithTokenThunk,
 };
 

@@ -138,9 +138,15 @@ export type UserListResponse = {
   users: User[];
 };
 
+export type CreateOrgRequest = Omit<Org, "_id">;
+
 export type CreateOrgResponse = {
   msg: string;
   org: Org;
+};
+
+export type OrgListResponse = {
+  orgs: Org[];
 };
 
 export type DeviceResponse = {
