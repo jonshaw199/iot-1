@@ -13,13 +13,13 @@ import type { RootState } from "../state/store";
 
 // Define a type for the slice state
 interface OrgState {
-  orgs: Map<string, Org>;
+  orgs: { [key: string]: Org };
   errorMsg: string;
 }
 
 // Define the initial state using that type
 const initialState: OrgState = {
-  orgs: new Map(),
+  orgs: {},
   errorMsg: "",
 };
 
@@ -37,10 +37,10 @@ const createOrgReducer = (
   state: OrgState,
   action: PayloadAction<OrgResponse>
 ) => {
-  state.orgs = new Map(state.orgs).set(
-    action.payload.org._id.toString(),
-    action.payload.org
-  );
+  state.orgs = {
+    ...state.orgs,
+    [action.payload.org._id.toString()]: action.payload.org,
+  };
 };
 
 const getOrgListReducer = (
@@ -48,8 +48,11 @@ const getOrgListReducer = (
   action: PayloadAction<OrgListResponse>
 ) => {
   state.orgs = action.payload.orgs.reduce(
-    (prev, cur) => prev.set(cur._id, cur),
-    new Map()
+    (prev: { [key: string]: Org }, cur) => {
+      prev[cur._id.toString()] = cur;
+      return prev;
+    },
+    {}
   );
 };
 

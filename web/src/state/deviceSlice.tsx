@@ -13,13 +13,13 @@ import type { RootState } from "../state/store";
 
 // Define a type for the slice state
 interface DeviceState {
-  devices: Map<string, Device>;
+  devices: { [key: string]: Device };
   errorMsg: string;
 }
 
 // Define the initial state using that type
 const initialState: DeviceState = {
-  devices: new Map(),
+  devices: {},
   errorMsg: "",
 };
 
@@ -40,10 +40,10 @@ const createDeviceReducer = (
   state: DeviceState,
   action: PayloadAction<DeviceResponse>
 ) => {
-  state.devices = new Map(state.devices).set(
-    action.payload.device._id.toString(),
-    action.payload.device
-  );
+  state.devices = {
+    ...state.devices,
+    [action.payload.device._id.toString()]: action.payload.device,
+  };
 };
 
 const getDeviceListReducer = (
@@ -51,8 +51,11 @@ const getDeviceListReducer = (
   action: PayloadAction<DeviceListResponse>
 ) => {
   state.devices = action.payload.devices.reduce(
-    (prev, cur) => prev.set(cur._id, cur),
-    new Map()
+    (prev: { [key: string]: Device }, cur) => {
+      prev[cur._id.toString()] = cur;
+      return prev;
+    },
+    {}
   );
 };
 

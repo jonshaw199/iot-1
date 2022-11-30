@@ -22,7 +22,7 @@ import type { RootState } from "../state/store";
 
 // Define a type for the slice state
 interface UserState {
-  users: Map<string, User>;
+  users: { [key: string]: User };
   errorMsg: string;
   token: string;
   currentUser?: Nullable<User>;
@@ -30,7 +30,7 @@ interface UserState {
 
 // Define the initial state using that type
 const initialState: UserState = {
-  users: new Map(),
+  users: {},
   errorMsg: "",
   token: "",
 };
@@ -69,37 +69,34 @@ const createReducer = (
   state: UserState,
   action: PayloadAction<CreateUserResponse>
 ) => {
-  state.users = new Map(state.users).set(
-    action.payload.user._id.toString(),
-    action.payload.user
-  );
+  state.users = {
+    ...state.users,
+    [action.payload.user._id.toString()]: action.payload.user,
+  };
 };
 
 const updateReducer = (
   state: UserState,
   action: PayloadAction<UserResponse>
 ) => {
-  state.users = new Map(state.users).set(
-    action.payload.user._id.toString(),
-    action.payload.user
-  );
+  state.users = {
+    ...state.users,
+    [action.payload.user._id.toString()]: action.payload.user,
+  };
 };
 
 const getReducer = (state: UserState, action: PayloadAction<UserResponse>) => {
-  state.users = new Map(state.users).set(
-    action.payload.user._id.toString(),
-    action.payload.user
-  );
+  state.users = {
+    ...state.users,
+    [action.payload.user._id.toString()]: action.payload.user,
+  };
 };
 
 const removeReducer = (
   state: UserState,
   action: PayloadAction<UserResponse>
 ) => {
-  state.users = new Map(state.users).set(
-    action.payload.user._id.toString(),
-    action.payload.user
-  );
+  delete state.users[action.payload.user._id.toString()];
 };
 
 const getListReducer = (
@@ -107,8 +104,11 @@ const getListReducer = (
   action: PayloadAction<UserListResponse>
 ) => {
   state.users = action.payload.users.reduce(
-    (prev, cur) => prev.set(cur._id, cur),
-    new Map()
+    (prev: { [key: string]: User }, cur) => {
+      prev[cur._id.toString()] = cur;
+      return prev;
+    },
+    {}
   );
 };
 

@@ -100,7 +100,7 @@ function NewDevice() {
               select
               sx={{ minWidth: 100 }}
             >
-              {Array.from(orgs.values()).map((o: Org, i) => (
+              {Object.values(orgs).map((o: Org, i) => (
                 <MenuItem value={o._id.toString()} key={i}>
                   {o.name}
                 </MenuItem>
@@ -161,7 +161,7 @@ function DeviceTableRow({ device }: { device: Device }) {
 function DeviceTable() {
   const deviceMap = useSelector(devicesSelector);
 
-  const devices = useMemo(() => Array.from(deviceMap.values()), [deviceMap]);
+  const devices = useMemo(() => Object.values(deviceMap), [deviceMap]);
 
   return (
     <TableContainer component={Paper}>

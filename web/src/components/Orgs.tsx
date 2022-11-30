@@ -107,7 +107,7 @@ function MessageTableRow({ org }: { org: Org }) {
 function OrgTable() {
   const orgMap = useSelector(orgsSelector);
 
-  const orgs = useMemo(() => Array.from(orgMap.values()), [orgMap]);
+  const orgs = useMemo(() => Object.values(orgMap), [orgMap]);
 
   return (
     <TableContainer component={Paper}>

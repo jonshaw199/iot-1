@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback, useContext } from "react";
+import { useMemo, useState, useCallback } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -110,7 +110,7 @@ function NewUser() {
               select
               sx={{ minWidth: 100 }}
             >
-              {Array.from(orgs.values()).map((o: Org, i) => (
+              {Object.values(orgs).map((o: Org, i) => (
                 <MenuItem value={o._id.toString()} key={i}>
                   {o.name}
                 </MenuItem>
@@ -178,7 +178,7 @@ function UsersTableRow({ user }: { user: User }) {
 function UsersTable() {
   const userMap = useSelector(usersSelector);
 
-  const users = useMemo(() => Array.from(userMap.values()), [userMap]);
+  const users = useMemo(() => Object.values(userMap), [userMap]);
 
   return useMemo(
     () => (
