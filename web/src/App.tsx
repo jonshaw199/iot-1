@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { styled, ThemeProvider } from "@mui/material/styles";
-import { Provider } from "react-redux";
 
 import "./App.css";
 import Nav from "./components/Nav";
@@ -21,7 +20,7 @@ import Devices from "./components/Devices";
 import { GlobalDeviceContext, useDeviceState } from "./state/device";
 import { GlobalMessageContext, useMessageState } from "./state/message";
 import Lights from "./components/Lights";
-import store, { useDispatch, useSelector } from "./state/store";
+import { useDispatch, useSelector } from "./state/store";
 import {
   authWithTokenThunk,
   currentUser as currentUserSelector,
@@ -118,30 +117,28 @@ function App() {
   return (
     <Router>
       <ThemeProvider theme={theme}>
-        <Provider store={store}>
-          <GlobalOrgContext.Provider value={orgState}>
-            <GlobalDeviceContext.Provider value={deviceState}>
-              <GlobalMessageContext.Provider value={messageState}>
-                <Outer>
-                  {loadingInitially ? (
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      height={1}
-                    >
-                      <CircularProgress />
-                    </Box>
-                  ) : loggedIn ? (
-                    <LoggedIn />
-                  ) : (
-                    <Login />
-                  )}
-                </Outer>
-              </GlobalMessageContext.Provider>
-            </GlobalDeviceContext.Provider>
-          </GlobalOrgContext.Provider>
-        </Provider>
+        <GlobalOrgContext.Provider value={orgState}>
+          <GlobalDeviceContext.Provider value={deviceState}>
+            <GlobalMessageContext.Provider value={messageState}>
+              <Outer>
+                {loadingInitially ? (
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    height={1}
+                  >
+                    <CircularProgress />
+                  </Box>
+                ) : loggedIn ? (
+                  <LoggedIn />
+                ) : (
+                  <Login />
+                )}
+              </Outer>
+            </GlobalMessageContext.Provider>
+          </GlobalDeviceContext.Provider>
+        </GlobalOrgContext.Provider>
       </ThemeProvider>
     </Router>
   );
