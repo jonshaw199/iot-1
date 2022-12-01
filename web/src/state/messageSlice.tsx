@@ -65,7 +65,7 @@ export const sendMessageThunk = createAsyncThunk(
   "message/send",
   ({ msg, ws }: { msg: Packet; ws: UseWebSocket<Packet> }, thunkApi) => {
     if (msg.qos && msg.type === MessageType.TYPE_MQTT_PUBLISH) {
-      msg.packetId = (thunkApi.getState() as MessageState).nextPacketId; // to do type safety
+      msg.packetId = (thunkApi.getState() as RootState).messages.nextPacketId; // to do type safety
     }
     ws.send(msg);
     return msg;
