@@ -128,3 +128,17 @@ msg_handler LightsBase::getInboxHandler()
     }
   };
 }
+
+msg_handler LightsBase::getOutboxHandler()
+{
+  return [](AF1Msg &m)
+  {
+    uint8_t q = m.json()["qos"];
+    if (q && m.getType() == TYPE_MQTT_PUBLISH)
+    {
+      m.json()["packetId"] = nextPacketId;
+      nextPacketId++;
+    }
+    Base::handleOutboxMsg(m);
+  };
+}
