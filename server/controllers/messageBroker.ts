@@ -2,11 +2,11 @@ import { WebSocket as WS } from "ws";
 import { Types } from "mongoose";
 
 import MessageBroker from "../messageBroker";
-import { WebSocket, Request } from "../types";
+import { WebSocketClient, Request } from "../types";
 import deviceModel from "../models/device";
 
 export async function handleWS(w: WS, req: Request, next) {
-  const ws = w as WebSocket;
+  const ws = w as WebSocketClient;
   ws.path = req.path;
   try {
     ws.deviceId = new Types.ObjectId(req.query.deviceId?.toString());

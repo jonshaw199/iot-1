@@ -56,7 +56,8 @@ export type SubscriberId = string;
 export type PacketId = number;
 export type QOS = number;
 export type Topic = string;
-export type Subscription = {
+export type Subscriber = {
+  subscriberId: SubscriberId;
   topic: Topic;
   qos?: QOS;
 };
@@ -79,10 +80,15 @@ export type PacketLightsColor = Packet & {
   v: Nullable<number>;
 };
 
-export type WebSocket = WS & {
+export type WebSocketClient = WS & {
   path: Nullable<string>;
   deviceId: Nullable<Types.ObjectId>;
   orgId: Nullable<Types.ObjectId>;
+};
+
+export type SubscriberClient = WebSocketClient & {
+  topic: Topic;
+  qos: QOS;
 };
 
 export type Request = Req & {

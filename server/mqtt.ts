@@ -1,17 +1,18 @@
-import { Topic, SubscriberId, QOS } from "./types";
+import { Topic, SubscriberId, Subscriber, QOS } from "./types";
 
 const WILDCARD = "*";
 const WILDCARD_MULTI = "#";
 const SUBTOPIC_SEPARATOR = "/";
+const DEFAULT_QOS = 1;
 
 class TopicNode {
   subtopic: Topic;
-  subscriberIds: Set<SubscriberId>;
+  subscribers: Map<SubscriberId, Subscriber>;
   next: Map<Topic, TopicNode>;
 
   constructor(subtopic: Topic) {
     this.subtopic = subtopic;
-    this.subscriberIds = new Set();
+    this.subscribers = new Map();
     this.next = new Map();
   }
 }
@@ -49,7 +50,7 @@ export default class MQTT {
         }
         cur = cur.next.get(subtopics[i]);
       }
-      cur.subscriberIds.add(subscriberId);
+      cur.subscribers.set(subscriberId, { subscriberId, topic, qos });
       return true;
     }
     return false;
@@ -66,33 +67,45 @@ export default class MQTT {
           return false;
         }
       }
-      cur.subscriberIds.delete(subscriberId);
+      cur.subscribers.delete(subscriberId);
       return true;
     }
     return false;
   }
 
-  public static getSubscriberIds(topic: Topic) {
+  public static getSubscribers(topic: Topic) {
+    function getMaxQos(map: Map<SubscriberId, Subscriber>, cur: Subscriber) {
+      return Math.max(
+        map.get(cur.subscriberId)?.qos || DEFAULT_QOS,
+        cur.qos || DEFAULT_QOS
+      );
+    }
     function getSubscribersRec(
       remainingTopic: Topic,
       nodes: TopicNode[]
-    ): Set<SubscriberId> {
-      const result = new Set<SubscriberId>();
+    ): Map<SubscriberId, Subscriber> {
+      const result = new Map<SubscriberId, Subscriber>();
       const subtopics = MQTT.getSubTopics(remainingTopic);
       if (subtopics.length) {
         nodes.forEach((node) => {
           if (node.subtopic === WILDCARD || node.subtopic === subtopics[0]) {
             if (subtopics.length === 1) {
-              node.subscriberIds.forEach((i) => result.add(i));
+              node.subscribers.forEach((i) => {
+                result.set(i.subscriberId, { ...i, qos: getMaxQos(result, i) });
+              });
             } else {
               const next = getSubscribersRec(
                 subtopics.slice(1).join(SUBTOPIC_SEPARATOR),
                 [...node.next.values()]
               );
-              next.forEach((i) => result.add(i));
+              next.forEach((i) =>
+                result.set(i.subscriberId, { ...i, qos: getMaxQos(result, i) })
+              );
             }
           } else if (node.subtopic === WILDCARD_MULTI) {
-            node.subscriberIds.forEach((i) => result.add(i));
+            node.subscribers.forEach((i) =>
+              result.set(i.subscriberId, { ...i, qos: getMaxQos(result, i) })
+            );
           }
         });
       }
