@@ -55,7 +55,12 @@ const recvMessageThunk = createAsyncThunk(
 
 const sendMessageThunk = createAsyncThunk(
   "message/send",
-  ({ msg, ws }: { msg: Packet; ws: UseWebSocket<Packet> }) => {
+  ({ msg, ws }: { msg: Packet; ws: UseWebSocket<Packet> }, thunkApi) => {
+    if (!msg.packetId) {
+      const { nextPacketId } = thunkApi.getState() as MessageState; // to do type safety
+      msg.packetId = nextPacketId;
+      thunkApi.dispatch(incrementPacketId);
+    }
     ws.send(msg);
     return msg;
   }
@@ -68,11 +73,6 @@ const recvMessageReducer = (
   action: PayloadAction<Packet>
 ) => {
   switch (action.payload.type) {
-    case MessageType.TYPE_MQTT_PUBLISH:
-      if (action.payload.packetId && (action.payload.qos || 0) > 0) {
-        state.unackedMessages[action.payload.packetId] = action.payload;
-      }
-      break;
     case MessageType.TYPE_MQTT_PUBACK:
     case MessageType.TYPE_MQTT_PUBCOMP:
       if (action.payload.packetId) {
@@ -95,12 +95,21 @@ const sendMessageReducer = (
   state.messages.push(action.payload);
 };
 
+const incrementPacketIdReducer = (
+  state: MessageState,
+  action: PayloadAction<Packet>
+) => {
+  state.nextPacketId++;
+};
+
 export const messageSlice = createSlice({
   name: "message",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     recvMessage: recvMessageReducer,
+    sendMessage: sendMessageReducer,
+    incrementPacketId: incrementPacketIdReducer,
   },
   extraReducers: (builder) => {
     builder.addCase(recvMessageThunk.fulfilled, recvMessageReducer);
@@ -108,7 +117,8 @@ export const messageSlice = createSlice({
   },
 });
 
-export const { recvMessage } = messageSlice.actions;
+export const { recvMessage, sendMessage, incrementPacketId } =
+  messageSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const messagesSelector = (state: RootState) => state.messages.messages;
