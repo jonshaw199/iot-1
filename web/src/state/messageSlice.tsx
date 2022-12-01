@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { UseWebSocket } from "../hooks/useWebsocket";
 import { MessageType, Packet, PacketId } from "../serverTypes";
 import type { RootState } from "../state/store";
 
@@ -20,17 +21,45 @@ const initialState: MessageState = {
 
 const recvMessageThunk = createAsyncThunk(
   "message/receive",
-  (msg: Packet, thunkApi) => {
+  ({ msg, ws }: { msg: Packet; ws: UseWebSocket<Packet> }, thunkApi) => {
     switch (msg.type) {
-      case MessageType.TYPE_MQTT_PUBACK:
-        console.log("Pub ack");
+      case MessageType.TYPE_MQTT_PUBLISH:
+        if (msg.qos === 2) {
+          thunkApi.dispatch(
+            sendMessageThunk({
+              msg: { ...msg, type: MessageType.TYPE_MQTT_PUBREC },
+              ws,
+            })
+          );
+        } else if (msg.qos === 1) {
+          thunkApi.dispatch(
+            sendMessageThunk({
+              msg: { ...msg, type: MessageType.TYPE_MQTT_PUBACK },
+              ws,
+            })
+          );
+        }
+        break;
+      case MessageType.TYPE_MQTT_PUBREL:
+        thunkApi.dispatch(
+          sendMessageThunk({
+            msg: { ...msg, type: MessageType.TYPE_MQTT_PUBCOMP },
+            ws,
+          })
+        );
         break;
     }
     return msg;
   }
 );
 
-// const sendMessageThunk = createA
+const sendMessageThunk = createAsyncThunk(
+  "message/send",
+  ({ msg, ws }: { msg: Packet; ws: UseWebSocket<Packet> }) => {
+    ws.send(msg);
+    return msg;
+  }
+);
 
 // Reducers
 
@@ -65,6 +94,7 @@ export const messageSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(recvMessageThunk.fulfilled, recvMessageReducer);
+    builder.addCase(sendMessageThunk.fulfilled, sendMessageReducer);
   },
 });
 
