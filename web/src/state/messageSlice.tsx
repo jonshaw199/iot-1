@@ -56,10 +56,8 @@ const recvMessageThunk = createAsyncThunk(
 const sendMessageThunk = createAsyncThunk(
   "message/send",
   ({ msg, ws }: { msg: Packet; ws: UseWebSocket<Packet> }, thunkApi) => {
-    if (!msg.packetId) {
-      const { nextPacketId } = thunkApi.getState() as MessageState; // to do type safety
-      msg.packetId = nextPacketId;
-      thunkApi.dispatch(incrementPacketId);
+    if (msg.qos && msg.type === MessageType.TYPE_MQTT_PUBLISH) {
+      msg.packetId = (thunkApi.getState() as MessageState).nextPacketId; // to do type safety
     }
     ws.send(msg);
     return msg;
@@ -92,14 +90,22 @@ const sendMessageReducer = (
   state: MessageState,
   action: PayloadAction<Packet>
 ) => {
+  switch (action.payload.type) {
+    case MessageType.TYPE_MQTT_PUBLISH:
+      if (action.payload.packetId) {
+        state.nextPacketId++;
+        if ((action.payload.qos || 0) > 0) {
+          state.unackedMessages[action.payload.packetId] = action.payload;
+        }
+      }
+      break;
+    case MessageType.TYPE_MQTT_PUBREL:
+      if (action.payload.packetId) {
+        state.unackedMessages[action.payload.packetId] = action.payload;
+      }
+      break;
+  }
   state.messages.push(action.payload);
-};
-
-const incrementPacketIdReducer = (
-  state: MessageState,
-  action: PayloadAction<Packet>
-) => {
-  state.nextPacketId++;
 };
 
 export const messageSlice = createSlice({
@@ -109,7 +115,6 @@ export const messageSlice = createSlice({
   reducers: {
     recvMessage: recvMessageReducer,
     sendMessage: sendMessageReducer,
-    incrementPacketId: incrementPacketIdReducer,
   },
   extraReducers: (builder) => {
     builder.addCase(recvMessageThunk.fulfilled, recvMessageReducer);
@@ -117,8 +122,7 @@ export const messageSlice = createSlice({
   },
 });
 
-export const { recvMessage, sendMessage, incrementPacketId } =
-  messageSlice.actions;
+export const { recvMessage, sendMessage } = messageSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const messagesSelector = (state: RootState) => state.messages.messages;
