@@ -101,12 +101,12 @@ export default class MessageBroker {
 
   private static pubRec(packet: Packet) {
     const { packetId, senderId } = packet;
+    if (packetId) {
+      this.subscriberMap.get(senderId).unackedPackets.set(packetId, packet);
+    }
     const res = packet;
     res.type = MessageType.TYPE_MQTT_PUBREL;
     this.getSubscriberClient(senderId)?.send(JSON.stringify(res));
-    if (packetId) {
-      this.subscriberMap.get(senderId).unackedPackets.set(packetId, res);
-    }
   }
 
   private static pubRel(packet: Packet) {

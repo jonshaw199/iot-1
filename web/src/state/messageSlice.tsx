@@ -49,7 +49,7 @@ const recvMessageThunk = createAsyncThunk(
         );
         break;
     }
-    return msg;
+    return msg; // Return as received
   }
 );
 
@@ -68,10 +68,20 @@ const recvMessageReducer = (
   action: PayloadAction<Packet>
 ) => {
   switch (action.payload.type) {
+    case MessageType.TYPE_MQTT_PUBLISH:
+      if (action.payload.packetId && (action.payload.qos || 0) > 0) {
+        state.unackedMessages[action.payload.packetId] = action.payload;
+      }
+      break;
     case MessageType.TYPE_MQTT_PUBACK:
-      console.log("Pub ack");
+    case MessageType.TYPE_MQTT_PUBCOMP:
       if (action.payload.packetId) {
         delete state.unackedMessages[action.payload.packetId];
+      }
+      break;
+    case MessageType.TYPE_MQTT_PUBREC:
+      if (action.payload.packetId) {
+        state.unackedMessages[action.payload.packetId] = action.payload;
       }
       break;
   }
