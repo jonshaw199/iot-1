@@ -18,6 +18,7 @@ export default function Lights() {
         h: ((c.hsv.h || 0) * 255) / 360,
         s: ((c.hsv.s || 0) * 255) / 100,
         v: ((c.hsv.v || 0) * 255) / 100,
+        qos: 2,
       };
       send(packet);
     },

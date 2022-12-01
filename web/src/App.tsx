@@ -26,7 +26,7 @@ import {
 } from "./state/userSlice";
 import { getOrgListThunk } from "./state/orgSlice";
 import { getDeviceListThunk } from "./state/deviceSlice";
-import { recvMessage } from "./state/messageSlice";
+import { recvMessageThunk } from "./state/messageSlice";
 import { MessageType, Packet } from "./serverTypes";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
@@ -63,10 +63,11 @@ function LoggedIn() {
         senderId: process.env.REACT_APP_DEVICE_ID!,
         topic: "lights/#",
         type: MessageType.TYPE_MQTT_SUBSCRIBE,
+        qos: 2,
       });
     },
     onRecv: (m) => {
-      dispatch(recvMessage(m));
+      dispatch(recvMessageThunk({ msg: m, ws }));
     },
   });
 

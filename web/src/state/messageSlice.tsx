@@ -19,7 +19,7 @@ const initialState: MessageState = {
 
 // Thunks
 
-const recvMessageThunk = createAsyncThunk(
+export const recvMessageThunk = createAsyncThunk(
   "message/receive",
   ({ msg, ws }: { msg: Packet; ws: UseWebSocket<Packet> }, thunkApi) => {
     switch (msg.type) {
@@ -40,6 +40,14 @@ const recvMessageThunk = createAsyncThunk(
           );
         }
         break;
+      case MessageType.TYPE_MQTT_PUBREC:
+        thunkApi.dispatch(
+          sendMessageThunk({
+            msg: { ...msg, type: MessageType.TYPE_MQTT_PUBREL },
+            ws,
+          })
+        );
+        break;
       case MessageType.TYPE_MQTT_PUBREL:
         thunkApi.dispatch(
           sendMessageThunk({
@@ -53,7 +61,7 @@ const recvMessageThunk = createAsyncThunk(
   }
 );
 
-const sendMessageThunk = createAsyncThunk(
+export const sendMessageThunk = createAsyncThunk(
   "message/send",
   ({ msg, ws }: { msg: Packet; ws: UseWebSocket<Packet> }, thunkApi) => {
     if (msg.qos && msg.type === MessageType.TYPE_MQTT_PUBLISH) {
