@@ -102,7 +102,7 @@ const sendMessageReducer = (
     case MessageType.TYPE_MQTT_PUBLISH:
       if (action.payload.packetId) {
         state.nextPacketId++;
-        if ((action.payload.qos || 0) > 0) {
+        if (action.payload.qos) {
           state.unackedMessages[action.payload.packetId] = action.payload;
         }
       }
