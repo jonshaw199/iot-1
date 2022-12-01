@@ -3,6 +3,10 @@ import { w3cwebsocket } from "websocket";
 
 import { Packet } from "../serverTypes";
 
+export type UseWebSocket<T> = {
+  send: (msg: T) => void;
+};
+
 export function useWebsocket<T>({
   url,
   onOpen = () => null,
@@ -11,7 +15,7 @@ export function useWebsocket<T>({
   url: string;
   onOpen?: () => void;
   onRecv?: (msg: T) => void;
-}) {
+}): UseWebSocket<T> {
   const client = useRef<w3cwebsocket>();
 
   useEffect(() => {
