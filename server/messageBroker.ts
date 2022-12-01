@@ -92,6 +92,23 @@ export default class MessageBroker {
     this.subscriberMap = new Map();
   }
 
+  private static pubAck(packet: Packet) {
+    const { packetId, senderId } = packet;
+    if (packetId) {
+      this.subscriberMap.get(senderId).unackedPackets.delete(packetId);
+    }
+  }
+
+  private static pubRec(packet: Packet) {
+    const { packetId, senderId } = packet;
+    const res = packet;
+    res.type = MessageType.TYPE_MQTT_PUBREL;
+    this.getSubscriberClient(senderId)?.send(JSON.stringify(res));
+    if (packetId) {
+      this.subscriberMap.get(senderId).unackedPackets.set(packetId, res);
+    }
+  }
+
   private static pubRel(packet: Packet) {
     const { packetId, senderId } = packet;
     if (packetId) {
@@ -100,6 +117,13 @@ export default class MessageBroker {
     const res = packet;
     res.type = MessageType.TYPE_MQTT_PUBCOMP;
     this.getSubscriberClient(senderId)?.send(JSON.stringify(res));
+  }
+
+  private static pubComp(packet: Packet) {
+    const { packetId, senderId } = packet;
+    if (packetId) {
+      this.subscriberMap.get(senderId).unackedPackets.delete(packetId);
+    }
   }
 
   private static publish({
@@ -121,9 +145,15 @@ export default class MessageBroker {
         .subscriptions.get(topic).qos;
       const subscriberQosInternal =
         subscriberQos == null ? DEFAULT_QOS : subscriberQos;
-      const minQos = Math.min(qosInternal, subscriberQosInternal);
-      if (minQos === 2 && packetId) {
-        this.subscriberMap.get(senderId).unackedPackets.set(packetId, packet);
+      // Subscriber can downgrade
+      const minQos =
+        subscriberQosInternal < qosInternal
+          ? subscriberQosInternal
+          : qosInternal;
+      if (minQos > 0 && packetId) {
+        this.subscriberMap
+          .get(subscriber.deviceId.toString())
+          .unackedPackets.set(packetId, packet);
       }
     });
 
@@ -167,6 +197,15 @@ export default class MessageBroker {
           orgId,
           packet,
         });
+        break;
+      case MessageType.TYPE_MQTT_PUBACK:
+        this.pubAck(packet);
+        break;
+      case MessageType.TYPE_MQTT_PUBREC:
+        this.pubRec(packet);
+        break;
+      case MessageType.TYPE_MQTT_PUBCOMP:
+        this.pubComp(packet);
         break;
       case MessageType.TYPE_MQTT_PUBREL:
         this.pubRel(packet);
