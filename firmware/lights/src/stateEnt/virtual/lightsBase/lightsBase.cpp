@@ -84,45 +84,33 @@ msg_handler LightsBase::getInboxHandler()
       if (q == 1)
       {
         int p = m.json()["packetId"];
-        if (p)
-        {
-          AF1Msg res(TYPE_MQTT_PUBACK);
-          res.json()["packetId"] = p;
-          pushOutbox(res);
-        }
+        AF1Msg res(TYPE_MQTT_PUBACK);
+        res.json()["packetId"] = p;
+        pushOutbox(res);
       }
       else if (q == 2)
       {
         int p = m.json()["packetId"];
-        if (p)
-        {
-          AF1Msg res(TYPE_MQTT_PUBREC);
-          res.json()["packetId"] = p;
-          pushOutbox(res);
-        }
+        AF1Msg res(TYPE_MQTT_PUBREC);
+        res.json()["packetId"] = p;
+        pushOutbox(res);
       }
     }
     break;
     case TYPE_MQTT_PUBREC:
     {
       int packetId = m.json()["packetId"];
-      if (packetId)
-      {
-        AF1Msg res(TYPE_MQTT_PUBREL);
-        res.json()["packetId"] = packetId;
-        pushOutbox(res);
-      }
+      AF1Msg res(TYPE_MQTT_PUBREL);
+      res.json()["packetId"] = packetId;
+      pushOutbox(res);
     }
     break;
     case TYPE_MQTT_PUBREL:
     {
       int packetId = m.json()["packetId"];
-      if (packetId)
-      {
-        AF1Msg res(TYPE_MQTT_PUBCOMP);
-        res.json()["packetId"] = packetId;
-        pushOutbox(res);
-      }
+      AF1Msg res(TYPE_MQTT_PUBCOMP);
+      res.json()["packetId"] = packetId;
+      pushOutbox(res);
     }
     break;
     }

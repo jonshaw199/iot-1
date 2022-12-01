@@ -81,12 +81,12 @@ const recvMessageReducer = (
   switch (action.payload.type) {
     case MessageType.TYPE_MQTT_PUBACK:
     case MessageType.TYPE_MQTT_PUBCOMP:
-      if (action.payload.packetId) {
+      if (action.payload.packetId != null) {
         delete state.unackedMessages[action.payload.packetId];
       }
       break;
     case MessageType.TYPE_MQTT_PUBREC:
-      if (action.payload.packetId) {
+      if (action.payload.packetId != null) {
         state.unackedMessages[action.payload.packetId] = action.payload;
       }
       break;
@@ -100,7 +100,7 @@ const sendMessageReducer = (
 ) => {
   switch (action.payload.type) {
     case MessageType.TYPE_MQTT_PUBLISH:
-      if (action.payload.packetId) {
+      if (action.payload.packetId != null) {
         state.nextPacketId++;
         if (action.payload.qos) {
           state.unackedMessages[action.payload.packetId] = action.payload;
@@ -108,7 +108,7 @@ const sendMessageReducer = (
       }
       break;
     case MessageType.TYPE_MQTT_PUBREL:
-      if (action.payload.packetId) {
+      if (action.payload.packetId != null) {
         state.unackedMessages[action.payload.packetId] = action.payload;
       }
       break;

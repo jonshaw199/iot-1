@@ -25,10 +25,18 @@ export default class MessageBroker {
 
   public static init(i: Instance) {
     this.expressWsInstance = i;
+    this.subscriberMap = new Map();
   }
 
   public static getSubscribers(topic: Topic) {
     return MQTT.getSubscribers(topic);
+  }
+
+  private static getOrCreate(subscriberId: SubscriberId) {
+    if (!this.subscriberMap.has(subscriberId)) {
+      this.subscriberMap.set(subscriberId, { unackedPackets: new Map() });
+    }
+    return this.subscriberMap.get(subscriberId);
   }
 
   private static getOrgClients(orgId?: Types.ObjectId) {
@@ -99,15 +107,15 @@ export default class MessageBroker {
 
   private static pubAck(packet: Packet) {
     const { packetId, senderId } = packet;
-    if (packetId) {
-      this.subscriberMap.get(senderId).unackedPackets.delete(packetId);
+    if (packetId != null) {
+      this.getOrCreate(senderId).unackedPackets.delete(packetId);
     }
   }
 
   private static pubRec(packet: Packet) {
     const { packetId, senderId } = packet;
-    if (packetId) {
-      this.subscriberMap.get(senderId).unackedPackets.set(packetId, packet);
+    if (packetId != null) {
+      this.getOrCreate(senderId).unackedPackets.set(packetId, packet);
     }
     const res = packet;
     res.type = MessageType.TYPE_MQTT_PUBREL;
@@ -116,8 +124,8 @@ export default class MessageBroker {
 
   private static pubRel(packet: Packet) {
     const { packetId, senderId } = packet;
-    if (packetId) {
-      this.subscriberMap.get(senderId).unackedPackets.delete(packetId);
+    if (packetId != null) {
+      this.getOrCreate(senderId).unackedPackets.delete(packetId);
     }
     const res = packet;
     res.type = MessageType.TYPE_MQTT_PUBCOMP;
@@ -126,8 +134,8 @@ export default class MessageBroker {
 
   private static pubComp(packet: Packet) {
     const { packetId, senderId } = packet;
-    if (packetId) {
-      this.subscriberMap.get(senderId).unackedPackets.delete(packetId);
+    if (packetId != null) {
+      this.getOrCreate(senderId).unackedPackets.delete(packetId);
     }
   }
 
@@ -147,10 +155,11 @@ export default class MessageBroker {
       // Subscriber can downgrade
       const minQos =
         subscriber.qos < qosInternal ? subscriber.qos : qosInternal;
-      if (minQos > 0 && packetId) {
-        this.subscriberMap
-          .get(subscriber.deviceId.toString())
-          .unackedPackets.set(packetId, { ...packet, qos: minQos });
+      if (minQos > 0 && packetId != null) {
+        this.getOrCreate(subscriber.deviceId.toString()).unackedPackets.set(
+          packetId,
+          { ...packet, qos: minQos }
+        );
       }
     });
 
@@ -163,10 +172,8 @@ export default class MessageBroker {
           this.getClient(packet.senderId)?.send(JSON.stringify(res));
           break;
         case 2:
-          if (packetId) {
-            this.subscriberMap
-              .get(senderId)
-              .unackedPackets.set(packetId, packet);
+          if (packetId != null) {
+            this.getOrCreate(senderId).unackedPackets.set(packetId, packet);
           }
           res.type = MessageType.TYPE_MQTT_PUBREC;
           this.getClient(senderId)?.send(JSON.stringify(res));
