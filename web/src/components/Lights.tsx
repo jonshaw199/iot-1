@@ -3,15 +3,18 @@ import { Paper, Box, useTheme } from "@mui/material";
 import { useContext, useCallback } from "react";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
 import { MessageType, Topics, PacketLightsColor } from "../serverTypes";
+import { sendMessageThunk } from "../state/messageSlice";
+import { useDispatch } from "../state/store";
 import ColorPicker from "./ColorPicker";
 
 export default function Lights() {
   const theme = useTheme();
-  const { send } = useContext(GlobalWebsocketContext);
+  const ws = useContext(GlobalWebsocketContext);
+  const dispatch = useDispatch();
 
   const submitColor = useCallback(
     (c: iro.Color) => {
-      const packet: PacketLightsColor = {
+      const msg: PacketLightsColor = {
         senderId: process.env.REACT_APP_DEVICE_ID || "",
         type: MessageType.TYPE_MQTT_PUBLISH,
         topic: Topics.LIGHTS_COLOR,
@@ -20,9 +23,9 @@ export default function Lights() {
         v: ((c.hsv.v || 0) * 255) / 100,
         qos: 2,
       };
-      send(packet);
+      dispatch(sendMessageThunk({ msg, ws }));
     },
-    [send]
+    [dispatch, ws]
   );
 
   return (
