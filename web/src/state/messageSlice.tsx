@@ -1,15 +1,59 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Message } from "../serverTypes";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { MessageType, Packet, PacketId } from "../serverTypes";
 import type { RootState } from "../state/store";
 
 // Define a type for the slice state
 interface MessageState {
-  messages: Message[];
+  messages: Packet[];
+  unackedMessages: { [key: PacketId]: Packet };
+  nextPacketId: PacketId;
 }
 
 // Define the initial state using that type
 const initialState: MessageState = {
   messages: [],
+  unackedMessages: {},
+  nextPacketId: 0,
+};
+
+// Thunks
+
+const recvMessageThunk = createAsyncThunk(
+  "message/receive",
+  (msg: Packet, thunkApi) => {
+    switch (msg.type) {
+      case MessageType.TYPE_MQTT_PUBACK:
+        console.log("Pub ack");
+        break;
+    }
+    return msg;
+  }
+);
+
+// const sendMessageThunk = createA
+
+// Reducers
+
+const recvMessageReducer = (
+  state: MessageState,
+  action: PayloadAction<Packet>
+) => {
+  switch (action.payload.type) {
+    case MessageType.TYPE_MQTT_PUBACK:
+      console.log("Pub ack");
+      if (action.payload.packetId) {
+        delete state.unackedMessages[action.payload.packetId];
+      }
+      break;
+  }
+  state.messages.push(action.payload);
+};
+
+const sendMessageReducer = (
+  state: MessageState,
+  action: PayloadAction<Packet>
+) => {
+  state.messages.push(action.payload);
 };
 
 export const messageSlice = createSlice({
@@ -17,9 +61,10 @@ export const messageSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    recvMessage: (state: MessageState, action: PayloadAction<Message>) => {
-      state.messages.push(action.payload);
-    },
+    recvMessage: recvMessageReducer,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(recvMessageThunk.fulfilled, recvMessageReducer);
   },
 });
 
