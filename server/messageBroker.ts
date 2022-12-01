@@ -153,7 +153,7 @@ export default class MessageBroker {
       if (minQos > 0 && packetId) {
         this.subscriberMap
           .get(subscriber.deviceId.toString())
-          .unackedPackets.set(packetId, packet);
+          .unackedPackets.set(packetId, { ...packet, qos: minQos });
       }
     });
 
@@ -204,11 +204,11 @@ export default class MessageBroker {
       case MessageType.TYPE_MQTT_PUBREC:
         this.pubRec(packet);
         break;
-      case MessageType.TYPE_MQTT_PUBCOMP:
-        this.pubComp(packet);
-        break;
       case MessageType.TYPE_MQTT_PUBREL:
         this.pubRel(packet);
+        break;
+      case MessageType.TYPE_MQTT_PUBCOMP:
+        this.pubComp(packet);
         break;
       default:
         console.log("Unknown packet type");
