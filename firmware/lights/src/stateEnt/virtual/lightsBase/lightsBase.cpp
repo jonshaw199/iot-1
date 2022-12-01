@@ -8,6 +8,9 @@
 #include "img/mountains.h"
 #endif
 
+static uint8_t nextPacketId;
+static std::map<uint8_t, AF1Msg> unackedPackets;
+
 void LightsBase::setup()
 {
   Base::setup();
@@ -60,22 +63,68 @@ void LightsBase::onConnectWSServer()
 
 msg_handler LightsBase::getInboxHandler()
 {
-  return [](AF1Msg m)
+  return [](AF1Msg &m)
   {
     Base::handleInboxMsg(m);
-    String topic = m.json()["topic"];
-    if (topic == "/lights/pattern")
+    switch (m.getType())
     {
-      Serial.println("Pattern msg");
-      setRequestedState(m.getState());
+    case TYPE_MQTT_PUBLISH:
+    {
+      String topic = m.json()["topic"];
+      if (topic == "/lights/pattern")
+      {
+        Serial.println("Pattern msg");
+        setRequestedState(m.getState());
+      }
+      else if (topic == "/lights/color")
+      {
+        Serial.println("Color msg");
+      }
+      uint8_t q = m.json()["qos"];
+      if (q == 1)
+      {
+        int p = m.json()["packetId"];
+        if (p)
+        {
+          AF1Msg res(TYPE_MQTT_PUBACK);
+          res.json()["packetId"] = p;
+          pushOutbox(res);
+        }
+      }
+      else if (q == 2)
+      {
+        int p = m.json()["packetId"];
+        if (p)
+        {
+          AF1Msg res(TYPE_MQTT_PUBREC);
+          res.json()["packetId"] = p;
+          pushOutbox(res);
+        }
+      }
     }
-    else if (topic == "/lights/color")
+    break;
+    case TYPE_MQTT_PUBREC:
     {
-      Serial.println("Color msg");
+      int packetId = m.json()["packetId"];
+      if (packetId)
+      {
+        AF1Msg res(TYPE_MQTT_PUBREL);
+        res.json()["packetId"] = packetId;
+        pushOutbox(res);
+      }
     }
-    else
+    break;
+    case TYPE_MQTT_PUBREL:
     {
-      Serial.println("Other Msg");
+      int packetId = m.json()["packetId"];
+      if (packetId)
+      {
+        AF1Msg res(TYPE_MQTT_PUBCOMP);
+        res.json()["packetId"] = packetId;
+        pushOutbox(res);
+      }
+    }
+    break;
     }
   };
 }
