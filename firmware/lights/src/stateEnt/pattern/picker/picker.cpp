@@ -11,7 +11,7 @@ String Picker::getName()
 
 msg_handler Picker::getInboxHandler()
 {
-  return [](AF1Msg m)
+  return [](AF1Msg &m)
   {
     Pattern::handleInboxMsg(m);
     String topic = m.json()["topic"];
