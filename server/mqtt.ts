@@ -76,16 +76,10 @@ export default class MQTT {
   public static getSubscribers(topic: Topic) {
     function getMaxQos(map: Map<SubscriberId, Subscriber>, cur: Subscriber) {
       const lastQos = map.get(cur.subscriberId)?.qos;
-      // 0 = falsy woes
-      if (lastQos == null && cur.qos == null) {
-        return DEFAULT_QOS;
-      } else if (lastQos == null) {
-        return cur.qos;
-      } else if (cur.qos == null) {
-        return lastQos;
-      } else {
-        return Math.max(lastQos, cur.qos);
-      }
+      // falsy woes
+      const lastQosWithDefault = lastQos == null ? DEFAULT_QOS : lastQos;
+      const curQosWithDefault = cur.qos == null ? DEFAULT_QOS : cur.qos;
+      return Math.max(lastQosWithDefault, curQosWithDefault);
     }
     function getSubscribersRec(
       remainingTopic: Topic,
