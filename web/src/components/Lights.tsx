@@ -1,6 +1,6 @@
 import iro from "@jaames/iro";
 import { Paper, Box, useTheme, TextField, MenuItem } from "@mui/material";
-import { useContext, useCallback, useState, useMemo } from "react";
+import { useContext, useCallback, useState } from "react";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
 import {
   MessageType,
@@ -12,6 +12,15 @@ import {
 import { sendMessageThunk } from "../state/messageSlice";
 import { useDispatch } from "../state/store";
 import ColorPicker from "./ColorPicker";
+
+const stateOptions: [number, string][] = [
+  [State.STATE_HOME, "Home"],
+  [State.STATE_PATTERN_NOISE, "Pattern - Noise"],
+  [State.STATE_PATTERN_NOISEPLUSPALETTE, "Pattern - Noise+Palette"],
+  [State.STATE_PATTERN_TWINKLEFOX, "Pattern - Twinklefox"],
+  [State.STATE_RESTART, "Restart"],
+  [State.STATE_OTA, "OTA"],
+];
 
 export default function Lights() {
   const theme = useTheme();
@@ -45,18 +54,6 @@ export default function Lights() {
       dispatch(sendMessageThunk({ msg, ws }));
     },
     [dispatch, ws]
-  );
-
-  const stateOptions: [number, string][] = useMemo(
-    () => [
-      [State.STATE_HOME, "Home"],
-      [State.STATE_PATTERN_NOISE, "Pattern - Noise"],
-      [State.STATE_PATTERN_NOISEPLUSPALETTE, "Pattern - Noise+Palette"],
-      [State.STATE_PATTERN_TWINKLEFOX, "Pattern - Twinklefox"],
-      [State.STATE_RESTART, "Restart"],
-      [State.STATE_OTA, "OTA"],
-    ],
-    []
   );
 
   return (
