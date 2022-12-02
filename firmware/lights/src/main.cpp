@@ -12,7 +12,6 @@
 #include "state.h"
 #include "stateEnt/home/home.h"
 #include "stateEnt/pattern/twinklefox/twinklefox.h"
-#include "stateEnt/pattern/noisePlusPalette/noisePlusPalette.h"
 #include "stateEnt/pattern/noise/noise.h"
 #include "stateEnt/pattern/picker/picker.h"
 
@@ -38,9 +37,6 @@ void setup()
   AF1::addStateEnt(STATE_PATTERN_TWINKLEFOX, new Twinklefox());
   AF1::addStringHandler("twinklefox", [](SHArg a)
                         { AF1::setRequestedState(STATE_PATTERN_TWINKLEFOX); });
-  AF1::addStateEnt(STATE_PATTERN_NOISEPLUSPALETTE, new NoisePlusPalette());
-  AF1::addStringHandler("noisepluspalette", [](SHArg a)
-                        { AF1::setRequestedState(STATE_PATTERN_NOISEPLUSPALETTE); });
   AF1::addStateEnt(STATE_PATTERN_NOISE, new Noise());
   AF1::addStringHandler("noise", [](SHArg a)
                         { AF1::setRequestedState(STATE_PATTERN_NOISE); });

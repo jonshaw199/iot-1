@@ -16,7 +16,6 @@ import ColorPicker from "./subcomponents/ColorPicker";
 const stateOptions: [number, string][] = [
   [State.STATE_HOME, "Home"],
   [State.STATE_PATTERN_NOISE, "Pattern - Noise"],
-  [State.STATE_PATTERN_NOISEPLUSPALETTE, "Pattern - Noise+Palette"],
   [State.STATE_PATTERN_TWINKLEFOX, "Pattern - Twinklefox"],
   [State.STATE_RESTART, "Restart"],
   [State.STATE_OTA, "OTA"],
