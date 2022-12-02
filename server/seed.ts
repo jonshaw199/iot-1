@@ -65,6 +65,18 @@ async function insertDocuments() {
       orgId: org.id,
       _id: "638a498b239dc28bfed416ad",
     }),
+    new deviceModel({
+      board: Board.BOARD_M5STICK_C,
+      name: "15",
+      orgId: org.id,
+      _id: "637e682a353c2a48866b901d",
+    }),
+    new deviceModel({
+      board: Board.BOARD_M5STICK_C,
+      name: "18",
+      orgId: org.id,
+      _id: "637e6824353c2a48866b901a",
+    }),
   ];
 
   const users = [
