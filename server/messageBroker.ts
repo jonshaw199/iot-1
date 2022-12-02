@@ -159,8 +159,10 @@ export default class MessageBroker {
           packetId,
           { ...packet, qos: minQos }
         );
+        subscriber.send(JSON.stringify({ ...packet, qos: minQos }));
+      } else {
+        subscriber.send(JSON.stringify({ ...packet, qos: 0 }));
       }
-      subscriber.send(JSON.stringify({ ...packet, qos: minQos }));
     });
 
     // QOS for publisher
