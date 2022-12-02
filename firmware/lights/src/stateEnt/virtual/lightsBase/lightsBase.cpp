@@ -64,71 +64,73 @@ void LightsBase::onConnectWSServer()
   pushOutbox(m);
 }
 
-msg_handler LightsBase::getInboxHandler()
+void LightsBase::handleInboxMsg(AF1Msg &m)
 {
-  return [](AF1Msg &m)
+  Base::handleInboxMsg(m);
+  switch (m.getType())
   {
-    Base::handleInboxMsg(m);
-    switch (m.getType())
+  case TYPE_MQTT_PUBLISH:
+  {
+    String topic = m.json()["topic"];
+    if (topic == "/lights/state")
     {
-    case TYPE_MQTT_PUBLISH:
+      Serial.println("Pattern msg");
+      setRequestedState(m.getState());
+    }
+    else if (topic == "/lights/color")
     {
-      String topic = m.json()["topic"];
-      if (topic == "/lights/state")
-      {
-        Serial.println("Pattern msg");
-        setRequestedState(m.getState());
-      }
-      else if (topic == "/lights/color")
-      {
-        Serial.println("Color msg");
-      }
+      Serial.println("Color msg");
+    }
 
-      // Acks
-      uint8_t q = m.json()["qos"];
-      if (q == 1)
-      {
-        int p = m.json()["packetId"];
-        AF1Msg res(TYPE_MQTT_PUBACK);
-        res.json()["packetId"] = p;
-        pushOutbox(res);
-      }
-      else if (q == 2)
-      {
-        int p = m.json()["packetId"];
-        AF1Msg res(TYPE_MQTT_PUBREC);
-        res.json()["packetId"] = p;
-        pushOutbox(res);
-      }
-    }
-    break;
-    case TYPE_MQTT_PUBACK:
-    case TYPE_MQTT_PUBCOMP:
-    {
-      uint8_t p = m.json()["packetId"];
-      unackedPackets.erase(p);
-    }
-    break;
-
-    case TYPE_MQTT_PUBREC:
-    {
-      uint8_t p = m.json()["packetId"];
-      unackedPackets[p] = m;
-      AF1Msg res(TYPE_MQTT_PUBREL);
-      res.json()["packetId"] = p;
-      pushOutbox(res);
-    }
-    break;
-    case TYPE_MQTT_PUBREL:
+    // Acks
+    uint8_t q = m.json()["qos"];
+    if (q == 1)
     {
       int p = m.json()["packetId"];
-      AF1Msg res(TYPE_MQTT_PUBCOMP);
+      AF1Msg res(TYPE_MQTT_PUBACK);
       res.json()["packetId"] = p;
       pushOutbox(res);
     }
-    break;
+    else if (q == 2)
+    {
+      int p = m.json()["packetId"];
+      AF1Msg res(TYPE_MQTT_PUBREC);
+      res.json()["packetId"] = p;
+      pushOutbox(res);
     }
-  };
+  }
+  break;
+  case TYPE_MQTT_PUBACK:
+  case TYPE_MQTT_PUBCOMP:
+  {
+    uint8_t p = m.json()["packetId"];
+    unackedPackets.erase(p);
+  }
+  break;
+
+  case TYPE_MQTT_PUBREC:
+  {
+    uint8_t p = m.json()["packetId"];
+    unackedPackets[p] = m;
+    AF1Msg res(TYPE_MQTT_PUBREL);
+    res.json()["packetId"] = p;
+    pushOutbox(res);
+  }
+  break;
+  case TYPE_MQTT_PUBREL:
+  {
+    int p = m.json()["packetId"];
+    AF1Msg res(TYPE_MQTT_PUBCOMP);
+    res.json()["packetId"] = p;
+    pushOutbox(res);
+  }
+  break;
+  }
+}
+
+msg_handler LightsBase::getInboxHandler()
+{
+  return handleInboxMsg;
 }
 
 msg_handler LightsBase::getOutboxHandler()

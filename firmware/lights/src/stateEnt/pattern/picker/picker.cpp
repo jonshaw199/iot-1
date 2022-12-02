@@ -13,7 +13,7 @@ msg_handler Picker::getInboxHandler()
 {
   return [](AF1Msg &m)
   {
-    Pattern::handleInboxMsg(m);
+    LightsBase::handleInboxMsg(m);
     String topic = m.json()["topic"];
     if (topic == "/lights/color")
     {

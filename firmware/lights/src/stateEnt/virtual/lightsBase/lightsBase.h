@@ -5,7 +5,8 @@
 
 class LightsBase : public Base
 {
-
+protected:
+  static void handleInboxMsg(AF1Msg &m);
 public:
   void setup();
   void loop();
