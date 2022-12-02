@@ -28,7 +28,6 @@ export default function Lights() {
         h: ((c.hsv.h || 0) * 255) / 360,
         s: ((c.hsv.s || 0) * 255) / 100,
         v: ((c.hsv.v || 0) * 255) / 100,
-        qos: 2,
       };
       dispatch(sendMessageThunk({ msg, ws }));
     },
@@ -42,7 +41,6 @@ export default function Lights() {
         type: MessageType.TYPE_MQTT_PUBLISH,
         topic: Topics.LIGHTS_STATE,
         state: s,
-        qos: 2,
       };
       dispatch(sendMessageThunk({ msg, ws }));
     },
