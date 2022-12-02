@@ -7,6 +7,15 @@
 
 class Twinklefox : public Pattern
 {
+  static CRGB *leds;
+  static CRGBPalette16 gCurrentPalette;
+  static CRGBPalette16 gTargetPalette;
+  // Background color for 'unlit' pixels
+  // Can be set to CRGB::Black if desired.
+  static CRGB gBackgroundColor;
+  // Example of dim incandescent fairy light background color
+  // CRGB gBackgroundColor = CRGB(CRGB::FairyLight).nscale8_video(16);
+
   static void drawTwinkles(CRGB *leds);
   static CRGB computeOneTwinkle(uint32_t ms, uint8_t salt);
   static uint8_t attackDecayWave8(uint8_t i);

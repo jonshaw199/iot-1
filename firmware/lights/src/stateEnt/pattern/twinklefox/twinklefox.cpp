@@ -8,6 +8,8 @@ namespace Twinkle
 #include "color/palette/halloween_gp.h"
 }
 
+using namespace Twinkle;
+
 #if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001000)
 #warning "Requires FastLED 3.1 or later; check github for latest code."
 #endif
@@ -100,22 +102,14 @@ namespace Twinkle
 // incandescent bulbs change color as they get dim down.
 #define COOL_LIKE_INCANDESCENT 1
 
-namespace Twinkle
-{
-
-  CRGB *leds;
-  CRGBPalette16 gCurrentPalette;
-  CRGBPalette16 gTargetPalette;
-
-  // Background color for 'unlit' pixels
-  // Can be set to CRGB::Black if desired.
-  CRGB gBackgroundColor = CRGB::Black;
-  // Example of dim incandescent fairy light background color
-  // CRGB gBackgroundColor = CRGB(CRGB::FairyLight).nscale8_video(16);
-
-};
-
-using namespace Twinkle;
+CRGB *Twinklefox::leds;
+CRGBPalette16 Twinklefox::gCurrentPalette;
+CRGBPalette16 Twinklefox::gTargetPalette;
+// Background color for 'unlit' pixels
+// Can be set to CRGB::Black if desired.
+CRGB Twinklefox::gBackgroundColor = CRGB::Black;
+// Example of dim incandescent fairy light background color
+// CRGB gBackgroundColor = CRGB(CRGB::FairyLight).nscale8_video(16);
 
 void Twinklefox::setup()
 {
