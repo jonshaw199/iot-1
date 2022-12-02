@@ -8,6 +8,9 @@ export async function req<T>(path: string, options?: Nullable<RequestInit>) {
       token: localStorage.getItem("token") || "",
     },
   };
-  const result = await fetch(`http://localhost:3000${path}`, optionsInternal);
+  const result = await fetch(
+    `http://${process.env.REACT_APP_SERVER_ADDRESS}${path}`,
+    optionsInternal
+  );
   return (await result.json()) as T;
 }
