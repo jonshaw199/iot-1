@@ -63,7 +63,7 @@ function LoggedIn() {
         senderId: process.env.REACT_APP_DEVICE_ID!,
         topic: "lights/#",
         type: MessageType.TYPE_MQTT_SUBSCRIBE,
-        qos: 2,
+        qos: 0,
       });
     },
     onRecv: (m) => {

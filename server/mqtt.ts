@@ -39,7 +39,7 @@ export default class MQTT {
   public static subscribe(
     subscriberId: SubscriberId,
     topic: Topic,
-    qos: QOS = 0
+    qos: QOS = DEFAULT_QOS
   ) {
     const subtopics = this.getSubTopics(topic);
     if (subtopics.length) {
@@ -75,10 +75,17 @@ export default class MQTT {
 
   public static getSubscribers(topic: Topic) {
     function getMaxQos(map: Map<SubscriberId, Subscriber>, cur: Subscriber) {
-      return Math.max(
-        map.get(cur.subscriberId)?.qos || DEFAULT_QOS,
-        cur.qos || DEFAULT_QOS
-      );
+      const lastQos = map.get(cur.subscriberId)?.qos;
+      // 0 = falsy woes
+      if (lastQos == null && cur.qos == null) {
+        return DEFAULT_QOS;
+      } else if (lastQos == null) {
+        return cur.qos;
+      } else if (cur.qos == null) {
+        return lastQos;
+      } else {
+        return Math.max(lastQos, cur.qos);
+      }
     }
     function getSubscribersRec(
       remainingTopic: Topic,

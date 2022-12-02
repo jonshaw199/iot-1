@@ -60,6 +60,7 @@ void LightsBase::onConnectWSServer()
 {
   AF1Msg m(TYPE_MQTT_SUBSCRIBE);
   m.json()["topic"] = LIGHTS_ROUTE;
+  m.json()["qos"] = 0;
   pushOutbox(m);
 }
 

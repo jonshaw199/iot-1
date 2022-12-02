@@ -151,7 +151,6 @@ export default class MessageBroker {
     const qosInternal = qos == null ? DEFAULT_QOS : qos;
     const clients = this.getSubscriberClients({ topic: topic, orgId });
     clients.forEach((subscriber) => {
-      subscriber.send(JSON.stringify(packet));
       // Subscriber can downgrade
       const minQos =
         subscriber.qos < qosInternal ? subscriber.qos : qosInternal;
@@ -161,6 +160,7 @@ export default class MessageBroker {
           { ...packet, qos: minQos }
         );
       }
+      subscriber.send(JSON.stringify({ ...packet, qos: minQos }));
     });
 
     // QOS for publisher
