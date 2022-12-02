@@ -85,7 +85,7 @@ using namespace Twinkle;
 #define TWINKLE_DENSITY 5
 
 // How often to change color palettes.
-#define SECONDS_PER_PALETTE 30
+#define SECONDS_PER_PALETTE 15
 // Also: toward the bottom of the file is an array
 // called "ActivePaletteList" which controls which color
 // palettes are used; you can add or remove color palettes
@@ -402,10 +402,10 @@ const TProgmemRGBPalette16 *ActivePaletteList[] = {
 // Advance to the next color palette in the list (above).
 void Twinklefox::chooseNextColorPalette(CRGBPalette16 &pal)
 {
-  const CRGBPalette16 active[] = {halloween_gp, hopegoddess_gp};
-  const uint8_t numberOfPalettes = sizeof(active) / sizeof(active[0]);
-  static uint8_t whichPalette = -1;
-  whichPalette = addmod8(whichPalette, 1, numberOfPalettes);
-
-  pal = active[whichPalette];
+  const uint8_t numberOfPalettes = sizeof(ActivePaletteList) / sizeof(ActivePaletteList[0]);
+  static uint8_t whichPalette = -1; 
+  whichPalette = addmod8( whichPalette, 1, numberOfPalettes);
+  pal = *(ActivePaletteList[whichPalette]);
+  Serial.print("Changing palette: ");
+  Serial.println(whichPalette);
 }
