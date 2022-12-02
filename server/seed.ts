@@ -7,7 +7,6 @@ import deviceModel from "./models/device";
 import orgModel from "./models/org";
 import userModel from "./models/user";
 import { Board } from "./types";
-import messageModel from "./models/message";
 
 async function connect() {
   try {
@@ -19,11 +18,7 @@ async function connect() {
 
 async function deleteAllDocuments() {
   try {
-    await Promise.all([
-      userModel.deleteMany({}),
-      deviceModel.deleteMany({}),
-      messageModel.deleteMany({}),
-    ]);
+    await Promise.all([userModel.deleteMany({}), deviceModel.deleteMany({})]);
     return await orgModel.deleteMany({});
   } catch (e) {
     console.log(`Failed to delete all documents before seeding: ${e}`);
@@ -39,6 +34,36 @@ async function insertDocuments() {
       name: "webclient",
       orgId: org.id,
       _id: "637aab30382d30060fd5f4e3",
+    }),
+    new deviceModel({
+      board: Board.BOARD_WEMOS_D1_MINI32,
+      name: "2",
+      orgId: org.id,
+      _id: "638a493afbbc51c90ce1ba9d",
+    }),
+    new deviceModel({
+      board: Board.BOARD_WEMOS_D1_MINI32,
+      name: "3",
+      orgId: org.id,
+      _id: "638a493ffbbc51c90ce1baa0",
+    }),
+    new deviceModel({
+      board: Board.BOARD_WEMOS_D1_MINI32,
+      name: "4",
+      orgId: org.id,
+      _id: "638a4941fbbc51c90ce1baa3",
+    }),
+    new deviceModel({
+      board: Board.BOARD_WEMOS_D1_MINI32,
+      name: "5",
+      orgId: org.id,
+      _id: "638a4944fbbc51c90ce1baa6",
+    }),
+    new deviceModel({
+      board: Board.BOARD_WEMOS_D1_MINI32,
+      name: "6",
+      orgId: org.id,
+      _id: "638a498b239dc28bfed416ad",
     }),
   ];
 
