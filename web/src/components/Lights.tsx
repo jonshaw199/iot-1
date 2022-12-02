@@ -1,5 +1,5 @@
 import iro from "@jaames/iro";
-import { Paper, Box, useTheme, TextField, MenuItem } from "@mui/material";
+import { useTheme, TextField, MenuItem, Card, Grid } from "@mui/material";
 import { useContext, useCallback, useState } from "react";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
 import {
@@ -57,33 +57,33 @@ export default function Lights() {
   );
 
   return (
-    <Paper>
-      <Box
-        p={theme.spacing(2)}
-        gap={theme.spacing(2)}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-      >
-        <TextField
-          label="State"
-          value={selectedState}
-          onChange={(e) => {
-            const s = parseInt(e.target.value);
-            setSelectedState(s);
-            changeState(s);
-          }}
-          select
-          // sx={{ flex: 1 }}
-        >
-          {stateOptions.map(([value, name]: [number, string], i) => (
-            <MenuItem value={value} key={i}>
-              {name}
-            </MenuItem>
-          ))}
-        </TextField>
-        <ColorPicker throttle={333} onChangeThrottled={submitColor} />
-      </Box>
-    </Paper>
+    <Grid container spacing={1}>
+      <Grid item xs={12} md={6}>
+        <Card sx={{ padding: theme.spacing(2) }}>
+          <TextField
+            label="State"
+            value={selectedState}
+            onChange={(e) => {
+              const s = parseInt(e.target.value);
+              setSelectedState(s);
+              changeState(s);
+            }}
+            select
+            // sx={{ flex: 1 }}
+          >
+            {stateOptions.map(([value, name]: [number, string], i) => (
+              <MenuItem value={value} key={i}>
+                {name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Card>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <Card sx={{ padding: theme.spacing(2) }}>
+          <ColorPicker throttle={333} onChangeThrottled={submitColor} />
+        </Card>
+      </Grid>
+    </Grid>
   );
 }
