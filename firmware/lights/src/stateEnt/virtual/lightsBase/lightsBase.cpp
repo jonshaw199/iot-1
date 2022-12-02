@@ -8,6 +8,8 @@
 #include "img/mountains.h"
 #endif
 
+#define MAX_PACKET_ID 5 // Can't store many unacked
+
 static uint8_t nextPacketId;
 static std::map<uint8_t, AF1Msg> unackedPackets;
 
@@ -97,19 +99,28 @@ msg_handler LightsBase::getInboxHandler()
       }
     }
     break;
+    case TYPE_MQTT_PUBACK:
+    case TYPE_MQTT_PUBCOMP:
+    {
+      uint8_t p = m.json()["packetId"];
+      unackedPackets.erase(p);
+    }
+    break;
+
     case TYPE_MQTT_PUBREC:
     {
-      int packetId = m.json()["packetId"];
+      uint8_t p = m.json()["packetId"];
+      unackedPackets[p] = m;
       AF1Msg res(TYPE_MQTT_PUBREL);
-      res.json()["packetId"] = packetId;
+      res.json()["packetId"] = p;
       pushOutbox(res);
     }
     break;
     case TYPE_MQTT_PUBREL:
     {
-      int packetId = m.json()["packetId"];
+      int p = m.json()["packetId"];
       AF1Msg res(TYPE_MQTT_PUBCOMP);
-      res.json()["packetId"] = packetId;
+      res.json()["packetId"] = p;
       pushOutbox(res);
     }
     break;
@@ -122,10 +133,17 @@ msg_handler LightsBase::getOutboxHandler()
   return [](AF1Msg &m)
   {
     uint8_t q = m.json()["qos"];
-    if (q && m.getType() == TYPE_MQTT_PUBLISH)
+    switch (m.getType())
     {
-      m.json()["packetId"] = nextPacketId;
-      nextPacketId++;
+    case TYPE_MQTT_PUBLISH:
+    case TYPE_MQTT_PUBREL:
+      if (q)
+      {
+        m.json()["packetId"] = nextPacketId;
+        unackedPackets[nextPacketId] = m;
+        nextPacketId = (nextPacketId + 1) % MAX_PACKET_ID;
+      }
+      break;
     }
     Base::handleOutboxMsg(m);
   };
