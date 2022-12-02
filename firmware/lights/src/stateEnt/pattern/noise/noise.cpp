@@ -1,17 +1,11 @@
 #include "noise.h"
 
-namespace noise
-{
-  CRGB *leds;
-  CRGBPalette16 currentPalette;
-  TBlendType currentBlending;
-  CRGBPalette16 targetPalette;
-
-  CHSV orange = CHSV(10, 255, 225);
-  CHSV purple = CHSV(200, 250, 150); // 200, 150
-}
-
-using namespace noise;
+CRGB *Noise::leds;
+CRGBPalette16 Noise::currentPalette;
+TBlendType Noise::currentBlending;
+CRGBPalette16 Noise::targetPalette;
+CHSV Noise::orange = CHSV(10, 255, 225);
+CHSV Noise::purple = CHSV(200, 250, 150);
 
 void Noise::setup()
 {
@@ -54,7 +48,8 @@ void Noise::setup()
       EVENT_TYPE_TEMP, 5000));
 }
 
-void Noise::preStateChange(int s) {
+void Noise::preStateChange(int s)
+{
   Pattern::preStateChange(s);
   delete[] leds;
 }
