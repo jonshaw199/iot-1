@@ -11,7 +11,7 @@ import {
 } from "../serverTypes";
 import { sendMessageThunk } from "../state/messageSlice";
 import { useDispatch } from "../state/store";
-import ColorPicker from "./ColorPicker";
+import ColorPicker from "./subcomponents/ColorPicker";
 
 const stateOptions: [number, string][] = [
   [State.STATE_HOME, "Home"],
@@ -65,7 +65,6 @@ export default function Lights() {
         flexDirection="column"
         alignItems="center"
       >
-        <ColorPicker throttle={333} onChangeThrottled={submitColor} />
         <TextField
           label="State"
           value={selectedState}
@@ -75,7 +74,7 @@ export default function Lights() {
             changeState(s);
           }}
           select
-          sx={{ minWidth: 250 }}
+          // sx={{ flex: 1 }}
         >
           {stateOptions.map(([value, name]: [number, string], i) => (
             <MenuItem value={value} key={i}>
@@ -83,6 +82,7 @@ export default function Lights() {
             </MenuItem>
           ))}
         </TextField>
+        <ColorPicker throttle={333} onChangeThrottled={submitColor} />
       </Box>
     </Paper>
   );
