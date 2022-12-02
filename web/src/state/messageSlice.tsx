@@ -3,6 +3,8 @@ import { UseWebSocket } from "../hooks/useWebsocket";
 import { MessageType, Packet, PacketId } from "../serverTypes";
 import type { RootState } from "../state/store";
 
+const MAX_PACKET_ID = 1000;
+
 // Define a type for the slice state
 interface MessageState {
   messages: Packet[];
@@ -101,7 +103,8 @@ const sendMessageReducer = (
   switch (action.payload.type) {
     case MessageType.TYPE_MQTT_PUBLISH:
       if (action.payload.packetId != null) {
-        state.nextPacketId++;
+        state.nextPacketId = (state.nextPacketId + 1) % MAX_PACKET_ID; // Wrapping around
+        delete state.unackedMessages[state.nextPacketId]; // Clearing stragglers (to do: handle unacked properly)
         if (action.payload.qos) {
           state.unackedMessages[action.payload.packetId] = action.payload;
         }
