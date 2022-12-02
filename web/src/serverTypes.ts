@@ -48,7 +48,7 @@ export enum Board {
 }
 
 export enum Topics {
-  LIGHTS_PATTERN = "/lights/pattern",
+  LIGHTS_PATTERN = "/lights/state",
   LIGHTS_COLOR = "/lights/color",
 }
 

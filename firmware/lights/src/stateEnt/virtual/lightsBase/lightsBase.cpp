@@ -74,7 +74,7 @@ msg_handler LightsBase::getInboxHandler()
     case TYPE_MQTT_PUBLISH:
     {
       String topic = m.json()["topic"];
-      if (topic == "/lights/pattern")
+      if (topic == "/lights/state")
       {
         Serial.println("Pattern msg");
         setRequestedState(m.getState());
