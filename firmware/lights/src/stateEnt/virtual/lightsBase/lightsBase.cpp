@@ -83,6 +83,8 @@ msg_handler LightsBase::getInboxHandler()
       {
         Serial.println("Color msg");
       }
+
+      // Acks
       uint8_t q = m.json()["qos"];
       if (q == 1)
       {
