@@ -63,13 +63,11 @@ export default function Lights() {
           <TextField
             label="State"
             value={selectedState}
-            onChange={(e) => {
-              const s = parseInt(e.target.value);
-              setSelectedState(s);
-              changeState(s);
+            SelectProps={{
+              onClose: () => changeState(selectedState),
             }}
+            onChange={(e) => setSelectedState(parseInt(e.target.value))}
             select
-            // sx={{ flex: 1 }}
           >
             {stateOptions.map(([value, name]: [number, string], i) => (
               <MenuItem value={value} key={i}>
