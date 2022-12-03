@@ -15,6 +15,7 @@ class Twinklefox : public Pattern
   static CRGB gBackgroundColor;
   // Example of dim incandescent fairy light background color
   // CRGB gBackgroundColor = CRGB(CRGB::FairyLight).nscale8_video(16);
+  static uint8_t whichPalette;
 
   static void drawTwinkles(CRGB *leds);
   static CRGB computeOneTwinkle(uint32_t ms, uint8_t salt);

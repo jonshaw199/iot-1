@@ -100,7 +100,7 @@ using namespace Twinkle;
 // If COOL_LIKE_INCANDESCENT is set to 1, colors will
 // fade out slighted 'reddened', similar to how
 // incandescent bulbs change color as they get dim down.
-#define COOL_LIKE_INCANDESCENT 1
+#define COOL_LIKE_INCANDESCENT 0
 
 CRGB *Twinklefox::leds;
 CRGBPalette16 Twinklefox::gCurrentPalette;
@@ -110,12 +110,15 @@ CRGBPalette16 Twinklefox::gTargetPalette;
 CRGB Twinklefox::gBackgroundColor = CRGB::Black;
 // Example of dim incandescent fairy light background color
 // CRGB gBackgroundColor = CRGB(CRGB::FairyLight).nscale8_video(16);
+uint8_t Twinklefox::whichPalette;
 
 void Twinklefox::setup()
 {
   Pattern::setup();
 
   leds = new CRGB[CNT];
+
+  whichPalette = -1;
 
 #if CNT
 #if CNT_A
@@ -403,7 +406,6 @@ const TProgmemRGBPalette16 *ActivePaletteList[] = {
 void Twinklefox::chooseNextColorPalette(CRGBPalette16 &pal)
 {
   const uint8_t numberOfPalettes = sizeof(ActivePaletteList) / sizeof(ActivePaletteList[0]);
-  static uint8_t whichPalette = -1; 
   whichPalette = addmod8( whichPalette, 1, numberOfPalettes);
   pal = *(ActivePaletteList[whichPalette]);
   Serial.print("Changing palette: ");
