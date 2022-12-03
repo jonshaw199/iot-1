@@ -9,7 +9,7 @@
 // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // Size: 24 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(blackhorse_gp){
+static const TProgmemRGBGradientPalette_byte blackhorse_gp[] FL_PROGMEM = {
     0, 8, 30, 1,
     53, 29, 99, 237,
     112, 1, 1, 14,

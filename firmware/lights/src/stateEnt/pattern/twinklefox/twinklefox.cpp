@@ -2,14 +2,6 @@
 
 #include "twinklefox.h"
 
-namespace Twinkle
-{
-#include "color/palette/hopegoddess_gp.h"
-#include "color/palette/halloween_gp.h"
-}
-
-using namespace Twinkle;
-
 #if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001000)
 #warning "Requires FastLED 3.1 or later; check github for latest code."
 #endif
@@ -377,16 +369,7 @@ const TProgmemRGBPalette16 RetroC9_p FL_PROGMEM =
      C9_Blue, C9_Blue, C9_Blue,
      C9_White};
 
-// A cold, icy pale blue palette
-#define Ice_Blue1 0x0C1040
-#define Ice_Blue2 0x182080
-#define Ice_Blue3 0x5080C0
-const TProgmemRGBPalette16 Ice_p FL_PROGMEM =
-    {
-        Ice_Blue1, Ice_Blue1, Ice_Blue1, Ice_Blue1,
-        Ice_Blue1, Ice_Blue1, Ice_Blue1, Ice_Blue1,
-        Ice_Blue1, Ice_Blue1, Ice_Blue1, Ice_Blue1,
-        Ice_Blue2, Ice_Blue2, Ice_Blue2, Ice_Blue3};
+// ice
 
 // Add or remove palette names from this list to control which color
 // palettes are used, and in what order.

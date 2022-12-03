@@ -6,7 +6,7 @@
 // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // Size: 8 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(hopegoddess_gp){
+static const TProgmemRGBGradientPalette_byte hopegoddess_gp[] FL_PROGMEM = {
     0, 229, 85, 1,
     255, 36, 3, 32};
 

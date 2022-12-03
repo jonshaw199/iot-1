@@ -9,7 +9,7 @@
 // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // Size: 28 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(butterflytalker_gp){
+static const TProgmemRGBGradientPalette_byte butterflytalker_gp[] FL_PROGMEM = {
     0, 1, 1, 6,
     51, 6, 11, 52,
     89, 107, 107, 192,

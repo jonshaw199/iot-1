@@ -6,7 +6,7 @@
 // converted for FastLED with gammas (2.6, 2.2, 2.5)
 // Size: 16 bytes of program space.
 
-DEFINE_GRADIENT_PALETTE(halloween_gp){
+static const TProgmemRGBGradientPalette_byte halloween_gp[] FL_PROGMEM = {
     0, 173, 53, 1,
     127, 0, 0, 0,
     191, 173, 53, 1,
