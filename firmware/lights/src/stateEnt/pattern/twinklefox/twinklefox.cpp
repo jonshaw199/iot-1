@@ -390,12 +390,12 @@ const TProgmemRGBPalette16 Ice_p FL_PROGMEM =
 const TProgmemRGBPalette16 *ActivePaletteList[] = {
     &RetroC9_p,
     &BlueWhite_p,
-    &RainbowColors_p,
-    &FairyLight_p,
+    // &RainbowColors_p,
+    // &FairyLight_p,
     &RedGreenWhite_p,
-    &PartyColors_p,
-    &RedWhite_p,
-    &Snow_p,
+    // &PartyColors_p,
+    // &RedWhite_p,
+    // &Snow_p,
     &Holly_p,
     &Ice_p};
 
