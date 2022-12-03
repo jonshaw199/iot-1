@@ -12,6 +12,7 @@ public:
   void loop();
   bool doScanForPeersESPNow();
   void onConnectWSServer();
+  void onConnectWSServerFailed();
   msg_handler getInboxHandler();
   msg_handler getOutboxHandler();
 };

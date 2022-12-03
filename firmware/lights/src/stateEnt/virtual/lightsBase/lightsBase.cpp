@@ -64,6 +64,12 @@ void LightsBase::onConnectWSServer()
   pushOutbox(m);
 }
 
+void LightsBase::onConnectWSServerFailed()
+{
+  Serial.println("Restarting due to failed WS connection");
+  ESP.restart();
+}
+
 void LightsBase::handleInboxMsg(AF1Msg &m)
 {
   Base::handleInboxMsg(m);
