@@ -8,11 +8,8 @@
 class Noise : public Pattern
 {
   static uint8_t scale;
-  static uint8_t whichPalette;
-  static const TProgmemRGBPalette16 *ActivePaletteList[];
 
   static void fillNoise8();
-  static void setTargetPalette();
 
 public:
   void setup();

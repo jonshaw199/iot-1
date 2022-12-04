@@ -77,9 +77,10 @@
 #define TWINKLE_DENSITY 5
 
 // How often to change color palettes.
-#define SECONDS_PER_PALETTE 15
+// #define SECONDS_PER_PALETTE 15 // Now defined globally in pattern as default
+
 // Also: toward the bottom of the file is an array
-// called "ActivePaletteList" which controls which color
+// called "activePaletteList" which controls which color
 // palettes are used; you can add or remove color palettes
 // from there freely.
 
@@ -99,30 +100,14 @@
 CRGB Twinklefox::gBackgroundColor = CRGB::Black;
 // Example of dim incandescent fairy light background color
 // CRGB gBackgroundColor = CRGB(CRGB::FairyLight).nscale8_video(16);
-uint8_t Twinklefox::whichPalette;
-// Add or remove palette names from this list to control which color
-// palettes are used, and in what order.
-const TProgmemRGBPalette16 *Twinklefox::ActivePaletteList[] = {
-    &RetroC9_p,
-    &BlueWhite_p,
-    // &RainbowColors_p,
-    // &FairyLight_p,
-    &RedGreenWhite_p,
-    // &PartyColors_p,
-    // &RedWhite_p,
-    // &Snow_p,
-    &Holly_p,
-    &Ice_p};
 
 void Twinklefox::setup()
 {
   Pattern::setup();
-
-  whichPalette = -1;
   
   addEvent(Event(
       "Twinklefox_NextPalette", [](ECBArg a)
-      { chooseNextColorPalette(); },
+      { advanceTargetPalette(); },
       EVENT_TYPE_TEMP, SECONDS_PER_PALETTE, 0, 0, START_EPOCH_SEC));
 
   addEvent(Event(
@@ -292,14 +277,4 @@ void Twinklefox::coolLikeIncandescent(CRGB &c, uint8_t phase)
   uint8_t cooling = (phase - 128) >> 4;
   c.g = qsub8(c.g, cooling);
   c.b = qsub8(c.b, cooling * 2);
-}
-
-// Advance to the next color palette in the list (above).
-void Twinklefox::chooseNextColorPalette()
-{
-  const uint8_t numberOfPalettes = sizeof(ActivePaletteList) / sizeof(ActivePaletteList[0]);
-  whichPalette = addmod8( whichPalette, 1, numberOfPalettes);
-  targetPalette = *(ActivePaletteList[whichPalette]);
-  Serial.print("Changing palette: ");
-  Serial.println(whichPalette);
 }
