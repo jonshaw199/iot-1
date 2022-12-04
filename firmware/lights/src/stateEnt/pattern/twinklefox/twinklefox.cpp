@@ -149,7 +149,7 @@ void Twinklefox::drawTwinkles()
   // numbers that it generates is (paradoxically) stable.
   uint16_t PRNG16 = 11337;
 
-  uint32_t clock32 = millis();
+  uint32_t clock32 = getCurStateEnt()->getElapsedMs();
 
   // Set up the background color, "bg".
   // if AUTO_SELECT_BACKGROUND_COLOR == 1, and the first two colors of
