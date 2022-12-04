@@ -121,8 +121,6 @@ void Twinklefox::setup()
   Pattern::setup();
 
   whichPalette = -1;
-
-  chooseNextColorPalette();
   
   addEvent(Event(
       "Twinklefox_NextPalette", [](ECBArg a)
@@ -133,7 +131,7 @@ void Twinklefox::setup()
       "Twinklefox_Loop", [](ECBArg a)
       { 
         nblendPaletteTowardPalette(gCurrentPalette, gTargetPalette);
-        drawTwinkles(leds); 
+        drawTwinkles(); 
         FastLED.show(); },
       EVENT_TYPE_TEMP, 1));
 }
@@ -143,7 +141,7 @@ void Twinklefox::setup()
 //  "CalculateOneTwinkle" on each pixel.  It then displays
 //  either the twinkle color of the background color,
 //  whichever is brighter.
-void Twinklefox::drawTwinkles(CRGB *L)
+void Twinklefox::drawTwinkles()
 {
   // "PRNG16" is the pseudorandom number generator
   // It MUST be reset to the same starting value each time
