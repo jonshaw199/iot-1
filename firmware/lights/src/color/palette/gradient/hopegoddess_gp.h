@@ -1,6 +1,8 @@
 #ifndef COLOR_PALETTE_HOPEGODDESS_H_
 #define COLOR_PALETTE_HOPEGODDESS_H_
 
+#include <FastLED.h>
+
 // Gradient palette "hopegoddess_gp", originally from
 // http://soliton.vm.bytemark.co.uk/pub/cpt-city/rc/tn/hopegoddess.png.index.html
 // converted for FastLED with gammas (2.6, 2.2, 2.5)

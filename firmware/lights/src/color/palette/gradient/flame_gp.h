@@ -1,8 +1,7 @@
-
-#include <FastLED.h>
-
 #ifndef COLOR_PALETTE_FLAMEGP_H_
 #define COLOR_PALETTE_FLAMEGP_H_
+
+#include <FastLED.h>
 
 // Gradient palette "flame_gp", originally from
 // http://soliton.vm.bytemark.co.uk/pub/cpt-city/rc/tn/flame.png.index.html

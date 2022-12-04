@@ -1,12 +1,10 @@
+
+// WARNING: too many control points (21)
+
 #ifndef COLOR_PALETTE_LEOGP_H_
 #define COLOR_PALETTE_LEOGP_H_
 
 #include <FastLED.h>
-
-// Gradient palette "halloween_gp", originally from
-// http://soliton.vm.bytemark.co.uk/pub/cpt-city/rc/tn/halloween.png.index.html
-// converted for FastLED with gammas (2.6, 2.2, 2.5)
-// Size: 16 bytes of program space.
 
 // Gradient palette "leo_gp", originally from
 // http://soliton.vm.bytemark.co.uk/pub/cpt-city/rc/tn/leo.png.index.html

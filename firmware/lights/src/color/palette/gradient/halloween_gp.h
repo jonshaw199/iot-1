@@ -1,6 +1,8 @@
 #ifndef COLOR_PALETTE_HALLOWEENGP_H_
 #define COLOR_PALETTE_HALLOWEENGP_H_
 
+#include <FastLED.h>
+
 // Gradient palette "halloween_gp", originally from
 // http://soliton.vm.bytemark.co.uk/pub/cpt-city/rc/tn/halloween.png.index.html
 // converted for FastLED with gammas (2.6, 2.2, 2.5)
