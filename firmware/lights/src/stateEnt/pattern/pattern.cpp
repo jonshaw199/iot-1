@@ -8,10 +8,7 @@ void Pattern::setup()
 {
   LightsBase::setup();
 
-  if (!leds)
-  {
-    leds = new CRGB[CNT];
-  }
+  leds = new CRGB[CNT];
 
 #if CNT
 #if CNT_A
@@ -32,8 +29,5 @@ void Pattern::preStateChange(int s)
   FastLED.showColor(CRGB::Black);
 #endif
 
-  if (leds)
-  {
-    delete[] leds;
-  }
+  delete[] leds;
 }
