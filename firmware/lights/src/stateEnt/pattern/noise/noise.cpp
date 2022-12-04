@@ -36,7 +36,7 @@ void Noise::setup()
       [](ECBArg a)
       { fillNoise8();
         FastLED.show();
-        nblendPaletteTowardPalette(currentPalette, targetPalette, 150);          // Blend towards the target palette over 48 iterations.
+        nblendPaletteTowardPalette(currentPalette, targetPalette);
       },
       EVENT_TYPE_TEMP, 1));
 

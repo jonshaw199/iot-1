@@ -17,11 +17,6 @@ class Noise : public Pattern
   static void fillNoise8();
   static void setTargetPalette();
 
-  static void SetupRandomPalette();
-  static void SetupBlackAndWhiteStripedPalette();
-  static void SetupPurpleAndGreenPalette();
-  static uint16_t XY(uint8_t x, uint8_t y);
-
 public:
   void setup();
 };
