@@ -66,6 +66,30 @@ async function insertDocuments() {
       _id: "638a498b239dc28bfed416ad",
     }),
     new deviceModel({
+      board: Board.BOARD_WEMOS_D1_MINI32,
+      name: "7",
+      orgId: org.id,
+      _id: "638ccd0dc3573560b9cbbbc3",
+    }),
+    new deviceModel({
+      board: Board.BOARD_WEMOS_D1_MINI32,
+      name: "8",
+      orgId: org.id,
+      _id: "638ccd11c3573560b9cbbbc6",
+    }),
+    new deviceModel({
+      board: Board.BOARD_WEMOS_D1_MINI32,
+      name: "9",
+      orgId: org.id,
+      _id: "638ccd15c3573560b9cbbbc9",
+    }),
+    new deviceModel({
+      board: Board.BOARD_WEMOS_D1_MINI32,
+      name: "10",
+      orgId: org.id,
+      _id: "638ccd1ac3573560b9cbbbcc",
+    }),
+    new deviceModel({
       board: Board.BOARD_M5STICK_C,
       name: "15",
       orgId: org.id,
