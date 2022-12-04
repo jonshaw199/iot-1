@@ -3,7 +3,15 @@
 
 #include "stateEnt/virtual/lightsBase/lightsBase.h"
 
-#include "color/palette/ice.h"
+#include "color/palette/bluewhite_p.h"
+#include "color/palette/fairylight_p.h"
+#include "color/palette/holly_p.h"
+#include "color/palette/ice_p.h"
+#include "color/palette/redgreenwhite_p.h"
+#include "color/palette/redwhite_p.h"
+#include "color/palette/retroc9_p.h"
+#include "color/palette/snow_p.h"
+
 #include "color/palette/gradient/autumnrose_gp.h"
 #include "color/palette/gradient/blackhorse_gp.h"
 #include "color/palette/gradient/butterflytalker_gp.h"
