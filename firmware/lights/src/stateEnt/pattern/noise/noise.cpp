@@ -28,15 +28,13 @@ void Noise::setup()
 
   whichPalette = -1;
 
-  // currentPalette = CRGBPalette16(orange);
-  setTargetPalette();
-
   addEvent(Event(
       "Noise",
       [](ECBArg a)
-      { fillNoise8();
-        FastLED.show();
+      {
         nblendPaletteTowardPalette(currentPalette, targetPalette);
+        fillNoise8();
+        FastLED.show();
       },
       EVENT_TYPE_TEMP, 1));
 
@@ -60,7 +58,7 @@ void Noise::fillNoise8()
 void Noise::setTargetPalette()
 {
   const uint8_t numberOfPalettes = sizeof(ActivePaletteList) / sizeof(ActivePaletteList[0]);
-  whichPalette = addmod8( whichPalette, 1, numberOfPalettes);
+  whichPalette = addmod8(whichPalette, 1, numberOfPalettes);
   targetPalette = *(ActivePaletteList[whichPalette]);
   Serial.print("Changing palette: ");
   Serial.println(whichPalette);

@@ -301,7 +301,7 @@ void Twinklefox::chooseNextColorPalette()
 {
   const uint8_t numberOfPalettes = sizeof(ActivePaletteList) / sizeof(ActivePaletteList[0]);
   whichPalette = addmod8( whichPalette, 1, numberOfPalettes);
-  gCurrentPalette = *(ActivePaletteList[whichPalette]);
+  gTargetPalette = *(ActivePaletteList[whichPalette]);
   Serial.print("Changing palette: ");
   Serial.println(whichPalette);
 }
