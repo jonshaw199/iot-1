@@ -7,9 +7,6 @@
 
 class Noise : public Pattern
 {
-  static CRGBPalette16 currentPalette;
-  static TBlendType currentBlending;
-  static CRGBPalette16 targetPalette;
   static uint8_t scale;
   static uint8_t whichPalette;
   static const TProgmemRGBPalette16 *ActivePaletteList[];

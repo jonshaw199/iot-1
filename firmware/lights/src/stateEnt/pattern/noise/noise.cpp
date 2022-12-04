@@ -2,9 +2,6 @@
 
 #define SECONDS_PER_PALETTE 20
 
-CRGBPalette16 Noise::currentPalette;
-TBlendType Noise::currentBlending;
-CRGBPalette16 Noise::targetPalette;
 uint8_t Noise::scale;
 
 uint8_t Noise::whichPalette;

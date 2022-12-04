@@ -1,8 +1,5 @@
 #include "picker.h"
 
-CRGBPalette16 Picker::currentPalette;
-CRGBPalette16 Picker::targetPalette;
-
 String Picker::getName()
 {
   return "Picker";

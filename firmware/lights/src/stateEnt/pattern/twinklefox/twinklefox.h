@@ -7,8 +7,6 @@
 
 class Twinklefox : public Pattern
 {
-  static CRGBPalette16 gCurrentPalette;
-  static CRGBPalette16 gTargetPalette;
   // Background color for 'unlit' pixels
   // Can be set to CRGB::Black if desired.
   static CRGB gBackgroundColor;
