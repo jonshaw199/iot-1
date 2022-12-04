@@ -57,7 +57,7 @@ void Noise::setup()
       "Noise_MovingTarget",
       [](ECBArg a)
       { setTargetPalette(); },
-      EVENT_TYPE_TEMP, SECONDS_PER_PALETTE));
+      EVENT_TYPE_TEMP, SECONDS_PER_PALETTE, 0, 0, START_EPOCH_SEC));
 }
 
 void Noise::preStateChange(int s)
