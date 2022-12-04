@@ -2,7 +2,6 @@
 
 #define SECONDS_PER_PALETTE 20
 
-CRGB *Noise::leds;
 CRGBPalette16 Noise::currentPalette;
 TBlendType Noise::currentBlending;
 CRGBPalette16 Noise::targetPalette;
@@ -27,23 +26,11 @@ void Noise::setup()
 {
   Pattern::setup();
 
-  leds = new CRGB[CNT];
-
   whichPalette = -1;
-
-#if CNT
-#if CNT_A
-  FastLED.addLeds<LED_TYPE_A, LED_PIN_A, LED_ORDER_A>(leds, CNT);
-#endif
-#if CNT_B
-  FastLED.addLeds<LED_TYPE_B, LED_PIN_B, LED_ORDER_B>(leds, CNT);
-#endif
-  // FastLED.setBrightness(10);
-  // FastLED.showColor(CRGB::DarkRed);
-#endif
 
   // currentPalette = CRGBPalette16(orange);
   setTargetPalette();
+
   addEvent(Event(
       "Noise",
       [](ECBArg a)
@@ -58,12 +45,6 @@ void Noise::setup()
       [](ECBArg a)
       { setTargetPalette(); },
       EVENT_TYPE_TEMP, SECONDS_PER_PALETTE, 0, 0, START_EPOCH_SEC));
-}
-
-void Noise::preStateChange(int s)
-{
-  Pattern::preStateChange(s);
-  delete[] leds;
 }
 
 void Noise::fillNoise8()

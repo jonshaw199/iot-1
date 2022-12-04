@@ -7,7 +7,6 @@
 
 class Noise : public Pattern
 {
-  static CRGB *leds;
   static CRGBPalette16 currentPalette;
   static TBlendType currentBlending;
   static CRGBPalette16 targetPalette;
@@ -25,7 +24,6 @@ class Noise : public Pattern
 
 public:
   void setup();
-  void preStateChange(int s);
 };
 
 #endif
