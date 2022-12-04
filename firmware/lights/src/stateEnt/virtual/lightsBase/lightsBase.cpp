@@ -70,6 +70,11 @@ void LightsBase::onConnectWSServerFailed()
   ESP.restart();
 }
 
+void LightsBase::onConnectWifiFailed() {
+  Serial.println("Restarting due to failed wifi connection");
+  ESP.restart();
+}
+
 void LightsBase::handleInboxMsg(AF1Msg &m)
 {
   Base::handleInboxMsg(m);

@@ -13,6 +13,7 @@ public:
   bool doScanForPeersESPNow();
   void onConnectWSServer();
   void onConnectWSServerFailed();
+  void onConnectWifiFailed();
   msg_handler getInboxHandler();
   msg_handler getOutboxHandler();
 };
