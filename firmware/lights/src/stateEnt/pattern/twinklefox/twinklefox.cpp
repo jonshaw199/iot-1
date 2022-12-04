@@ -123,17 +123,16 @@ void Twinklefox::setup()
   whichPalette = -1;
 
   chooseNextColorPalette();
+  
   addEvent(Event(
       "Twinklefox_NextPalette", [](ECBArg a)
       { chooseNextColorPalette(); },
       EVENT_TYPE_TEMP, SECONDS_PER_PALETTE, 0, 0, START_EPOCH_SEC));
-  addEvent(Event(
-      "Twinklefox_BlendPalette", [](ECBArg a)
-      { nblendPaletteTowardPalette(gCurrentPalette, gTargetPalette, 12); },
-      EVENT_TYPE_TEMP, 10));
+
   addEvent(Event(
       "Twinklefox_Loop", [](ECBArg a)
       { 
+        nblendPaletteTowardPalette(gCurrentPalette, gTargetPalette);
         drawTwinkles(leds); 
         FastLED.show(); },
       EVENT_TYPE_TEMP, 1));
