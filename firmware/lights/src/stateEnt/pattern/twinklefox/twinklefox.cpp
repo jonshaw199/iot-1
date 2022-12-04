@@ -103,6 +103,19 @@ CRGB Twinklefox::gBackgroundColor = CRGB::Black;
 // Example of dim incandescent fairy light background color
 // CRGB gBackgroundColor = CRGB(CRGB::FairyLight).nscale8_video(16);
 uint8_t Twinklefox::whichPalette;
+// Add or remove palette names from this list to control which color
+// palettes are used, and in what order.
+const TProgmemRGBPalette16 *Twinklefox::ActivePaletteList[] = {
+    &RetroC9_p,
+    &BlueWhite_p,
+    // &RainbowColors_p,
+    // &FairyLight_p,
+    &RedGreenWhite_p,
+    // &PartyColors_p,
+    // &RedWhite_p,
+    // &Snow_p,
+    &Holly_p,
+    &Ice_p};
 
 void Twinklefox::setup()
 {
@@ -305,20 +318,6 @@ void Twinklefox::coolLikeIncandescent(CRGB &c, uint8_t phase)
   c.g = qsub8(c.g, cooling);
   c.b = qsub8(c.b, cooling * 2);
 }
-
-// Add or remove palette names from this list to control which color
-// palettes are used, and in what order.
-const TProgmemRGBPalette16 *ActivePaletteList[] = {
-    &RetroC9_p,
-    &BlueWhite_p,
-    // &RainbowColors_p,
-    // &FairyLight_p,
-    &RedGreenWhite_p,
-    // &PartyColors_p,
-    // &RedWhite_p,
-    // &Snow_p,
-    &Holly_p,
-    &Ice_p};
 
 // Advance to the next color palette in the list (above).
 void Twinklefox::chooseNextColorPalette(CRGBPalette16 &pal)
