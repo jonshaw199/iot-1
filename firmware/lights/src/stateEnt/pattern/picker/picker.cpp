@@ -1,6 +1,5 @@
 #include "picker.h"
 
-CRGB *Picker::leds;
 CRGBPalette16 Picker::currentPalette;
 CRGBPalette16 Picker::targetPalette;
 
@@ -30,16 +29,7 @@ void Picker::setup()
 {
   Pattern::setup();
 
-  leds = new CRGB[CNT];
   currentPalette = CRGBPalette16(CRGB::Black);
-
-#if CNT
-#if CNT_A
-  FastLED.addLeds<LED_TYPE_A, LED_PIN_A, LED_ORDER_A>(leds, CNT);
-#endif
-#if CNT_B
-  FastLED.addLeds<LED_TYPE_B, LED_PIN_B, LED_ORDER_B>(leds, CNT);
-#endif
 
   addEvent(Event(
       "Picker_UpdateLeds",
@@ -54,11 +44,4 @@ void Picker::setup()
       [](ECBArg a)
       { nblendPaletteTowardPalette(currentPalette, targetPalette, 1); },
       EVENT_TYPE_TEMP, 10));
-#endif
-}
-
-void Picker::preStateChange(int s)
-{
-  Pattern::preStateChange(s);
-  delete[] leds;
 }

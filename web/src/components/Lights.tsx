@@ -18,7 +18,6 @@ const stateOptions: [number, string][] = [
   [State.STATE_PATTERN_NOISE, "Pattern - Noise"],
   [State.STATE_PATTERN_TWINKLEFOX, "Pattern - Twinklefox"],
   [State.STATE_PATTERN_PICKER, "Pattern - Color Picker"],
-  [State.STATE_PATTERN_CONFETTI, "Pattern - Confetti"],
   [State.STATE_RESTART, "Restart"],
   [State.STATE_OTA, "OTA"],
 ];

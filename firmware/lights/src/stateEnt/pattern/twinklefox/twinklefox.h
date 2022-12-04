@@ -7,7 +7,6 @@
 
 class Twinklefox : public Pattern
 {
-  static CRGB *leds;
   static CRGBPalette16 gCurrentPalette;
   static CRGBPalette16 gTargetPalette;
   // Background color for 'unlit' pixels
@@ -22,11 +21,10 @@ class Twinklefox : public Pattern
   static CRGB computeOneTwinkle(uint32_t ms, uint8_t salt);
   static uint8_t attackDecayWave8(uint8_t i);
   static void coolLikeIncandescent(CRGB &c, uint8_t phase);
-  static void chooseNextColorPalette(CRGBPalette16 &pal);
+  static void chooseNextColorPalette();
 
 public:
   void setup();
-  void preStateChange(int s);
 };
 
 #endif

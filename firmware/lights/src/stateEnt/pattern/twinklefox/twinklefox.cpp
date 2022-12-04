@@ -94,7 +94,6 @@
 // incandescent bulbs change color as they get dim down.
 #define COOL_LIKE_INCANDESCENT 0
 
-CRGB *Twinklefox::leds;
 CRGBPalette16 Twinklefox::gCurrentPalette;
 CRGBPalette16 Twinklefox::gTargetPalette;
 // Background color for 'unlit' pixels
@@ -121,25 +120,12 @@ void Twinklefox::setup()
 {
   Pattern::setup();
 
-  leds = new CRGB[CNT];
-
   whichPalette = -1;
 
-#if CNT
-#if CNT_A
-  FastLED.addLeds<LED_TYPE_A, LED_PIN_A, LED_ORDER_A>(leds, CNT);
-#endif
-#if CNT_B
-  FastLED.addLeds<LED_TYPE_B, LED_PIN_B, LED_ORDER_B>(leds, CNT);
-#endif
-  // FastLED.setBrightness(10);
-  // FastLED.showColor(CRGB::DarkRed);
-#endif
-
-  chooseNextColorPalette(gTargetPalette);
+  chooseNextColorPalette();
   addEvent(Event(
       "Twinklefox_NextPalette", [](ECBArg a)
-      { chooseNextColorPalette(gTargetPalette); },
+      { chooseNextColorPalette(); },
       EVENT_TYPE_TEMP, SECONDS_PER_PALETTE, 0, 0, START_EPOCH_SEC));
   addEvent(Event(
       "Twinklefox_BlendPalette", [](ECBArg a)
@@ -151,12 +137,6 @@ void Twinklefox::setup()
         drawTwinkles(leds); 
         FastLED.show(); },
       EVENT_TYPE_TEMP, 1));
-}
-
-void Twinklefox::preStateChange(int s)
-{
-  Pattern::preStateChange(s);
-  delete[] leds;
 }
 
 //  This function loops over each pixel, calculates the
@@ -320,11 +300,11 @@ void Twinklefox::coolLikeIncandescent(CRGB &c, uint8_t phase)
 }
 
 // Advance to the next color palette in the list (above).
-void Twinklefox::chooseNextColorPalette(CRGBPalette16 &pal)
+void Twinklefox::chooseNextColorPalette()
 {
   const uint8_t numberOfPalettes = sizeof(ActivePaletteList) / sizeof(ActivePaletteList[0]);
   whichPalette = addmod8( whichPalette, 1, numberOfPalettes);
-  pal = *(ActivePaletteList[whichPalette]);
+  gCurrentPalette = *(ActivePaletteList[whichPalette]);
   Serial.print("Changing palette: ");
   Serial.println(whichPalette);
 }

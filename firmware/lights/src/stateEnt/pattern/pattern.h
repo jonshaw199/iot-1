@@ -78,8 +78,12 @@
 
 class Pattern : public LightsBase
 {
+protected:
+  static CRGB *leds;
+
 public:
   void preStateChange(int s);
+  void setup();
 };
 
 #endif

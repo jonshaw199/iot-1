@@ -14,7 +14,6 @@
 #include "stateEnt/pattern/twinklefox/twinklefox.h"
 #include "stateEnt/pattern/noise/noise.h"
 #include "stateEnt/pattern/picker/picker.h"
-#include "stateEnt/pattern/confetti/confetti.h"
 
 void setup()
 {
@@ -44,9 +43,6 @@ void setup()
   AF1::addStateEnt(STATE_PATTERN_PICKER, new Picker());
   AF1::addStringHandler("picker", [](SHArg a)
                         { AF1::setRequestedState(STATE_PATTERN_PICKER); });
-  AF1::addStateEnt(STATE_PATTERN_CONFETTI, new Confetti());
-  AF1::addStringHandler("confetti", [](SHArg a)
-                        { AF1::setRequestedState(STATE_PATTERN_CONFETTI); });
 
 #ifdef ARDUINO_M5Stick_C
   delay(500);
