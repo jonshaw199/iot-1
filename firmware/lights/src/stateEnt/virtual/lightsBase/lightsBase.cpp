@@ -13,6 +13,8 @@
 static uint8_t nextPacketId;
 static std::map<uint8_t, AF1Msg> unackedPackets;
 
+CRGB *LightsBase::leds;
+
 void LightsBase::setup()
 {
   Base::setup();
@@ -21,6 +23,17 @@ void LightsBase::setup()
   M5.Lcd.fillScreen(TFT_WHITE);
   M5.Lcd.setRotation(0);
   M5.Lcd.pushImage(0, 0, MOUNTAINS_WIDTH, MOUNTAINS_HEIGHT, (uint16_t *)mountains);
+#endif
+
+  leds = new CRGB[CNT];
+
+#if CNT
+#if CNT_A
+  FastLED.addLeds<LED_TYPE_A, LED_PIN_A, LED_ORDER_A>(leds, CNT);
+#endif
+#if CNT_B
+  FastLED.addLeds<LED_TYPE_B, LED_PIN_B, LED_ORDER_B>(leds, CNT);
+#endif
 #endif
 }
 
@@ -49,6 +62,10 @@ void LightsBase::loop()
     M5.Lcd.setCursor(0, 0);
   }*/
 #endif
+}
+
+void LightsBase::preStateChange(int s) {
+  delete[] leds;
 }
 
 bool LightsBase::doScanForPeersESPNow()

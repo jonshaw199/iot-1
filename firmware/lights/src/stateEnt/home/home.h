@@ -7,6 +7,7 @@ class Home : public LightsBase
 {
 public:
     String getName();
+    void setup();
 };
 
 #endif
