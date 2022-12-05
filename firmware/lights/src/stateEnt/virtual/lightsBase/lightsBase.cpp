@@ -15,6 +15,22 @@ static std::map<uint8_t, AF1Msg> unackedPackets;
 
 CRGB *LightsBase::leds;
 
+CRGBPalette16 LightsBase::currentPalette;
+CRGBPalette16 LightsBase::targetPalette;
+TBlendType LightsBase::currentBlending = LINEARBLEND;
+uint8_t LightsBase::currentBrightness = 200;
+uint8_t LightsBase::currentPaletteIndex;
+// Add or remove palette names from this list to control which color
+// palettes are used, and in what order.
+const TProgmemRGBPalette16 *LightsBase::activePaletteList[] = {
+    &RetroC9_p,
+    &BlueWhite_p,
+    &RedGreenWhite_p,
+    &Snow_p,
+    &RedWhite_p,
+    &Ice_p,
+    &Holly_p}; // to do
+
 void LightsBase::init()
 {
   leds = new CRGB[CNT];
@@ -180,4 +196,13 @@ msg_handler LightsBase::getOutboxHandler()
     }
     Base::handleOutboxMsg(m);
   };
+}
+
+void LightsBase::advanceTargetPalette()
+{
+  const uint8_t numberOfPalettes = sizeof(activePaletteList) / sizeof(activePaletteList[0]);
+  currentPaletteIndex = addmod8(currentPaletteIndex, 1, numberOfPalettes);
+  targetPalette = *(activePaletteList[currentPaletteIndex]);
+  Serial.print("Changing palette: ");
+  Serial.println(currentPaletteIndex);
 }

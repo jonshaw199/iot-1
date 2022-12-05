@@ -24,7 +24,7 @@ msg_handler Picker::getInboxHandler()
 
 void Picker::setup()
 {
-  Pattern::setup();
+  LightsBase::setup();
 
   currentPalette = CRGBPalette16(CRGB::Black);
 

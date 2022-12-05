@@ -2,7 +2,7 @@
 
 void Beatwave::setup()
 {
-  Pattern::setup();
+  LightsBase::setup();
 
   addEvent(Event(
       "Beatwave_NextPalette", [](ECBArg a)

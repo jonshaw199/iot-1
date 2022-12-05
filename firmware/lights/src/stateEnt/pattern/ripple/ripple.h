@@ -1,9 +1,9 @@
 #ifndef STATEENT_PATTERN_RIPPLE_RIPPLE_H
 #define STATEENT_PATTERN_RIPPLE_RIPPLE_H
 
-#include "stateEnt/pattern/pattern.h"
+#include "stateEnt/virtual/lightsBase/lightsBase.h"
 
-class Ripple : public Pattern
+class Ripple : public LightsBase
 {
   static uint8_t colour; // Ripple colour is randomized.
   static int center;     // Center of the current ripple.

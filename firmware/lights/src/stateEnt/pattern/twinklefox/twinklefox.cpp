@@ -103,8 +103,8 @@ CRGB Twinklefox::gBackgroundColor = CRGB::Black;
 
 void Twinklefox::setup()
 {
-  Pattern::setup();
-  
+  LightsBase::setup();
+
   addEvent(Event(
       "Twinklefox_NextPalette", [](ECBArg a)
       { advanceTargetPalette(); },

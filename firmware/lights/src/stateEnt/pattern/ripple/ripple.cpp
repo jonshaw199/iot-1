@@ -11,7 +11,7 @@ int Ripple::thisdelay; // Standard delay value.
 
 void Ripple::setup()
 {
-  Pattern::setup();
+  LightsBase::setup();
 
   center = 0;
   step = -1;

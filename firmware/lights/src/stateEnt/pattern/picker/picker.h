@@ -3,9 +3,9 @@
 
 #include <FastLED.h>
 
-#include "stateEnt/pattern/pattern.h"
+#include "stateEnt/virtual/lightsBase/lightsBase.h"
 
-class Picker : public Pattern
+class Picker : public LightsBase
 {
 public:
   String getName();

@@ -3,9 +3,9 @@
 
 #include <FastLED.h>
 
-#include "stateEnt/pattern/pattern.h"
+#include "stateEnt/virtual/lightsBase/lightsBase.h"
 
-class Twinklefox : public Pattern
+class Twinklefox : public LightsBase
 {
   // Background color for 'unlit' pixels
   // Can be set to CRGB::Black if desired.

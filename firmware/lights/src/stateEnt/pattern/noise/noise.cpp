@@ -4,7 +4,7 @@ uint8_t Noise::scale;
 
 void Noise::setup()
 {
-  Pattern::setup();
+  LightsBase::setup();
 
   addEvent(Event(
       "Noise",

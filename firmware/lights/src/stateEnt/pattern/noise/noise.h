@@ -3,9 +3,9 @@
 
 #include <FastLED.h>
 
-#include "stateEnt/pattern/pattern.h"
+#include "stateEnt/virtual/lightsBase/lightsBase.h"
 
-class Noise : public Pattern
+class Noise : public LightsBase
 {
   static uint8_t scale;
 
