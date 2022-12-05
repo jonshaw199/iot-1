@@ -15,16 +15,8 @@ static std::map<uint8_t, AF1Msg> unackedPackets;
 
 CRGB *LightsBase::leds;
 
-void LightsBase::setup()
+void LightsBase::init()
 {
-  Base::setup();
-
-#ifdef ARDUINO_M5Stick_C
-  M5.Lcd.fillScreen(TFT_WHITE);
-  M5.Lcd.setRotation(0);
-  M5.Lcd.pushImage(0, 0, MOUNTAINS_WIDTH, MOUNTAINS_HEIGHT, (uint16_t *)mountains);
-#endif
-
   leds = new CRGB[CNT];
 
 #if CNT
@@ -34,6 +26,17 @@ void LightsBase::setup()
 #if CNT_B
   FastLED.addLeds<LED_TYPE_B, LED_PIN_B, LED_ORDER_B>(leds, CNT);
 #endif
+#endif
+}
+
+void LightsBase::setup()
+{
+  Base::setup();
+
+#ifdef ARDUINO_M5Stick_C
+  M5.Lcd.fillScreen(TFT_WHITE);
+  M5.Lcd.setRotation(0);
+  M5.Lcd.pushImage(0, 0, MOUNTAINS_WIDTH, MOUNTAINS_HEIGHT, (uint16_t *)mountains);
 #endif
 }
 
@@ -62,10 +65,6 @@ void LightsBase::loop()
     M5.Lcd.setCursor(0, 0);
   }*/
 #endif
-}
-
-void LightsBase::preStateChange(int s) {
-  delete[] leds;
 }
 
 bool LightsBase::doScanForPeersESPNow()

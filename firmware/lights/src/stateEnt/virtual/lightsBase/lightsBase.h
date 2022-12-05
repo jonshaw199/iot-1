@@ -82,10 +82,11 @@ class LightsBase : public Base
 protected:
   static CRGB *leds;
   static void handleInboxMsg(AF1Msg &m);
+
 public:
+  static void init();
   void setup();
   void loop();
-  void preStateChange(int s);
   bool doScanForPeersESPNow();
   void onConnectWSServer();
   void onConnectWSServerFailed();

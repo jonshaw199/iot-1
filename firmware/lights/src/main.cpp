@@ -11,6 +11,7 @@
 
 #include "state.h"
 #include "stateEnt/home/home.h"
+#include "stateEnt/virtual/lightsBase/lightsBase.h"
 #include "stateEnt/pattern/twinklefox/twinklefox.h"
 #include "stateEnt/pattern/noise/noise.h"
 #include "stateEnt/pattern/picker/picker.h"
@@ -61,6 +62,8 @@ void setup()
 
   AF1::setInitialState(INITIAL_STATE);
   AF1::setDefaultWS(SERVER_IP, String("/?deviceId=") + String(JS_ID), SERVER_PORT);
+
+  LightsBase::init();
 }
 
 void loop()
