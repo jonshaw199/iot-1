@@ -14,6 +14,7 @@
 #include "stateEnt/pattern/twinklefox/twinklefox.h"
 #include "stateEnt/pattern/noise/noise.h"
 #include "stateEnt/pattern/picker/picker.h"
+#include "stateEnt/pattern/beatwave/beatwave.h"
 
 void setup()
 {
@@ -43,6 +44,9 @@ void setup()
   AF1::addStateEnt(STATE_PATTERN_PICKER, new Picker());
   AF1::addStringHandler("picker", [](SHArg a)
                         { AF1::setRequestedState(STATE_PATTERN_PICKER); });
+  AF1::addStateEnt(STATE_PATTERN_BEATWAVE, new Beatwave());
+  AF1::addStringHandler("beatwave", [](SHArg a)
+                        { AF1::setRequestedState(STATE_PATTERN_BEATWAVE); });
 
 #ifdef ARDUINO_M5Stick_C
   delay(500);
