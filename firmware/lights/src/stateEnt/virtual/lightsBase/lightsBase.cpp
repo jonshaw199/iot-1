@@ -54,6 +54,8 @@ void LightsBase::setup()
   M5.Lcd.setRotation(0);
   M5.Lcd.pushImage(0, 0, MOUNTAINS_WIDTH, MOUNTAINS_HEIGHT, (uint16_t *)mountains);
 #endif
+
+  currentPaletteIndex = 0;
 }
 
 void LightsBase::loop()
