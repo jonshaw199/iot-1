@@ -111,9 +111,13 @@ void Twinklefox::setup()
       EVENT_TYPE_TEMP, SECONDS_PER_PALETTE, 0, 0, START_EPOCH_SEC));
 
   addEvent(Event(
+      "Twinklefox_Blend", [](ECBArg a)
+      { nblendPaletteTowardPalette(currentPalette, targetPalette, 48); },
+      EVENT_TYPE_TEMP, 100));
+
+  addEvent(Event(
       "Twinklefox_Loop", [](ECBArg a)
       { 
-        nblendPaletteTowardPalette(currentPalette, targetPalette);
         drawTwinkles(); 
         FastLED.show(); },
       EVENT_TYPE_TEMP, 1));

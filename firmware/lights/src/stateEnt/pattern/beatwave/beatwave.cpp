@@ -6,13 +6,17 @@ void Beatwave::setup()
 
   addEvent(Event(
       "Beatwave_NextPalette", [](ECBArg a)
-      { targetPalette = CRGBPalette16(CHSV(random8(), 255, random8(128,255)), CHSV(random8(), 255, random8(128,255)), CHSV(random8(), 192, random8(128,255)), CHSV(random8(), 255, random8(128,255))); },
+      { targetPalette = CRGBPalette16(CHSV(random8(), 255, random8(128, 255)), CHSV(random8(), 255, random8(128, 255)), CHSV(random8(), 192, random8(128, 255)), CHSV(random8(), 255, random8(128, 255))); },
       EVENT_TYPE_TEMP, 5, 0, 0, START_EPOCH_SEC));
+
+  addEvent(Event(
+      "Beatwave_Blend", [](ECBArg a)
+      { nblendPaletteTowardPalette(currentPalette, targetPalette, 48); },
+      EVENT_TYPE_TEMP, 100));
 
   addEvent(Event(
       "Beatwave_Loop", [](ECBArg a)
       { 
-        nblendPaletteTowardPalette(currentPalette, targetPalette);
         beatwave(); 
         FastLED.show(); },
       EVENT_TYPE_TEMP, 1));
