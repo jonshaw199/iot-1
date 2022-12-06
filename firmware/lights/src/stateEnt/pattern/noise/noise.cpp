@@ -1,6 +1,6 @@
 #include "noise.h"
 
-uint8_t Noise::scale = 300;
+uint8_t Noise::scale = 100;
 
 void Noise::setup()
 {
@@ -23,7 +23,7 @@ void Noise::setup()
 
   addEvent(Event(
       "Noise_Blend", [](ECBArg a)
-      { nblendPaletteTowardPalette(currentPalette, targetPalette, 48); },
+      { nblendPaletteTowardPalette(currentPalette, targetPalette, 24); },
       EVENT_TYPE_TEMP, 100));
 }
 

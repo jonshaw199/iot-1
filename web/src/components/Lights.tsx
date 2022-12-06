@@ -19,6 +19,8 @@ const stateOptions: [number, string][] = [
   [State.STATE_PATTERN_TWINKLEFOX, "Pattern - Twinklefox"],
   [State.STATE_PATTERN_PICKER, "Pattern - Color Picker"],
   [State.STATE_PATTERN_BEATWAVE, "Pattern - Beatwave"],
+  [State.STATE_PATTERN_RIPPLE, "Pattern - Ripple"],
+  [State.STATE_PATTERN_EVERYOTHER, "Pattern - Every Other"],
   [State.STATE_RESTART, "Restart"],
   [State.STATE_OTA, "OTA"],
 ];

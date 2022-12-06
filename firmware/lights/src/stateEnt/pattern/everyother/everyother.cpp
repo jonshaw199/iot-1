@@ -13,7 +13,7 @@ void EveryOther::setup()
         everyOther();
         FastLED.show();
       },
-      EVENT_TYPE_TEMP, 500));
+      EVENT_TYPE_TEMP, 250));
 
   addEvent(Event(
       "EveryOther_PaleteChange",

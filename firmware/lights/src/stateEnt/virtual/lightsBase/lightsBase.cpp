@@ -26,8 +26,8 @@ const TProgmemRGBPalette16 *LightsBase::activePaletteList[] = {
     &RetroC9_p,
     &BlueWhite_p,
     &RedGreenWhite_p,
-    &Snow_p,
-    &RedWhite_p,
+    // &Snow_p,
+    // &RedWhite_p,
     &Ice_p,
     &Holly_p}; // to do
 std::vector<uint8_t> LightsBase::sceneStates;

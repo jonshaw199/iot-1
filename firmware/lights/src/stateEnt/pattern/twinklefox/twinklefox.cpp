@@ -112,7 +112,7 @@ void Twinklefox::setup()
 
   addEvent(Event(
       "Twinklefox_Blend", [](ECBArg a)
-      { nblendPaletteTowardPalette(currentPalette, targetPalette, 48); },
+      { nblendPaletteTowardPalette(currentPalette, targetPalette); },
       EVENT_TYPE_TEMP, 100));
 
   addEvent(Event(
