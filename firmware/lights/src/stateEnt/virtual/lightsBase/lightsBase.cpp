@@ -54,8 +54,6 @@ void LightsBase::setup()
   M5.Lcd.setRotation(0);
   M5.Lcd.pushImage(0, 0, MOUNTAINS_WIDTH, MOUNTAINS_HEIGHT, (uint16_t *)mountains);
 #endif
-
-  currentPaletteIndex = 0;
 }
 
 void LightsBase::loop()
@@ -200,11 +198,11 @@ msg_handler LightsBase::getOutboxHandler()
   };
 }
 
-void LightsBase::advanceTargetPalette()
+void LightsBase::advanceTargetPalette(CRGBPalette16 *pal, const TProgmemRGBPalette16 **palList)
 {
-  const uint8_t numberOfPalettes = sizeof(activePaletteList) / sizeof(activePaletteList[0]);
+  const uint8_t numberOfPalettes = sizeof(palList) / sizeof(palList[0]);
   currentPaletteIndex = addmod8(currentPaletteIndex, 1, numberOfPalettes);
-  targetPalette = *(activePaletteList[currentPaletteIndex]);
+  *pal = *(palList[currentPaletteIndex]);
   Serial.print("Changing palette: ");
   Serial.println(currentPaletteIndex);
 }

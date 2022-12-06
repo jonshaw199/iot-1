@@ -17,6 +17,7 @@
 #include "stateEnt/pattern/picker/picker.h"
 #include "stateEnt/pattern/beatwave/beatwave.h"
 #include "stateEnt/pattern/ripple/ripple.h"
+#include "stateEnt/pattern/everyother/everyother.h"
 
 void setup()
 {
@@ -52,6 +53,9 @@ void setup()
   AF1::addStateEnt(STATE_PATTERN_RIPPLE, new Ripple());
   AF1::addStringHandler("ripple", [](SHArg a)
                         { AF1::setRequestedState(STATE_PATTERN_RIPPLE); });
+  AF1::addStateEnt(STATE_PATTERN_EVERYOTHER, new EveryOther());
+  AF1::addStringHandler("everyother", [](SHArg a)
+                        { AF1::setRequestedState(STATE_PATTERN_EVERYOTHER); });
 
 #ifdef ARDUINO_M5Stick_C
   delay(500);

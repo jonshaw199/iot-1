@@ -27,7 +27,7 @@ protected:
   static const TProgmemRGBPalette16 *activePaletteList[];
 
   static void handleInboxMsg(AF1Msg &m);
-  static void advanceTargetPalette();
+  static void advanceTargetPalette(CRGBPalette16 *pal = &targetPalette, const TProgmemRGBPalette16 **palList = activePaletteList);
 
 public:
   static void init();
