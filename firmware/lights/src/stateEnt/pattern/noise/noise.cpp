@@ -1,6 +1,6 @@
 #include "noise.h"
 
-uint8_t Noise::scale;
+uint8_t Noise::scale = 300;
 
 void Noise::setup()
 {
@@ -36,4 +36,3 @@ void Noise::fillNoise8()
   }
 
 } // fillnoise8()
-

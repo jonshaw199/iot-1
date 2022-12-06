@@ -22,7 +22,7 @@ uint8_t LightsBase::currentBrightness = 200;
 uint8_t LightsBase::currentPaletteIndex;
 // Add or remove palette names from this list to control which color
 // palettes are used, and in what order.
-const TProgmemRGBPalette16 *LightsBase::activePaletteList[7] = {
+const TProgmemRGBPalette16 *LightsBase::activePaletteList[] = {
     &RetroC9_p,
     &BlueWhite_p,
     &RedGreenWhite_p,
@@ -30,6 +30,8 @@ const TProgmemRGBPalette16 *LightsBase::activePaletteList[7] = {
     &RedWhite_p,
     &Ice_p,
     &Holly_p}; // to do
+std::vector<uint8_t> LightsBase::sceneStates;
+uint8_t LightsBase::currentSceneIndex;
 
 void LightsBase::init()
 {

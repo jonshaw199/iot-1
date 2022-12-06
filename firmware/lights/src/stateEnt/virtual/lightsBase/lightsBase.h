@@ -25,6 +25,8 @@ protected:
   static uint8_t currentBrightness;
   static uint8_t currentPaletteIndex;
   static const TProgmemRGBPalette16 *activePaletteList[];
+  static std::vector<uint8_t> sceneStates;
+  static uint8_t currentSceneIndex;
 
   static void handleInboxMsg(AF1Msg &m);
   static void advanceTargetPalette();
