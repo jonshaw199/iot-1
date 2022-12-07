@@ -9,6 +9,16 @@
 #define CNT max(CNT_A, CNT_B)
 #define SECONDS_PER_PALETTE 20
 
+enum patterns
+{
+  PATTERN_BEATWAVE,
+  PATTERN_EVERYOTHER,
+  PATTERN_NOISE,
+  PATTERN_PICKER,
+  PATTERN_RIPPLE,
+  PATTERN_TWINKLEFOX,
+};
+
 class Pattern
 {
 protected:
@@ -31,6 +41,8 @@ public:
   static void setCurrentBrightness(uint8_t b);
   static void setCurrentScale(uint8_t s);
   static void setCurrentSpeed(uint8_t s);
+  static void setCurrentPattern(uint8_t p);
+  static Pattern *getCurrentPattern();
 };
 
 #endif
