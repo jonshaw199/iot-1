@@ -27,12 +27,7 @@ export enum MessageType {
 
 export enum State {
   STATE_HOME = 0,
-  STATE_PATTERN_TWINKLEFOX,
-  STATE_PATTERN_NOISE,
-  STATE_PATTERN_PICKER,
-  STATE_PATTERN_BEATWAVE,
-  STATE_PATTERN_RIPPLE,
-  STATE_PATTERN_EVERYOTHER,
+  STATE_SHOW,
   STATE_INIT = 100,
   STATE_PURG,
   STATE_OTA,
@@ -69,6 +64,15 @@ export enum Palette {
   PartyColors_p,
 }
 
+export enum Pattern {
+  PATTERN_BEATWAVE,
+  PATTERN_EVERYOTHER,
+  PATTERN_NOISE,
+  PATTERN_PICKER,
+  PATTERN_RIPPLE,
+  PATTERN_TWINKLEFOX,
+}
+
 export type SubscriberId = string;
 export type PacketId = number;
 export type QOS = number;
@@ -98,6 +102,7 @@ export type PacketLightsAppearance = Packet & {
   palette?: Nullable<Palette>;
   speed?: Nullable<number>;
   scale?: Nullable<number>;
+  pattern?: Nullable<Pattern>;
 };
 
 export type WebSocketClient = WS & {

@@ -17,6 +17,7 @@ import {
   Packet,
   State,
   Palette,
+  Pattern,
 } from "../serverTypes";
 import { sendMessageThunk } from "../state/messageSlice";
 import { useDispatch } from "../state/store";
@@ -24,14 +25,18 @@ import ColorPicker from "./subcomponents/ColorPicker";
 
 const stateOptions: [number, string][] = [
   [State.STATE_HOME, "Home"],
-  [State.STATE_PATTERN_NOISE, "Pattern - Noise"],
-  [State.STATE_PATTERN_TWINKLEFOX, "Pattern - Twinklefox"],
-  [State.STATE_PATTERN_PICKER, "Pattern - Color Picker"],
-  [State.STATE_PATTERN_BEATWAVE, "Pattern - Beatwave"],
-  [State.STATE_PATTERN_RIPPLE, "Pattern - Ripple"],
-  [State.STATE_PATTERN_EVERYOTHER, "Pattern - Every Other"],
+  [State.STATE_SHOW, "Show"],
   [State.STATE_RESTART, "Restart"],
   [State.STATE_OTA, "OTA"],
+];
+
+const patternOptions: [number, string][] = [
+  [Pattern.PATTERN_BEATWAVE, "Beatwave"],
+  [Pattern.PATTERN_EVERYOTHER, "Every Other"],
+  [Pattern.PATTERN_NOISE, "Noise"],
+  [Pattern.PATTERN_PICKER, "Color Picker"],
+  [Pattern.PATTERN_RIPPLE, "Riplle"],
+  [Pattern.PATTERN_TWINKLEFOX, "Twinklefox"],
 ];
 
 const paletteOptions: [number, string][] = [
@@ -54,6 +59,7 @@ export default function Lights() {
   const [selectedPalette, setSelectedPalette] = useState(0);
   const [selectedSpeed, setSelectedSpeed] = useState(0);
   const [selectedScale, setSelectedScale] = useState(0);
+  const [selectedPattern, setSelectedPattern] = useState(0);
 
   const submitColor = useCallback(
     (c: iro.Color) => {
@@ -122,6 +128,19 @@ export default function Lights() {
     [dispatch, ws]
   );
 
+  const changePattern = useCallback(
+    (p: number) => {
+      const msg: PacketLightsAppearance = {
+        senderId: process.env.REACT_APP_DEVICE_ID || "",
+        type: MessageType.TYPE_MQTT_PUBLISH,
+        topic: Topics.LIGHTS_APPEARANCE,
+        pattern: p,
+      };
+      dispatch(sendMessageThunk({ msg, ws }));
+    },
+    [dispatch, ws]
+  );
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} md={6}>
@@ -137,6 +156,22 @@ export default function Lights() {
             select
           >
             {stateOptions.map(([value, name]: [number, string], i) => (
+              <MenuItem value={value} key={i}>
+                {name}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            label="Pattern"
+            value={selectedPattern}
+            onChange={(e) => {
+              const p = parseInt(e.target.value);
+              setSelectedPattern(p);
+              changePattern(p);
+            }}
+            select
+          >
+            {patternOptions.map(([value, name]: [number, string], i) => (
               <MenuItem value={value} key={i}>
                 {name}
               </MenuItem>
