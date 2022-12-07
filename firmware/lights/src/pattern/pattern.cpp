@@ -13,8 +13,8 @@ uint8_t Pattern::currentBrightness = 200;
 uint8_t Pattern::currentSpeed;
 uint8_t Pattern::currentScale;
 
-static std::vector<Pattern *> patterns;
 Pattern *Pattern::currentPattern;
+std::map<uint8_t, Pattern *> Pattern::patternMap;
 
 void Pattern::init()
 {
@@ -29,14 +29,14 @@ void Pattern::init()
 #endif
 #endif
 
-  patterns.push_back(new Beatwave());
-  patterns.push_back(new EveryOther());
-  patterns.push_back(new Noise());
-  patterns.push_back(new Picker());
-  patterns.push_back(new Ripple());
-  patterns.push_back(new Twinklefox());
+  patternMap[PATTERN_BEATWAVE] = new Beatwave();
+  patternMap[PATTERN_EVERYOTHER] = new EveryOther();
+  patternMap[PATTERN_NOISE] = new Noise();
+  patternMap[PATTERN_PICKER] = new Picker();
+  patternMap[PATTERN_RIPPLE] = new Ripple();
+  patternMap[PATTERN_TWINKLEFOX] = new Twinklefox();
 
-  currentPattern = patterns[0];
+  currentPattern = patternMap[PATTERN_PICKER];
 }
 
 void Pattern::setup()

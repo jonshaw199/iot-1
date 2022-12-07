@@ -69,6 +69,15 @@ export enum Palette {
   PartyColors_p,
 }
 
+export enum Pattern {
+  PATTERN_BEATWAVE,
+  PATTERN_EVERYOTHER,
+  PATTERN_NOISE,
+  PATTERN_PICKER,
+  PATTERN_RIPPLE,
+  PATTERN_TWINKLEFOX,
+}
+
 export type SubscriberId = string;
 export type PacketId = number;
 export type QOS = number;

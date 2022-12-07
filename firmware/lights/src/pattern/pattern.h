@@ -10,6 +10,16 @@
 #define CNT max(CNT_A, CNT_B)
 #define SECONDS_PER_PALETTE 20
 
+enum patterns
+{
+  PATTERN_BEATWAVE,
+  PATTERN_EVERYOTHER,
+  PATTERN_NOISE,
+  PATTERN_PICKER,
+  PATTERN_RIPPLE,
+  PATTERN_TWINKLEFOX,
+};
+
 class Pattern
 {
 protected:
@@ -22,6 +32,7 @@ protected:
   static uint8_t currentSpeed;
 
   static Pattern *currentPattern;
+  static std::map<uint8_t, Pattern *> patternMap;
 
 public:
   static void init();
