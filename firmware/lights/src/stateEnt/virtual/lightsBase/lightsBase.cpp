@@ -15,7 +15,6 @@ static std::map<uint8_t, AF1Msg> unackedPackets;
 
 void LightsBase::init()
 {
-  // Set up patterns
   Pattern::init();
 }
 
@@ -92,7 +91,7 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
     String topic = m.json()["topic"];
     if (topic == "/lights/state")
     {
-      Serial.println("Pattern msg");
+      Serial.println("State msg");
       setRequestedState(m.getState());
     }
     else if (topic == "/lights/appearance")

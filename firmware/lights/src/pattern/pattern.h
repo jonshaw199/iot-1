@@ -4,6 +4,7 @@
 #include <FastLED.h>
 #include <AF1.h>
 
+#include "pattern.h"
 #include "color/palette/list.h"
 
 #define CNT max(CNT_A, CNT_B)
@@ -19,6 +20,8 @@ protected:
   static uint8_t currentBrightness;
   static uint8_t currentScale;
   static uint8_t currentSpeed;
+
+  static Pattern *currentPattern;
 
 public:
   static void init();

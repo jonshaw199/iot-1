@@ -1,4 +1,9 @@
-#include "pattern.h"
+#include "pattern/beatwave/beatwave.h"
+#include "pattern/everyother/everyother.h"
+#include "pattern/noise/noise.h"
+#include "pattern/picker/picker.h"
+#include "pattern/ripple/ripple.h"
+#include "pattern/twinklefox/twinklefox.h"
 
 CRGB *Pattern::leds;
 CRGBPalette16 Pattern::currentPalette;
@@ -7,6 +12,9 @@ TBlendType Pattern::currentBlending = LINEARBLEND;
 uint8_t Pattern::currentBrightness = 200;
 uint8_t Pattern::currentSpeed;
 uint8_t Pattern::currentScale;
+
+static std::vector<Pattern *> patterns;
+Pattern *Pattern::currentPattern;
 
 void Pattern::init()
 {
@@ -20,6 +28,15 @@ void Pattern::init()
   FastLED.addLeds<LED_TYPE_B, LED_PIN_B, LED_ORDER_B>(leds, CNT);
 #endif
 #endif
+
+  patterns.push_back(new Beatwave());
+  patterns.push_back(new EveryOther());
+  patterns.push_back(new Noise());
+  patterns.push_back(new Picker());
+  patterns.push_back(new Ripple());
+  patterns.push_back(new Twinklefox());
+
+  currentPattern = patterns[0];
 }
 
 void Pattern::setup()

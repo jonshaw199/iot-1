@@ -8,8 +8,6 @@
 
 class LightsBase : public Base
 {
-  std::vector<Pattern> patterns;
-
 protected:
   static void handleInboxMsg(AF1Msg &m);
 
