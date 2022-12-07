@@ -27,7 +27,6 @@ export enum MessageType {
 
 export enum State {
   STATE_HOME = 0,
-  STATE_SHOW,
   STATE_INIT = 100,
   STATE_PURG,
   STATE_OTA,

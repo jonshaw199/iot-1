@@ -4,7 +4,6 @@
 enum custom_states
 {
   STATE_HOME = 0,
-  STATE_SHOW
 };
 
 enum custom_types
