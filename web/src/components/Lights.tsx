@@ -78,7 +78,7 @@ export default function Lights() {
       const msg: PacketLightsAppearance = {
         senderId: process.env.REACT_APP_DEVICE_ID || "",
         type: MessageType.TYPE_MQTT_PUBLISH,
-        topic: Topics.LIGHTS_STATE,
+        topic: Topics.LIGHTS_APPEARANCE,
         palette: p,
       };
       dispatch(sendMessageThunk({ msg, ws }));
