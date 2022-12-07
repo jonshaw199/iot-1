@@ -1,5 +1,7 @@
 #include "ripple.h"
 
+#define MAX_STEPS 16
+
 void Ripple::loop()
 {
   Pattern::loop();
@@ -10,6 +12,7 @@ void Ripple::loop()
   static uint8_t fadeval = 128;
   static uint8_t bgcol = 0;
   static int thisdelay = 60;
+  static uint8_t colour;
 
   EVERY_N_MILLISECONDS(60)
   {
@@ -30,7 +33,7 @@ void Ripple::loop()
       step++;
       break;
 
-    case maxsteps: // At the end of the ripples.
+    case MAX_STEPS: // At the end of the ripples.
       step = -1;
       break;
 

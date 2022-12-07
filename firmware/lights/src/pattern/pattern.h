@@ -2,6 +2,7 @@
 #define PATTERN_PATTERN_H_
 
 #include <FastLED.h>
+#include <AF1.h>
 
 #include "color/palette/list.h"
 
@@ -25,7 +26,7 @@ public:
   virtual void loop();
   static void setTargetPalette(CRGBPalette16 p);
   static void setCurrentBlending(TBlendType b);
-  static void setCurrentBrightness(uint8)t b);
+  static void setCurrentBrightness(uint8_t b);
   static void setCurrentScale(uint8_t s);
   static void setCurrentSpeed(uint8_t s);
 };

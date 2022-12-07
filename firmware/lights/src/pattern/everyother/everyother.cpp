@@ -3,6 +3,9 @@
 void EveryOther::loop()
 {
   Pattern::loop();
+
+  static uint8_t coef = 0;
+
   EVERY_N_MILLISECONDS(250)
   {
     coef = !coef;

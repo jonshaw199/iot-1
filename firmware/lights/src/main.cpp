@@ -12,12 +12,6 @@
 #include "state.h"
 #include "stateEnt/home/home.h"
 #include "stateEnt/virtual/lightsBase/lightsBase.h"
-#include "stateEnt/pattern/twinklefox/twinklefox.h"
-#include "stateEnt/pattern/noise/noise.h"
-#include "stateEnt/pattern/picker/picker.h"
-#include "stateEnt/pattern/beatwave/beatwave.h"
-#include "stateEnt/pattern/ripple/ripple.h"
-#include "stateEnt/pattern/everyother/everyother.h"
 
 void setup()
 {
@@ -38,24 +32,6 @@ void setup()
   AF1::addStateEnt(STATE_HOME, new Home());
   AF1::addStringHandler("home", [](SHArg a)
                         { AF1::setRequestedState(STATE_HOME); });
-  AF1::addStateEnt(STATE_PATTERN_TWINKLEFOX, new Twinklefox());
-  AF1::addStringHandler("twinklefox", [](SHArg a)
-                        { AF1::setRequestedState(STATE_PATTERN_TWINKLEFOX); });
-  AF1::addStateEnt(STATE_PATTERN_NOISE, new Noise());
-  AF1::addStringHandler("noise", [](SHArg a)
-                        { AF1::setRequestedState(STATE_PATTERN_NOISE); });
-  AF1::addStateEnt(STATE_PATTERN_PICKER, new Picker());
-  AF1::addStringHandler("picker", [](SHArg a)
-                        { AF1::setRequestedState(STATE_PATTERN_PICKER); });
-  AF1::addStateEnt(STATE_PATTERN_BEATWAVE, new Beatwave());
-  AF1::addStringHandler("beatwave", [](SHArg a)
-                        { AF1::setRequestedState(STATE_PATTERN_BEATWAVE); });
-  AF1::addStateEnt(STATE_PATTERN_RIPPLE, new Ripple());
-  AF1::addStringHandler("ripple", [](SHArg a)
-                        { AF1::setRequestedState(STATE_PATTERN_RIPPLE); });
-  AF1::addStateEnt(STATE_PATTERN_EVERYOTHER, new EveryOther());
-  AF1::addStringHandler("everyother", [](SHArg a)
-                        { AF1::setRequestedState(STATE_PATTERN_EVERYOTHER); });
 
 #ifdef ARDUINO_M5Stick_C
   delay(500);

@@ -2,7 +2,6 @@
 #define COLOR_PALETTE_LIST_H_
 
 #include <FastLED.h>
-#include <vector>
 
 #include "color/palette/bluewhite_p.h"
 #include "color/palette/fairylight_p.h"
