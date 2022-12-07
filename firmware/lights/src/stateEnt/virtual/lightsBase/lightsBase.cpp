@@ -13,30 +13,10 @@
 static uint8_t nextPacketId;
 static std::map<uint8_t, AF1Msg> unackedPackets;
 
-CRGB *LightsBase::leds;
-
-CRGBPalette16 LightsBase::currentPalette;
-CRGBPalette16 LightsBase::targetPalette;
-TBlendType LightsBase::currentBlending = LINEARBLEND;
-uint8_t LightsBase::currentBrightness = 200;
-uint8_t LightsBase::currentSpeed;
-uint8_t LightsBase::currentScale;
-
-std::vector<uint8_t> LightsBase::sceneStates;
-uint8_t LightsBase::currentSceneIndex;
-
 void LightsBase::init()
 {
-  leds = new CRGB[CNT];
-
-#if CNT
-#if CNT_A
-  FastLED.addLeds<LED_TYPE_A, LED_PIN_A, LED_ORDER_A>(leds, CNT);
-#endif
-#if CNT_B
-  FastLED.addLeds<LED_TYPE_B, LED_PIN_B, LED_ORDER_B>(leds, CNT);
-#endif
-#endif
+  // Set up patterns
+  Pattern::init();
 }
 
 void LightsBase::setup()
@@ -48,11 +28,6 @@ void LightsBase::setup()
   M5.Lcd.setRotation(0);
   M5.Lcd.pushImage(0, 0, MOUNTAINS_WIDTH, MOUNTAINS_HEIGHT, (uint16_t *)mountains);
 #endif
-
-  addEvent(Event(
-      "LightsBase_BlendTowardTargette", [](ECBArg a)
-      { nblendPaletteTowardPalette(currentPalette, targetPalette); },
-      EVENT_TYPE_TEMP, 10));
 }
 
 void LightsBase::loop()
@@ -128,7 +103,7 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
         uint8_t s = m.json()["s"];
         uint8_t v = m.json()["v"];
         CHSV targetColor = CHSV(h, s, v);
-        targetPalette = CRGBPalette16(targetColor);
+        Pattern::setTargetPalette(CRGBPalette16(targetColor));
       }
       else if (m.json().containsKey("palette"))
       {
@@ -137,31 +112,31 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
         switch (i)
         {
         case 0:
-          targetPalette = RetroC9_p;
+          Pattern::setTargetPalette(RetroC9_p);
           break;
         case 1:
-          targetPalette = BlueWhite_p;
+          Pattern::setTargetPalette(BlueWhite_p);
           break;
         case 2:
-          targetPalette = RedGreenWhite_p;
+          Pattern::setTargetPalette(RedGreenWhite_p);
           break;
         case 3:
-          targetPalette = Snow_p;
+          Pattern::setTargetPalette(Snow_p);
           break;
         case 4:
-          targetPalette = RedWhite_p;
+          Pattern::setTargetPalette(RedWhite_p);
           break;
         case 5:
-          targetPalette = Ice_p;
+          Pattern::setTargetPalette(Ice_p);
           break;
         case 6:
-          targetPalette = Holly_p;
+          Pattern::setTargetPalette(Holly_p);
           break;
         case 7:
-          targetPalette = RainbowColors_p;
+          Pattern::setTargetPalette(RainbowColors_p);
           break;
         case 8:
-          targetPalette = PartyColors_p;
+          Pattern::setTargetPalette(PartyColors_p);
           break;
         }
       }
@@ -169,13 +144,13 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
       if (m.json().containsKey("scale"))
       {
         uint8_t scale = m.json()["scale"];
-        currentScale = scale;
+        Pattern::setCurrentScale(scale);
       }
 
       if (m.json().containsKey("speed"))
       {
         uint8_t speed = m.json()["speed"];
-        currentSpeed = speed;
+        Pattern::setCurrentSpeed(speed);
       }
     }
 
