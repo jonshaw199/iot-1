@@ -4,21 +4,10 @@
 #include <FastLED.h>
 #include <AF1.h>
 
-#include "pattern.h"
 #include "color/palette/list.h"
 
 #define CNT max(CNT_A, CNT_B)
 #define SECONDS_PER_PALETTE 20
-
-enum patterns
-{
-  PATTERN_BEATWAVE,
-  PATTERN_EVERYOTHER,
-  PATTERN_NOISE,
-  PATTERN_PICKER,
-  PATTERN_RIPPLE,
-  PATTERN_TWINKLEFOX,
-};
 
 class Pattern
 {
@@ -31,13 +20,12 @@ protected:
   static uint8_t currentScale;
   static uint8_t currentSpeed;
 
-  static Pattern *currentPattern;
-  static std::map<uint8_t, Pattern *> patternMap;
-
 public:
   static void init();
+
   virtual void setup();
   virtual void loop();
+
   static void setTargetPalette(CRGBPalette16 p);
   static void setCurrentBlending(TBlendType b);
   static void setCurrentBrightness(uint8_t b);

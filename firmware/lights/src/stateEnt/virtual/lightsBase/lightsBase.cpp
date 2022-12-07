@@ -13,9 +13,20 @@
 static uint8_t nextPacketId;
 static std::map<uint8_t, AF1Msg> unackedPackets;
 
+static Pattern *currentPattern;
+static std::map<uint8_t, Pattern *> patternMap;
+
 void LightsBase::init()
 {
   Pattern::init();
+  patternMap[PATTERN_BEATWAVE] = new Beatwave();
+  patternMap[PATTERN_EVERYOTHER] = new EveryOther();
+  patternMap[PATTERN_NOISE] = new Noise();
+  patternMap[PATTERN_PICKER] = new Picker();
+  patternMap[PATTERN_RIPPLE] = new Ripple();
+  patternMap[PATTERN_TWINKLEFOX] = new Twinklefox();
+  currentPattern = patternMap[PATTERN_PICKER];
+  currentPattern->setup();
 }
 
 void LightsBase::setup()
@@ -54,6 +65,8 @@ void LightsBase::loop()
     M5.Lcd.setCursor(0, 0);
   }*/
 #endif
+
+  currentPattern->loop();
 }
 
 bool LightsBase::doScanForPeersESPNow()
@@ -96,6 +109,12 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
     }
     else if (topic == "/lights/appearance")
     {
+      if (m.json().containsKey("pattern"))
+      {
+        uint8_t p = m.json()["pattern"];
+        setCurrentPattern(p);
+      }
+
       if (m.json().containsKey("h"))
       {
         uint8_t h = m.json()["h"];
@@ -223,4 +242,17 @@ msg_handler LightsBase::getOutboxHandler()
     }
     Base::handleOutboxMsg(m);
   };
+}
+
+void LightsBase::setCurrentPattern(uint8_t p)
+{
+  if (patternMap.count(p))
+  {
+    currentPattern = patternMap[p];
+    currentPattern->setup();
+  }
+  else
+  {
+    Serial.println("Pattern doesn't exist");
+  }
 }
