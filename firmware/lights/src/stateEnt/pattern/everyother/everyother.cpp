@@ -14,15 +14,6 @@ void EveryOther::setup()
         FastLED.show();
       },
       EVENT_TYPE_TEMP, 250));
-
-  addEvent(Event(
-      "EveryOther_PaleteChange",
-      [](ECBArg a)
-      {
-        advanceTargetPalette();
-        currentPalette = targetPalette;
-      },
-      EVENT_TYPE_TEMP, SECONDS_PER_PALETTE, 0, 0, START_EPOCH_SEC));
 }
 
 void EveryOther::everyOther()

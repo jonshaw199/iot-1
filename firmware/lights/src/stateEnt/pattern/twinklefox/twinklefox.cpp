@@ -106,16 +106,6 @@ void Twinklefox::setup()
   LightsBase::setup();
 
   addEvent(Event(
-      "Twinklefox_NextPalette", [](ECBArg a)
-      { advanceTargetPalette(); },
-      EVENT_TYPE_TEMP, SECONDS_PER_PALETTE, 0, 0, START_EPOCH_SEC));
-
-  addEvent(Event(
-      "Twinklefox_Blend", [](ECBArg a)
-      { nblendPaletteTowardPalette(currentPalette, targetPalette); },
-      EVENT_TYPE_TEMP, 100));
-
-  addEvent(Event(
       "Twinklefox_Loop", [](ECBArg a)
       { 
         drawTwinkles(); 

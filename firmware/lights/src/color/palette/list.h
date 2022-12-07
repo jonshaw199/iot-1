@@ -2,6 +2,7 @@
 #define COLOR_PALETTE_LIST_H_
 
 #include <FastLED.h>
+#include <vector>
 
 #include "color/palette/bluewhite_p.h"
 #include "color/palette/fairylight_p.h"
@@ -73,18 +74,5 @@
 #include "color/palette/gradient/titannightfall_gp.h"
 #include "color/palette/gradient/tubepreview_gp.h"
 #include "color/palette/gradient/wildwinds_gp.h"
-
-static const TProgmemRGBPalette16 *christmasPaletteList[] = {
-    &RetroC9_p,
-    &BlueWhite_p,
-    &RedGreenWhite_p,
-    &Snow_p,
-    &RedWhite_p,
-    &Ice_p,
-    &Holly_p};
-
-static const TProgmemRGBPalette16 *regularPaletteList[] = {
-    &RainbowColors_p,
-    &PartyColors_p};
 
 #endif

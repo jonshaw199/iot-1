@@ -5,28 +5,9 @@ String Picker::getName()
   return "Picker";
 }
 
-msg_handler Picker::getInboxHandler()
-{
-  return [](AF1Msg &m)
-  {
-    LightsBase::handleInboxMsg(m);
-    String topic = m.json()["topic"];
-    if (topic == "/lights/color")
-    {
-      uint8_t h = m.json()["h"];
-      uint8_t s = m.json()["s"];
-      uint8_t v = m.json()["v"];
-      CHSV targetColor = CHSV(h, s, v);
-      targetPalette = CRGBPalette16(targetColor);
-    }
-  };
-}
-
 void Picker::setup()
 {
   LightsBase::setup();
-
-  currentPalette = CRGBPalette16(CRGB::Black);
 
   addEvent(Event(
       "Picker_UpdateLeds",

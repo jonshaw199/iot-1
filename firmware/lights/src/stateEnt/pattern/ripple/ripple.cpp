@@ -21,16 +21,6 @@ void Ripple::setup()
   thisdelay = 60;
 
   addEvent(Event(
-      "Ripple_NextPalette", [](ECBArg a)
-      { advanceTargetPalette(); },
-      EVENT_TYPE_TEMP, 3000));
-
-  addEvent(Event(
-      "Ripple_Blend", [](ECBArg a)
-      { nblendPaletteTowardPalette(currentPalette, targetPalette, 24); },
-      EVENT_TYPE_TEMP, 100));
-
-  addEvent(Event(
       "Ripple_Loop", [](ECBArg a)
       { 
         ripple(); 

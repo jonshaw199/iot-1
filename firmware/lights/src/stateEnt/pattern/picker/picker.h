@@ -9,7 +9,6 @@ class Picker : public LightsBase
 {
 public:
   String getName();
-  msg_handler getInboxHandler();
   void setup();
 };
 

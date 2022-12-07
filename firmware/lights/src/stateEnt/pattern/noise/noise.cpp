@@ -14,17 +14,6 @@ void Noise::setup()
         FastLED.show();
       },
       EVENT_TYPE_TEMP, 1));
-
-  addEvent(Event(
-      "Noise_MovingTarget",
-      [](ECBArg a)
-      { advanceTargetPalette(); },
-      EVENT_TYPE_TEMP, SECONDS_PER_PALETTE, 0, 0, START_EPOCH_SEC));
-
-  addEvent(Event(
-      "Noise_Blend", [](ECBArg a)
-      { nblendPaletteTowardPalette(currentPalette, targetPalette, 24); },
-      EVENT_TYPE_TEMP, 100));
 }
 
 void Noise::fillNoise8()

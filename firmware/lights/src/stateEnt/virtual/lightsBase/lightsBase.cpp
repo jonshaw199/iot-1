@@ -19,17 +19,7 @@ CRGBPalette16 LightsBase::currentPalette;
 CRGBPalette16 LightsBase::targetPalette;
 TBlendType LightsBase::currentBlending = LINEARBLEND;
 uint8_t LightsBase::currentBrightness = 200;
-uint8_t LightsBase::currentPaletteIndex;
-// Add or remove palette names from this list to control which color
-// palettes are used, and in what order.
-const TProgmemRGBPalette16 *LightsBase::activePaletteList[] = {
-    &RetroC9_p,
-    &BlueWhite_p,
-    &RedGreenWhite_p,
-    // &Snow_p,
-    // &RedWhite_p,
-    &Ice_p,
-    &Holly_p}; // to do
+
 std::vector<uint8_t> LightsBase::sceneStates;
 uint8_t LightsBase::currentSceneIndex;
 
@@ -56,6 +46,11 @@ void LightsBase::setup()
   M5.Lcd.setRotation(0);
   M5.Lcd.pushImage(0, 0, MOUNTAINS_WIDTH, MOUNTAINS_HEIGHT, (uint16_t *)mountains);
 #endif
+
+  addEvent(Event(
+      "LightsBase_BlendTowardTargette", [](ECBArg a)
+      { nblendPaletteTowardPalette(currentPalette, targetPalette); },
+      EVENT_TYPE_TEMP, 100));
 }
 
 void LightsBase::loop()
@@ -125,7 +120,48 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
     }
     else if (topic == "/lights/color")
     {
-      Serial.println("Color msg");
+      if (m.json().containsKey("h"))
+      {
+        uint8_t h = m.json()["h"];
+        uint8_t s = m.json()["s"];
+        uint8_t v = m.json()["v"];
+        CHSV targetColor = CHSV(h, s, v);
+        targetPalette = CRGBPalette16(targetColor);
+      }
+      else if (m.json().containsKey("palette"))
+      {
+        uint8_t i = m.json()["palette"];
+        switch (i)
+        {
+        case 0:
+          targetPalette = RetroC9_p;
+          break;
+        case 1:
+          targetPalette = BlueWhite_p;
+          break;
+        case 2:
+          targetPalette = RedGreenWhite_p;
+          break;
+        case 3:
+          targetPalette = Snow_p;
+          break;
+        case 4:
+          targetPalette = RedWhite_p;
+          break;
+        case 5:
+          targetPalette = Ice_p;
+          break;
+        case 6:
+          targetPalette = Holly_p;
+          break;
+        case 7:
+          targetPalette = RainbowColors_p;
+          break;
+        case 8:
+          targetPalette = PartyColors_p;
+          break;
+        }
+      }
     }
 
     // Acks
@@ -198,13 +234,4 @@ msg_handler LightsBase::getOutboxHandler()
     }
     Base::handleOutboxMsg(m);
   };
-}
-
-void LightsBase::advanceTargetPalette()
-{
-  const uint8_t numberOfPalettes = sizeof(activePaletteList) / sizeof(activePaletteList[0]);
-  currentPaletteIndex = addmod8(currentPaletteIndex, 1, numberOfPalettes);
-  targetPalette = *(activePaletteList[currentPaletteIndex]);
-  Serial.print("Changing palette: ");
-  Serial.println(currentPaletteIndex);
 }
