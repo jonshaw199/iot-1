@@ -7,8 +7,6 @@
 
 class Noise : public LightsBase
 {
-  static uint8_t scale;
-
   static void fillNoise8();
 
 public:

@@ -69,12 +69,12 @@
 // Overall twinkle speed.
 // 0 (VERY slow) to 8 (VERY fast).
 // 4, 5, and 6 are recommended, default is 4.
-#define TWINKLE_SPEED 4
+// #define TWINKLE_SPEED 4
 
 // Overall twinkle density.
 // 0 (NONE lit) to 8 (ALL lit at once).
 // Default is 5.
-#define TWINKLE_DENSITY 5
+// #define TWINKLE_DENSITY 5
 
 // How often to change color palettes.
 // #define SECONDS_PER_PALETTE 15 // Now defined globally in pattern as default
@@ -207,7 +207,7 @@ void Twinklefox::drawTwinkles()
 //  should light at all during this cycle, based on the TWINKLE_DENSITY.
 CRGB Twinklefox::computeOneTwinkle(uint32_t ms, uint8_t salt)
 {
-  uint16_t ticks = ms >> (8 - TWINKLE_SPEED);
+  uint16_t ticks = ms >> (8 - (currentSpeed * 8 / 255));
   uint8_t fastcycle8 = ticks;
   uint16_t slowcycle16 = (ticks >> 8) + salt;
   slowcycle16 += sin8(slowcycle16);
@@ -215,7 +215,8 @@ CRGB Twinklefox::computeOneTwinkle(uint32_t ms, uint8_t salt)
   uint8_t slowcycle8 = (slowcycle16 & 0xFF) + (slowcycle16 >> 8);
 
   uint8_t bright = 0;
-  if (((slowcycle8 & 0x0E) / 2) < TWINKLE_DENSITY)
+  if (((slowcycle8 & 0x0E) / 2) < (currentScale * 8 / 255))
+    ;
   {
     bright = attackDecayWave8(fastcycle8);
   }

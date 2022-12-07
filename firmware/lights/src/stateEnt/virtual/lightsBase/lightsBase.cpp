@@ -52,7 +52,7 @@ void LightsBase::setup()
   addEvent(Event(
       "LightsBase_BlendTowardTargette", [](ECBArg a)
       { nblendPaletteTowardPalette(currentPalette, targetPalette); },
-      EVENT_TYPE_TEMP, 100));
+      EVENT_TYPE_TEMP, 10));
 }
 
 void LightsBase::loop()
