@@ -5,7 +5,7 @@ import { GlobalWebsocketContext } from "../hooks/useWebsocket";
 import {
   MessageType,
   Topics,
-  PacketLightsColor,
+  PacketLightsAppearance,
   Packet,
   State,
 } from "../serverTypes";
@@ -33,10 +33,10 @@ export default function Lights() {
 
   const submitColor = useCallback(
     (c: iro.Color) => {
-      const msg: PacketLightsColor = {
+      const msg: PacketLightsAppearance = {
         senderId: process.env.REACT_APP_DEVICE_ID || "",
         type: MessageType.TYPE_MQTT_PUBLISH,
-        topic: Topics.LIGHTS_COLOR,
+        topic: Topics.LIGHTS_APPEARANCE,
         h: ((c.hsv.h || 0) * 255) / 360,
         s: ((c.hsv.s || 0) * 255) / 100,
         v: ((c.hsv.v || 0) * 255) / 100,

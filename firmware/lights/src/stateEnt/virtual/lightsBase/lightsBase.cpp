@@ -118,7 +118,7 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
       Serial.println("Pattern msg");
       setRequestedState(m.getState());
     }
-    else if (topic == "/lights/color")
+    else if (topic == "/lights/appearance")
     {
       if (m.json().containsKey("h"))
       {

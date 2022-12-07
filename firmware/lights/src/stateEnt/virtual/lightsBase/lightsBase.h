@@ -17,6 +17,8 @@ protected:
   static CRGBPalette16 targetPalette;
   static TBlendType currentBlending;
   static uint8_t currentBrightness;
+  static uint8_t currentScale;
+  static uint8_t currentSpeed;
 
   static std::vector<uint8_t> sceneStates;
   static uint8_t currentSceneIndex;

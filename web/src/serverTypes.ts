@@ -52,7 +52,21 @@ export enum Board {
 
 export enum Topics {
   LIGHTS_STATE = "/lights/state",
-  LIGHTS_COLOR = "/lights/color",
+  LIGHTS_APPEARANCE = "/lights/appearance",
+}
+
+export enum Palette {
+  // Christmas
+  RetroC9_p,
+  BlueWhite_p,
+  RedGreenWhite_p,
+  Snow_p,
+  RedWhite_p,
+  Ice_p,
+  Holly_p,
+  // Other
+  RainbowColors_p,
+  PartyColors_p,
 }
 
 export type SubscriberId = string;
@@ -77,10 +91,13 @@ export type Packet = Message & {
   packetId?: PacketId;
 };
 
-export type PacketLightsColor = Packet & {
-  h: Nullable<number>;
-  s: Nullable<number>;
-  v: Nullable<number>;
+export type PacketLightsAppearance = Packet & {
+  h?: Nullable<number>;
+  s?: Nullable<number>;
+  v?: Nullable<number>;
+  palette?: Nullable<Palette>;
+  speed?: Nullable<number>;
+  scale?: Nullable<number>;
 };
 
 export type WebSocketClient = WS & {
