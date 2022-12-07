@@ -25,7 +25,6 @@ import ColorPicker from "./subcomponents/ColorPicker";
 
 const stateOptions: [number, string][] = [
   [State.STATE_HOME, "Home"],
-  [State.STATE_SHOW, "Show"],
   [State.STATE_RESTART, "Restart"],
   [State.STATE_OTA, "OTA"],
 ];
@@ -35,7 +34,7 @@ const patternOptions: [number, string][] = [
   [Pattern.PATTERN_EVERYOTHER, "Every Other"],
   [Pattern.PATTERN_NOISE, "Noise"],
   [Pattern.PATTERN_PICKER, "Color Picker"],
-  [Pattern.PATTERN_RIPPLE, "Riplle"],
+  [Pattern.PATTERN_RIPPLE, "Ripple"],
   [Pattern.PATTERN_TWINKLEFOX, "Twinklefox"],
 ];
 
