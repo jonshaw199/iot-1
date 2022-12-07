@@ -8,6 +8,7 @@ import {
   PacketLightsAppearance,
   Packet,
   State,
+  Palette,
 } from "../serverTypes";
 import { sendMessageThunk } from "../state/messageSlice";
 import { useDispatch } from "../state/store";
@@ -25,11 +26,24 @@ const stateOptions: [number, string][] = [
   [State.STATE_OTA, "OTA"],
 ];
 
+const paletteOptions: [number, string][] = [
+  [Palette.BlueWhite_p, "Blue & White"],
+  [Palette.Holly_p, "Holly"],
+  [Palette.Ice_p, "Ice"],
+  [Palette.RedGreenWhite_p, "Red, Green, & White"],
+  [Palette.RedWhite_p, "Red & White"],
+  [Palette.RetroC9_p, "Retro C9"],
+  [Palette.Snow_p, "Snow"],
+  [Palette.RainbowColors_p, "Rainbow Colors"],
+  [Palette.PartyColors_p, "Party Colors"],
+];
+
 export default function Lights() {
   const theme = useTheme();
   const ws = useContext(GlobalWebsocketContext);
   const dispatch = useDispatch();
   const [selectedState, setSelectedState] = useState(0);
+  const [selectedPalette, setSelectedPalette] = useState(0);
 
   const submitColor = useCallback(
     (c: iro.Color) => {
@@ -59,6 +73,19 @@ export default function Lights() {
     [dispatch, ws]
   );
 
+  const changePalette = useCallback(
+    (p: number) => {
+      const msg: PacketLightsAppearance = {
+        senderId: process.env.REACT_APP_DEVICE_ID || "",
+        type: MessageType.TYPE_MQTT_PUBLISH,
+        topic: Topics.LIGHTS_STATE,
+        palette: p,
+      };
+      dispatch(sendMessageThunk({ msg, ws }));
+    },
+    [dispatch, ws]
+  );
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} md={6}>
@@ -72,9 +99,24 @@ export default function Lights() {
               changeState(s);
             }}
             select
-            // sx={{ flex: 1 }}
           >
             {stateOptions.map(([value, name]: [number, string], i) => (
+              <MenuItem value={value} key={i}>
+                {name}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            label="Color Palette"
+            value={selectedPalette}
+            onChange={(e) => {
+              const p = parseInt(e.target.value);
+              setSelectedPalette(p);
+              changePalette(p);
+            }}
+            select
+          >
+            {paletteOptions.map(([value, name]: [number, string], i) => (
               <MenuItem value={value} key={i}>
                 {name}
               </MenuItem>
