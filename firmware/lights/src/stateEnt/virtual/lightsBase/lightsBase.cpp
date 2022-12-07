@@ -131,6 +131,7 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
       else if (m.json().containsKey("palette"))
       {
         uint8_t i = m.json()["palette"];
+        // A map or vector would be lovely here but having constant issues with storing TProgmemRGBPalette16; to do
         switch (i)
         {
         case 0:
