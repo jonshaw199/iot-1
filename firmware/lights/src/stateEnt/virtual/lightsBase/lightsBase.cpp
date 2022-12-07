@@ -19,6 +19,8 @@ CRGBPalette16 LightsBase::currentPalette;
 CRGBPalette16 LightsBase::targetPalette;
 TBlendType LightsBase::currentBlending = LINEARBLEND;
 uint8_t LightsBase::currentBrightness = 200;
+uint8_t LightsBase::currentSpeed;
+uint8_t LightsBase::currentScale;
 
 std::vector<uint8_t> LightsBase::sceneStates;
 uint8_t LightsBase::currentSceneIndex;
@@ -162,6 +164,18 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
           targetPalette = PartyColors_p;
           break;
         }
+      }
+
+      if (m.json().containsKey("scale"))
+      {
+        uint8_t scale = m.json()["scale"];
+        currentScale = scale;
+      }
+
+      if (m.json().containsKey("speed"))
+      {
+        uint8_t speed = m.json()["speed"];
+        currentSpeed = speed;
       }
     }
 
