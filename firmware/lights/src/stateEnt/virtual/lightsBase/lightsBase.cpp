@@ -17,6 +17,8 @@ static std::map<uint8_t, AF1Msg> unackedPackets;
 void LightsBase::init()
 {
   Pattern::init();
+  AF1::addStringHandler("pattern*", [](SHArg a)
+                        { Pattern::setCurrentPattern(a.getValue().toInt()); });
 }
 
 void LightsBase::setup()
