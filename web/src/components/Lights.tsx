@@ -6,6 +6,7 @@ import {
   Card,
   Grid,
   Slider,
+  Typography,
 } from "@mui/material";
 import { useContext, useCallback, useState } from "react";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
@@ -166,8 +167,8 @@ export default function Lights() {
       </Grid>
       <Grid item xs={12} md={6}>
         <Card sx={{ padding: theme.spacing(2) }}>
+          <Typography>Speed</Typography>
           <Slider
-            name="Speed"
             value={selectedSpeed}
             onChange={(e, v) => {
               let speed = v;
@@ -178,6 +179,7 @@ export default function Lights() {
             }}
             onChangeCommitted={() => submitSpeed(selectedSpeed)}
           />
+          <Typography>Scale</Typography>
           <Slider
             name="Scale"
             value={selectedScale}
