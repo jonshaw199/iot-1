@@ -162,6 +162,11 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
         uint8_t speed = m.json()["speed"];
         Pattern::setCurrentSpeed(speed);
       }
+
+      if (m.json().containsKey("resetTime"))
+      {
+        Pattern::resetTime();
+      }
     }
 
     // Acks

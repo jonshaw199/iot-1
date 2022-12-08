@@ -11,6 +11,10 @@
 
 class Pattern
 {
+  static Pattern *currentPattern;
+  static std::map<uint8_t, Pattern *> patternMap;
+  static unsigned long time;
+
 protected:
   static CRGB *leds;
   static CRGBPalette16 currentPalette;
@@ -19,6 +23,8 @@ protected:
   static uint8_t currentBrightness;
   static uint8_t currentScale;
   static uint8_t currentSpeed;
+
+  static unsigned long getTime();
 
 public:
   static void init();
@@ -33,6 +39,7 @@ public:
   static void setCurrentSpeed(uint8_t s);
   static void setCurrentPattern(uint8_t p);
   static Pattern *getCurrentPattern();
+  static void resetTime();
 };
 
 #endif

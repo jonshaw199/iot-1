@@ -27,8 +27,10 @@ uint8_t Pattern::currentBrightness = 200;
 uint8_t Pattern::currentSpeed;
 uint8_t Pattern::currentScale;
 
-static Pattern *currentPattern;
-static std::map<uint8_t, Pattern *> patternMap;
+Pattern *Pattern::currentPattern;
+std::map<uint8_t, Pattern *> Pattern::patternMap;
+
+unsigned long Pattern::time;
 
 void Pattern::init()
 {
@@ -42,6 +44,8 @@ void Pattern::init()
   FastLED.addLeds<LED_TYPE_B, LED_PIN_B, LED_ORDER_B>(leds, CNT);
 #endif
 #endif
+
+  resetTime();
 
   patternMap[PATTERN_BEATWAVE] = new Beatwave();
   patternMap[PATTERN_EVERYOTHER] = new EveryOther();
@@ -104,4 +108,14 @@ void Pattern::setCurrentPattern(uint8_t p)
 Pattern *Pattern::getCurrentPattern()
 {
   return currentPattern;
+}
+
+unsigned long Pattern::getTime()
+{
+  return millis() - time;
+}
+
+void Pattern::resetTime()
+{
+  time = millis();
 }
