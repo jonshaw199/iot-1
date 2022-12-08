@@ -204,7 +204,9 @@ export default function Lights() {
               </MenuItem>
             ))}
           </TextField>
-          <Button onClick={resetTime}>Sync</Button>
+          <Button onClick={resetTime} variant="outlined">
+            Sync
+          </Button>
         </Card>
       </Grid>
       <Grid item xs={12} md={6}>
