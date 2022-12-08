@@ -70,6 +70,7 @@ export enum Pattern {
   PATTERN_PICKER,
   PATTERN_RIPPLE,
   PATTERN_TWINKLEFOX,
+  PATTERN_DOTBEAT,
 }
 
 export type SubscriberId = string;
