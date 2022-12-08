@@ -6,6 +6,18 @@
 #include "pattern/picker/picker.h"
 #include "pattern/ripple/ripple.h"
 #include "pattern/twinklefox/twinklefox.h"
+#include "pattern/dotbeat/dotbeat.h"
+
+enum patterns
+{
+  PATTERN_BEATWAVE,
+  PATTERN_EVERYOTHER,
+  PATTERN_NOISE,
+  PATTERN_PICKER,
+  PATTERN_RIPPLE,
+  PATTERN_TWINKLEFOX,
+  PATTERN_DOTBEAT
+};
 
 CRGB *Pattern::leds;
 CRGBPalette16 Pattern::currentPalette;
@@ -37,6 +49,7 @@ void Pattern::init()
   patternMap[PATTERN_PICKER] = new Picker();
   patternMap[PATTERN_RIPPLE] = new Ripple();
   patternMap[PATTERN_TWINKLEFOX] = new Twinklefox();
+  patternMap[PATTERN_DOTBEAT] = new DotBeat();
   currentPattern = patternMap[PATTERN_PICKER];
   currentPattern->setup();
 }
