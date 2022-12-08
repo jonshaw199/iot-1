@@ -165,7 +165,11 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
 
       if (m.json().containsKey("resetTime"))
       {
-        Pattern::resetTime();
+        bool r = m.json()["resetTime"];
+        if (r)
+        {
+          Pattern::resetTime();
+        }
       }
     }
 

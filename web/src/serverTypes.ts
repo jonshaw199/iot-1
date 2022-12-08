@@ -103,6 +103,7 @@ export type PacketLightsAppearance = Packet & {
   speed?: Nullable<number>;
   scale?: Nullable<number>;
   pattern?: Nullable<Pattern>;
+  resetTime?: Nullable<boolean>;
 };
 
 export type WebSocketClient = WS & {

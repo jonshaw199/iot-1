@@ -7,6 +7,7 @@ import {
   Grid,
   Slider,
   Typography,
+  Button,
 } from "@mui/material";
 import { useContext, useCallback, useState } from "react";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
@@ -141,6 +142,16 @@ export default function Lights() {
     [dispatch, ws]
   );
 
+  const resetTime = useCallback(() => {
+    const msg: PacketLightsAppearance = {
+      senderId: process.env.REACT_APP_DEVICE_ID || "",
+      type: MessageType.TYPE_MQTT_PUBLISH,
+      topic: Topics.LIGHTS_APPEARANCE,
+      resetTime: true,
+    };
+    dispatch(sendMessageThunk({ msg, ws }));
+  }, [dispatch, ws]);
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} md={6}>
@@ -193,6 +204,7 @@ export default function Lights() {
               </MenuItem>
             ))}
           </TextField>
+          <Button onClick={resetTime}>Sync</Button>
         </Card>
       </Grid>
       <Grid item xs={12} md={6}>
