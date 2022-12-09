@@ -1,6 +1,8 @@
 #ifndef PATTERN_PATTERN_H_
 #define PATTERN_PATTERN_H_
 
+#define USE_GET_MILLISECOND_TIMER true
+
 #include <FastLED.h>
 #include <AF1.h>
 
@@ -24,8 +26,6 @@ protected:
   static uint8_t currentScale;
   static uint8_t currentSpeed;
 
-  static unsigned long getTime();
-
 public:
   static void init();
 
@@ -39,6 +39,7 @@ public:
   static void setCurrentSpeed(uint8_t s);
   static void setCurrentPattern(uint8_t p);
   static Pattern *getCurrentPattern();
+  static unsigned long getTime();
   static void resetTime();
 };
 

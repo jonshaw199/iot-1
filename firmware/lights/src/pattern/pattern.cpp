@@ -1,5 +1,10 @@
 #include "pattern.h"
 
+uint32_t get_millisecond_timer()
+{
+  return Pattern::getTime();
+}
+
 #include "pattern/beatwave/beatwave.h"
 #include "pattern/everyother/everyother.h"
 #include "pattern/noise/noise.h"
