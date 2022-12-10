@@ -89,6 +89,7 @@ void Pattern::cbPattern(ECBArg a)
 {
   nblendPaletteTowardPalette(currentPalette, targetPalette);
   curPatternFn(a);
+  FastLED.show();
 }
 
 void Pattern::beatwave(ECBArg a)

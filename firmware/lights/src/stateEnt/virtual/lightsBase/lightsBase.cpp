@@ -19,10 +19,6 @@ void LightsBase::init()
   Pattern::init();
   AF1::addStringHandler("pattern*", [](SHArg a)
                         { Pattern::setCurPatternFn(a.getValue().toInt()); });
-  addEvent(Event(
-      "PatternLoop", [](ECBArg cbArg)
-      { Pattern::cbPattern(cbArg); },
-      EVENT_TYPE_PERM, 1));
 }
 
 void LightsBase::setup()
@@ -34,6 +30,11 @@ void LightsBase::setup()
   M5.Lcd.setRotation(0);
   M5.Lcd.pushImage(0, 0, MOUNTAINS_WIDTH, MOUNTAINS_HEIGHT, (uint16_t *)mountains);
 #endif
+
+  addEvent(Event(
+      "PatternLoop", [](ECBArg cbArg)
+      { Pattern::cbPattern(cbArg); },
+      EVENT_TYPE_TEMP, 1));
 }
 
 void LightsBase::loop()
