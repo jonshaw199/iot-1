@@ -38,6 +38,7 @@ const patternOptions: [number, string][] = [
   [Pattern.PATTERN_RIPPLE, "Ripple"],
   [Pattern.PATTERN_TWINKLEFOX, "Twinklefox"],
   [Pattern.PATTERN_DOTBEAT, "Dot Beat"],
+  [Pattern.PATTERN_SAWTOOTH, "Sawtooth"],
 ];
 
 const paletteOptions: [number, string][] = [
@@ -52,6 +53,11 @@ const paletteOptions: [number, string][] = [
   [Palette.PartyColors_p, "Party Colors"],
 ];
 
+const blendOptions: [number, string][] = [
+  [0, "No Blend"],
+  [1, "Linear Blend"],
+];
+
 export default function Lights() {
   const theme = useTheme();
   const ws = useContext(GlobalWebsocketContext);
@@ -61,6 +67,7 @@ export default function Lights() {
   const [selectedSpeed, setSelectedSpeed] = useState(0);
   const [selectedScale, setSelectedScale] = useState(0);
   const [selectedPattern, setSelectedPattern] = useState(0);
+  const [selectedBlend, setSelectedBlend] = useState(0);
 
   const submitColor = useCallback(
     (c: iro.Color) => {
@@ -152,6 +159,19 @@ export default function Lights() {
     dispatch(sendMessageThunk({ msg, ws }));
   }, [dispatch, ws]);
 
+  const changeBlend = useCallback(
+    (b: number) => {
+      const msg: PacketLightsAppearance = {
+        senderId: process.env.REACT_APP_DEVICE_ID || "",
+        type: MessageType.TYPE_MQTT_PUBLISH,
+        topic: Topics.LIGHTS_APPEARANCE,
+        blend: b,
+      };
+      dispatch(sendMessageThunk({ msg, ws }));
+    },
+    [dispatch, ws]
+  );
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} md={6}>
@@ -199,6 +219,22 @@ export default function Lights() {
             select
           >
             {paletteOptions.map(([value, name]: [number, string], i) => (
+              <MenuItem value={value} key={i}>
+                {name}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            label="Blend Type"
+            value={selectedBlend}
+            onChange={(e) => {
+              const b = parseInt(e.target.value);
+              setSelectedBlend(b);
+              changeBlend(b);
+            }}
+            select
+          >
+            {blendOptions.map(([value, name]: [number, string], i) => (
               <MenuItem value={value} key={i}>
                 {name}
               </MenuItem>

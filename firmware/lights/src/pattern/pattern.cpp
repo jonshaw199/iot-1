@@ -13,6 +13,7 @@ uint32_t get_millisecond_timer()
 #include "pattern/ripple/ripple.h"
 #include "pattern/twinklefox/twinklefox.h"
 #include "pattern/dotbeat/dotbeat.h"
+#include "pattern/sawtooth/sawtooth.h"
 
 enum patterns
 {
@@ -22,7 +23,8 @@ enum patterns
   PATTERN_PICKER,
   PATTERN_RIPPLE,
   PATTERN_TWINKLEFOX,
-  PATTERN_DOTBEAT
+  PATTERN_DOTBEAT,
+  PATTERN_SAWTOOTH
 };
 
 CRGB *Pattern::leds;
@@ -60,6 +62,7 @@ void Pattern::init()
   patternMap[PATTERN_RIPPLE] = new Ripple();
   patternMap[PATTERN_TWINKLEFOX] = new Twinklefox();
   patternMap[PATTERN_DOTBEAT] = new DotBeat();
+  patternMap[PATTERN_SAWTOOTH] = new Sawtooth();
   currentPattern = patternMap[PATTERN_PICKER];
   currentPattern->setup();
 }

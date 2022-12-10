@@ -171,6 +171,12 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
           Pattern::resetTime();
         }
       }
+
+      if (m.json().containsKey("blend"))
+      {
+        uint8_t b = m.json()["blend"];
+        Pattern::setCurrentBlending(static_cast<TBlendType>(b));
+      }
     }
 
     // Acks

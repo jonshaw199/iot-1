@@ -71,6 +71,7 @@ export enum Pattern {
   PATTERN_RIPPLE,
   PATTERN_TWINKLEFOX,
   PATTERN_DOTBEAT,
+  PATTERN_SAWTOOTH,
 }
 
 export type SubscriberId = string;
@@ -104,6 +105,7 @@ export type PacketLightsAppearance = Packet & {
   scale?: Nullable<number>;
   pattern?: Nullable<Pattern>;
   resetTime?: Nullable<boolean>;
+  blend?: Nullable<number>;
 };
 
 export type WebSocketClient = WS & {
