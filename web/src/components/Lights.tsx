@@ -35,10 +35,7 @@ const patternOptions: [number, string][] = [
   [Pattern.PATTERN_EVERYOTHER, "Every Other"],
   [Pattern.PATTERN_NOISE, "Noise"],
   [Pattern.PATTERN_PICKER, "Color Picker"],
-  [Pattern.PATTERN_RIPPLE, "Ripple"],
-  [Pattern.PATTERN_TWINKLEFOX, "Twinklefox"],
   [Pattern.PATTERN_DOTBEAT, "Dot Beat"],
-  [Pattern.PATTERN_SAWTOOTH, "Sawtooth"],
 ];
 
 const paletteOptions: [number, string][] = [
