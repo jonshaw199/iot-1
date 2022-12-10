@@ -17,7 +17,6 @@ enum patterns
   PATTERN_EVERYOTHER,
   PATTERN_NOISE,
   PATTERN_PICKER,
-  PATTERN_DOTBEAT,
 };
 
 typedef void (*patternFn)(ECBArg a);
@@ -27,7 +26,6 @@ class Pattern
   static unsigned long time;
 
   static void beatwave(ECBArg a);
-  static void dotbeat(ECBArg a);
   static void everyother(ECBArg a);
   static void noise(ECBArg a);
   static void picker(ECBArg a);

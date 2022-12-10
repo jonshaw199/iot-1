@@ -105,33 +105,23 @@ void Pattern::beatwave(ECBArg a)
   }
 }
 
-void Pattern::dotbeat(ECBArg a)
-{
-  uint8_t inner = beatsin8(currentSpeed, CNT / 4, CNT / 4 * 3);  // Move 1/4 to 3/4
-  uint8_t outer = beatsin8(currentSpeed, 0, CNT - 1);            // Move entire length
-  uint8_t middle = beatsin8(currentSpeed, CNT / 3, CNT / 3 * 2); // Move 1/3 to 2/3
-
-  leds[middle] = currentPalette[0];
-  leds[inner] = currentPalette[9];
-  leds[outer] = currentPalette[15];
-
-  nscale8(leds, CNT, currentScale); // Fade the entire array. Or for just a few LED's, use  nscale8(&leds[2], 5, fadeval);
-}
-
 // 250ms
 void Pattern::everyother(ECBArg a)
 {
-  static uint8_t coef;
-  coef = !coef;
-  for (int i = 0; i < CNT; i++)
+  if (a.cbCnt % 25 == 0)
   {
-    if (i % 2 == coef)
+    static uint8_t coef;
+    coef = !coef;
+    for (int i = 0; i < CNT; i++)
     {
-      leds[i] = ColorFromPalette(currentPalette, random8(), currentBrightness, NOBLEND);
-    }
-    else
-    {
-      leds[i] = CRGB::Black;
+      if (i % 2 == coef)
+      {
+        leds[i] = ColorFromPalette(currentPalette, random8(), currentBrightness, NOBLEND);
+      }
+      else
+      {
+        leds[i] = CRGB::Black;
+      }
     }
   }
 }

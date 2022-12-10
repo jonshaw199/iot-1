@@ -34,7 +34,7 @@ void LightsBase::setup()
   addEvent(Event(
       "PatternLoop", [](ECBArg cbArg)
       { Pattern::cbPattern(cbArg); },
-      EVENT_TYPE_TEMP, 1));
+      EVENT_TYPE_TEMP, 10));
 }
 
 void LightsBase::loop()
