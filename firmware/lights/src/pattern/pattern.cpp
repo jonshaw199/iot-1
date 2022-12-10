@@ -1,5 +1,6 @@
 #include "pattern.h"
 
+// FastLED timer override
 uint32_t get_millisecond_timer()
 {
   return Pattern::getTime();
