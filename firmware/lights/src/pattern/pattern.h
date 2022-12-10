@@ -11,11 +11,29 @@
 #define CNT max(CNT_A, CNT_B)
 #define SECONDS_PER_PALETTE 20
 
+enum patterns
+{
+  PATTERN_BEATWAVE,
+  PATTERN_EVERYOTHER,
+  PATTERN_NOISE,
+  PATTERN_PICKER,
+  PATTERN_DOTBEAT,
+};
+
+typedef void (*patternFn)(ECBArg a);
+
 class Pattern
 {
-  static Pattern *currentPattern;
-  static std::map<uint8_t, Pattern *> patternMap;
   static unsigned long time;
+
+  static void beatwave(ECBArg a);
+  static void dotbeat(ECBArg a);
+  static void everyother(ECBArg a);
+  static void noise(ECBArg a);
+  static void picker(ECBArg a);
+
+  static patternFn curPatternFn;
+  static std::map<uint8_t, patternFn> patternFnMap;
 
 protected:
   static CRGB *leds;
@@ -28,19 +46,17 @@ protected:
 
 public:
   static void init();
-
-  virtual void setup();
-  virtual void loop();
+  static void cbPattern(ECBArg a);
 
   static void setTargetPalette(CRGBPalette16 p);
   static void setCurrentBlending(TBlendType b);
   static void setCurrentBrightness(uint8_t b);
   static void setCurrentScale(uint8_t s);
   static void setCurrentSpeed(uint8_t s);
-  static void setCurrentPattern(uint8_t p);
-  static Pattern *getCurrentPattern();
   static unsigned long getTime();
   static void resetTime();
+
+  static void setCurPatternFn(uint8_t p);
 };
 
 #endif

@@ -18,7 +18,11 @@ void LightsBase::init()
 {
   Pattern::init();
   AF1::addStringHandler("pattern*", [](SHArg a)
-                        { Pattern::setCurrentPattern(a.getValue().toInt()); });
+                        { Pattern::setCurPatternFn(a.getValue().toInt()); });
+  addEvent(Event(
+      "PatternLoop", [](ECBArg cbArg)
+      { Pattern::cbPattern(cbArg); },
+      EVENT_TYPE_PERM, 1));
 }
 
 void LightsBase::setup()
@@ -57,8 +61,6 @@ void LightsBase::loop()
     M5.Lcd.setCursor(0, 0);
   }*/
 #endif
-
-  Pattern::getCurrentPattern()->loop();
 }
 
 bool LightsBase::doScanForPeersESPNow()
@@ -104,7 +106,7 @@ void LightsBase::handleInboxMsg(AF1Msg &m)
       if (m.json().containsKey("pattern"))
       {
         uint8_t p = m.json()["pattern"];
-        Pattern::setCurrentPattern(p);
+        Pattern::setCurPatternFn(p);
       }
 
       if (m.json().containsKey("h"))

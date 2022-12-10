@@ -6,27 +6,6 @@ uint32_t get_millisecond_timer()
   return Pattern::getTime();
 }
 
-#include "pattern/beatwave/beatwave.h"
-#include "pattern/everyother/everyother.h"
-#include "pattern/noise/noise.h"
-#include "pattern/picker/picker.h"
-#include "pattern/ripple/ripple.h"
-#include "pattern/twinklefox/twinklefox.h"
-#include "pattern/dotbeat/dotbeat.h"
-#include "pattern/sawtooth/sawtooth.h"
-
-enum patterns
-{
-  PATTERN_BEATWAVE,
-  PATTERN_EVERYOTHER,
-  PATTERN_NOISE,
-  PATTERN_PICKER,
-  PATTERN_RIPPLE,
-  PATTERN_TWINKLEFOX,
-  PATTERN_DOTBEAT,
-  PATTERN_SAWTOOTH
-};
-
 CRGB *Pattern::leds;
 CRGBPalette16 Pattern::currentPalette;
 CRGBPalette16 Pattern::targetPalette;
@@ -35,10 +14,10 @@ uint8_t Pattern::currentBrightness = 200;
 uint8_t Pattern::currentSpeed;
 uint8_t Pattern::currentScale;
 
-Pattern *Pattern::currentPattern;
-std::map<uint8_t, Pattern *> Pattern::patternMap;
-
 unsigned long Pattern::time;
+
+patternFn Pattern::curPatternFn;
+std::map<uint8_t, patternFn> Pattern::patternFnMap;
 
 void Pattern::init()
 {
@@ -55,25 +34,12 @@ void Pattern::init()
 
   resetTime();
 
-  patternMap[PATTERN_BEATWAVE] = new Beatwave();
-  patternMap[PATTERN_EVERYOTHER] = new EveryOther();
-  patternMap[PATTERN_NOISE] = new Noise();
-  patternMap[PATTERN_PICKER] = new Picker();
-  patternMap[PATTERN_RIPPLE] = new Ripple();
-  patternMap[PATTERN_TWINKLEFOX] = new Twinklefox();
-  patternMap[PATTERN_DOTBEAT] = new DotBeat();
-  patternMap[PATTERN_SAWTOOTH] = new Sawtooth();
-  currentPattern = patternMap[PATTERN_PICKER];
-  currentPattern->setup();
-}
-
-void Pattern::setup()
-{
-}
-
-void Pattern::loop()
-{
-  nblendPaletteTowardPalette(currentPalette, targetPalette);
+  patternFnMap[PATTERN_BEATWAVE] = beatwave;
+  patternFnMap[PATTERN_DOTBEAT] = dotbeat;
+  patternFnMap[PATTERN_EVERYOTHER] = everyother;
+  patternFnMap[PATTERN_NOISE] = noise;
+  patternFnMap[PATTERN_PICKER] = picker;
+  curPatternFn = picker;
 }
 
 void Pattern::setTargetPalette(CRGBPalette16 p)
@@ -101,24 +67,6 @@ void Pattern::setCurrentSpeed(uint8_t s)
   currentSpeed = s;
 }
 
-void Pattern::setCurrentPattern(uint8_t p)
-{
-  if (patternMap.count(p))
-  {
-    currentPattern = patternMap[p];
-    currentPattern->setup();
-  }
-  else
-  {
-    Serial.println("Pattern doesn't exist");
-  }
-}
-
-Pattern *Pattern::getCurrentPattern()
-{
-  return currentPattern;
-}
-
 unsigned long Pattern::getTime()
 {
   return millis() - time;
@@ -127,4 +75,76 @@ unsigned long Pattern::getTime()
 void Pattern::resetTime()
 {
   time = millis();
+}
+
+void Pattern::setCurPatternFn(uint8_t p)
+{
+  if (patternFnMap.count(p))
+  {
+    curPatternFn = patternFnMap[p];
+  }
+}
+
+void Pattern::cbPattern(ECBArg a)
+{
+  nblendPaletteTowardPalette(currentPalette, targetPalette);
+  curPatternFn(a);
+}
+
+void Pattern::beatwave(ECBArg a)
+{
+  uint8_t wave1 = beatsin8(9, 0, 255); // That's the same as beatsin8(9);
+  uint8_t wave2 = beatsin8(8, 0, 255);
+  uint8_t wave3 = beatsin8(7, 0, 255);
+  uint8_t wave4 = beatsin8(6, 0, 255);
+
+  for (int i = 0; i < CNT; i++)
+  {
+    leds[i] = ColorFromPalette(currentPalette, i + wave1 + wave2 + wave3 + wave4, 255, currentBlending);
+  }
+}
+
+void Pattern::dotbeat(ECBArg a)
+{
+  uint8_t inner = beatsin8(currentSpeed, CNT / 4, CNT / 4 * 3);  // Move 1/4 to 3/4
+  uint8_t outer = beatsin8(currentSpeed, 0, CNT - 1);            // Move entire length
+  uint8_t middle = beatsin8(currentSpeed, CNT / 3, CNT / 3 * 2); // Move 1/3 to 2/3
+
+  leds[middle] = currentPalette[0];
+  leds[inner] = currentPalette[9];
+  leds[outer] = currentPalette[15];
+
+  nscale8(leds, CNT, currentScale); // Fade the entire array. Or for just a few LED's, use  nscale8(&leds[2], 5, fadeval);
+}
+
+// 250ms
+void Pattern::everyother(ECBArg a)
+{
+  static uint8_t coef;
+  coef = !coef;
+  for (int i = 0; i < CNT; i++)
+  {
+    if (i % 2 == coef)
+    {
+      leds[i] = ColorFromPalette(currentPalette, random8(), currentBrightness, NOBLEND);
+    }
+    else
+    {
+      leds[i] = CRGB::Black;
+    }
+  }
+}
+
+void Pattern::noise(ECBArg a)
+{
+  for (int i = 0; i < CNT; i++)
+  {                                                                               // Just ONE loop to fill up the LED array as all of the pixels change.
+    uint8_t index = inoise8(i * currentScale, getTime() / 10 + i * currentScale); // Get a value from the noise function. I'm using both x and y axis.
+    leds[i] = ColorFromPalette(currentPalette, index, 255, LINEARBLEND);          // With that value, look up the 8 bit colour palette value and assign it to the current LED.
+  }
+}
+
+void Pattern::picker(ECBArg a)
+{
+  fill_solid(leds, CNT, ColorFromPalette(currentPalette, 0));
 }
