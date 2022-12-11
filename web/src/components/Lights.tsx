@@ -240,19 +240,7 @@ export default function Lights() {
               </MenuItem>
             ))}
           </TextField>
-          <Button onClick={resetTime} variant="outlined">
-            Sync
-          </Button>
-        </Card>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Card sx={{ padding: theme.spacing(2) }}>
-          <ColorPicker throttle={333} onChangeThrottled={submitColor} />
-        </Card>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Card sx={{ padding: theme.spacing(2) }}>
-          <Typography>Speed</Typography>
+          <Typography sx={{ marginTop: theme.spacing(2) }}>Speed</Typography>
           <Slider
             value={selectedSpeed}
             onChange={(e, v) => {
@@ -277,6 +265,14 @@ export default function Lights() {
             }}
             onChangeCommitted={() => submitScale(selectedScale)}
           />
+          <ColorPicker throttle={333} onChangeThrottled={submitColor} />
+          <Button
+            onClick={resetTime}
+            variant="outlined"
+            sx={{ marginTop: theme.spacing(2) }}
+          >
+            Time Sync
+          </Button>
         </Card>
       </Grid>
     </Grid>
