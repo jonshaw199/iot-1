@@ -48,7 +48,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
 }));
 
 const Outer = styled("div")(({ theme }) => ({
-  height: "100%",
+  minHeight: "100vh",
   backgroundColor: theme.page.backgroundColor,
 }));
 
