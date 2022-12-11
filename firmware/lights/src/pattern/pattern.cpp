@@ -35,7 +35,6 @@ void Pattern::init()
   resetTime();
 
   patternFnMap[PATTERN_BEATWAVE] = beatwave;
-  patternFnMap[PATTERN_DOTBEAT] = dotbeat;
   patternFnMap[PATTERN_EVERYOTHER] = everyother;
   patternFnMap[PATTERN_NOISE] = noise;
   patternFnMap[PATTERN_PICKER] = picker;
@@ -105,24 +104,15 @@ void Pattern::beatwave(ECBArg a)
   }
 }
 
-// 250ms
 void Pattern::everyother(ECBArg a)
 {
-  if (a.cbCnt % 25 == 0)
+  uint8_t wave1 = beatsin8(currentSpeed, 0, 255);
+  uint8_t wave2 = 255 - wave1;
+  uint8_t coef = wave1 > 127 ? 0 : 1;
+  for (int i = 0; i < CNT; i++)
   {
-    static uint8_t coef;
-    coef = !coef;
-    for (int i = 0; i < CNT; i++)
-    {
-      if (i % 2 == coef)
-      {
-        leds[i] = ColorFromPalette(currentPalette, random8(), currentBrightness, NOBLEND);
-      }
-      else
-      {
-        leds[i] = CRGB::Black;
-      }
-    }
+    uint8_t b = i % 2 == coef ? wave2 : wave1;
+    leds[i] = ColorFromPalette(currentPalette, i, b);
   }
 }
 
