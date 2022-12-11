@@ -58,12 +58,12 @@ export default function Lights() {
   const theme = useTheme();
   const ws = useContext(GlobalWebsocketContext);
   const dispatch = useDispatch();
-  const [selectedState, setSelectedState] = useState(0);
-  const [selectedPalette, setSelectedPalette] = useState(0);
-  const [selectedSpeed, setSelectedSpeed] = useState(0);
-  const [selectedScale, setSelectedScale] = useState(0);
-  const [selectedPattern, setSelectedPattern] = useState(0);
-  const [selectedBlend, setSelectedBlend] = useState(0);
+  const [selectedState, setSelectedState] = useState(-1);
+  const [selectedPalette, setSelectedPalette] = useState(-1);
+  const [selectedSpeed, setSelectedSpeed] = useState(-1);
+  const [selectedScale, setSelectedScale] = useState(-1);
+  const [selectedPattern, setSelectedPattern] = useState(-1);
+  const [selectedBlend, setSelectedBlend] = useState(-1);
 
   const submitColor = useCallback(
     (c: iro.Color) => {
@@ -181,6 +181,7 @@ export default function Lights() {
               changeState(s);
             }}
             select
+            style={{ minWidth: 100 }}
           >
             {stateOptions.map(([value, name]: [number, string], i) => (
               <MenuItem value={value} key={i}>
@@ -197,6 +198,7 @@ export default function Lights() {
               changePattern(p);
             }}
             select
+            style={{ minWidth: 100 }}
           >
             {patternOptions.map(([value, name]: [number, string], i) => (
               <MenuItem value={value} key={i}>
@@ -213,6 +215,7 @@ export default function Lights() {
               changePalette(p);
             }}
             select
+            style={{ minWidth: 100 }}
           >
             {paletteOptions.map(([value, name]: [number, string], i) => (
               <MenuItem value={value} key={i}>
@@ -229,6 +232,7 @@ export default function Lights() {
               changeBlend(b);
             }}
             select
+            style={{ minWidth: 100 }}
           >
             {blendOptions.map(([value, name]: [number, string], i) => (
               <MenuItem value={value} key={i}>
