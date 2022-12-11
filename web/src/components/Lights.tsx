@@ -9,6 +9,7 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import { Box } from "@mui/system";
 import { useContext, useCallback, useState } from "react";
 import { GlobalWebsocketContext } from "../hooks/useWebsocket";
 import {
@@ -172,74 +173,76 @@ export default function Lights() {
     <Grid container spacing={1}>
       <Grid item xs={12} md={6}>
         <Card sx={{ padding: theme.spacing(2) }}>
-          <TextField
-            label="State"
-            value={selectedState}
-            onChange={(e) => {
-              const s = parseInt(e.target.value);
-              setSelectedState(s);
-              changeState(s);
-            }}
-            select
-            style={{ minWidth: 100 }}
-          >
-            {stateOptions.map(([value, name]: [number, string], i) => (
-              <MenuItem value={value} key={i}>
-                {name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            label="Pattern"
-            value={selectedPattern}
-            onChange={(e) => {
-              const p = parseInt(e.target.value);
-              setSelectedPattern(p);
-              changePattern(p);
-            }}
-            select
-            style={{ minWidth: 100 }}
-          >
-            {patternOptions.map(([value, name]: [number, string], i) => (
-              <MenuItem value={value} key={i}>
-                {name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            label="Color Palette"
-            value={selectedPalette}
-            onChange={(e) => {
-              const p = parseInt(e.target.value);
-              setSelectedPalette(p);
-              changePalette(p);
-            }}
-            select
-            style={{ minWidth: 100 }}
-          >
-            {paletteOptions.map(([value, name]: [number, string], i) => (
-              <MenuItem value={value} key={i}>
-                {name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            label="Blend Type"
-            value={selectedBlend}
-            onChange={(e) => {
-              const b = parseInt(e.target.value);
-              setSelectedBlend(b);
-              changeBlend(b);
-            }}
-            select
-            style={{ minWidth: 100 }}
-          >
-            {blendOptions.map(([value, name]: [number, string], i) => (
-              <MenuItem value={value} key={i}>
-                {name}
-              </MenuItem>
-            ))}
-          </TextField>
+          <Box display="flex" gap={theme.spacing(1)} flexWrap="wrap">
+            <TextField
+              label="State"
+              value={selectedState}
+              onChange={(e) => {
+                const s = parseInt(e.target.value);
+                setSelectedState(s);
+                changeState(s);
+              }}
+              select
+              style={{ minWidth: 100 }}
+            >
+              {stateOptions.map(([value, name]: [number, string], i) => (
+                <MenuItem value={value} key={i}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              label="Pattern"
+              value={selectedPattern}
+              onChange={(e) => {
+                const p = parseInt(e.target.value);
+                setSelectedPattern(p);
+                changePattern(p);
+              }}
+              select
+              style={{ minWidth: 100 }}
+            >
+              {patternOptions.map(([value, name]: [number, string], i) => (
+                <MenuItem value={value} key={i}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              label="Color Palette"
+              value={selectedPalette}
+              onChange={(e) => {
+                const p = parseInt(e.target.value);
+                setSelectedPalette(p);
+                changePalette(p);
+              }}
+              select
+              style={{ minWidth: 100 }}
+            >
+              {paletteOptions.map(([value, name]: [number, string], i) => (
+                <MenuItem value={value} key={i}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              label="Blend Type"
+              value={selectedBlend}
+              onChange={(e) => {
+                const b = parseInt(e.target.value);
+                setSelectedBlend(b);
+                changeBlend(b);
+              }}
+              select
+              style={{ minWidth: 100 }}
+            >
+              {blendOptions.map(([value, name]: [number, string], i) => (
+                <MenuItem value={value} key={i}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Box>
           <Typography sx={{ marginTop: theme.spacing(2) }}>Speed</Typography>
           <Slider
             value={selectedSpeed}
