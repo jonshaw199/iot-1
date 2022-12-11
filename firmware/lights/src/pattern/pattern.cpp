@@ -106,12 +106,11 @@ void Pattern::beatwave(ECBArg a)
 
 void Pattern::everyother(ECBArg a)
 {
-  uint8_t wave1 = beatsin8(currentSpeed, 0, 255);
+  uint8_t wave1 = beatsin8(currentSpeed * 2, 0, 255);
   uint8_t wave2 = 255 - wave1;
-  uint8_t coef = wave1 > 127 ? 0 : 1;
   for (int i = 0; i < CNT; i++)
   {
-    uint8_t b = i % 2 == coef ? wave2 : wave1;
+    uint8_t b = i % 2 ? wave1 : wave2;
     leds[i] = ColorFromPalette(currentPalette, i, b);
   }
 }
