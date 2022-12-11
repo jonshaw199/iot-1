@@ -59,12 +59,12 @@ export default function Lights() {
   const theme = useTheme();
   const ws = useContext(GlobalWebsocketContext);
   const dispatch = useDispatch();
-  const [selectedState, setSelectedState] = useState(-1);
-  const [selectedPalette, setSelectedPalette] = useState(-1);
-  const [selectedSpeed, setSelectedSpeed] = useState(-1);
-  const [selectedScale, setSelectedScale] = useState(-1);
-  const [selectedPattern, setSelectedPattern] = useState(-1);
-  const [selectedBlend, setSelectedBlend] = useState(-1);
+  const [selectedState, setSelectedState] = useState<number | string>("");
+  const [selectedPalette, setSelectedPalette] = useState<number | string>("");
+  const [selectedPattern, setSelectedPattern] = useState<number | string>("");
+  const [selectedBlend, setSelectedBlend] = useState<number | string>("");
+  const [selectedSpeed, setSelectedSpeed] = useState(0);
+  const [selectedScale, setSelectedScale] = useState(0);
 
   const submitColor = useCallback(
     (c: iro.Color) => {
@@ -183,7 +183,7 @@ export default function Lights() {
                 changeState(s);
               }}
               select
-              style={{ minWidth: 100 }}
+              fullWidth
             >
               {stateOptions.map(([value, name]: [number, string], i) => (
                 <MenuItem value={value} key={i}>
@@ -200,7 +200,7 @@ export default function Lights() {
                 changePattern(p);
               }}
               select
-              style={{ minWidth: 100 }}
+              fullWidth
             >
               {patternOptions.map(([value, name]: [number, string], i) => (
                 <MenuItem value={value} key={i}>
@@ -217,7 +217,7 @@ export default function Lights() {
                 changePalette(p);
               }}
               select
-              style={{ minWidth: 100 }}
+              fullWidth
             >
               {paletteOptions.map(([value, name]: [number, string], i) => (
                 <MenuItem value={value} key={i}>
@@ -234,7 +234,7 @@ export default function Lights() {
                 changeBlend(b);
               }}
               select
-              style={{ minWidth: 100 }}
+              fullWidth
             >
               {blendOptions.map(([value, name]: [number, string], i) => (
                 <MenuItem value={value} key={i}>
