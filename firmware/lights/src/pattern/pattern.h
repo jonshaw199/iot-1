@@ -19,16 +19,16 @@ enum patterns
   PATTERN_PICKER,
 };
 
-typedef void (*patternFn)(ECBArg a);
+typedef void (*patternFn)();
 
 class Pattern
 {
   static unsigned long time;
 
-  static void beatwave(ECBArg a);
-  static void everyother(ECBArg a);
-  static void noise(ECBArg a);
-  static void picker(ECBArg a);
+  static void beatwave();
+  static void everyother();
+  static void noise();
+  static void picker();
 
   static patternFn curPatternFn;
   static std::map<uint8_t, patternFn> patternFnMap;
@@ -44,7 +44,7 @@ protected:
 
 public:
   static void init();
-  static void cbPattern(ECBArg a);
+  static void cbPattern();
 
   static void setTargetPalette(CRGBPalette16 p);
   static void setCurrentBlending(TBlendType b);

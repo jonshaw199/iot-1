@@ -84,14 +84,18 @@ void Pattern::setCurPatternFn(uint8_t p)
   }
 }
 
-void Pattern::cbPattern(ECBArg a)
+void Pattern::cbPattern()
 {
   nblendPaletteTowardPalette(currentPalette, targetPalette);
-  curPatternFn(a);
+  curPatternFn();
   FastLED.show();
 }
 
-void Pattern::beatwave(ECBArg a)
+/*
+ * Patterns
+ */
+
+void Pattern::beatwave()
 {
   uint8_t wave1 = beatsin8(9, 0, 255); // That's the same as beatsin8(9);
   uint8_t wave2 = beatsin8(8, 0, 255);
@@ -104,7 +108,7 @@ void Pattern::beatwave(ECBArg a)
   }
 }
 
-void Pattern::everyother(ECBArg a)
+void Pattern::everyother()
 {
   uint8_t wave1 = beatsin8(currentSpeed * 2, 0, 255);
   uint8_t wave2 = 255 - wave1;
@@ -115,7 +119,7 @@ void Pattern::everyother(ECBArg a)
   }
 }
 
-void Pattern::noise(ECBArg a)
+void Pattern::noise()
 {
   for (int i = 0; i < CNT; i++)
   {                                                                               // Just ONE loop to fill up the LED array as all of the pixels change.
@@ -124,7 +128,7 @@ void Pattern::noise(ECBArg a)
   }
 }
 
-void Pattern::picker(ECBArg a)
+void Pattern::picker()
 {
   fill_solid(leds, CNT, ColorFromPalette(currentPalette, 0));
 }
