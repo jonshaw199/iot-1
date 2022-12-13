@@ -38,6 +38,7 @@ void Pattern::init()
   patternFnMap[PATTERN_EVERYOTHER] = everyother;
   patternFnMap[PATTERN_NOISE] = noise;
   patternFnMap[PATTERN_PICKER] = picker;
+  patternFnMap[PATTERN_BREATHE] = breathe;
   curPatternFn = picker;
 }
 
@@ -97,20 +98,17 @@ void Pattern::cbPattern()
 
 void Pattern::beatwave()
 {
-  uint8_t wave1 = beatsin8(9);
-  uint8_t wave2 = beatsin8(8);
-  uint8_t wave3 = beatsin8(7);
-  uint8_t wave4 = beatsin8(6);
+  uint8_t wave = beatsin8(currentSpeed);
 
   for (int i = 0; i < CNT; i++)
   {
-    leds[i] = ColorFromPalette(currentPalette, i + wave1 + wave2 + wave3 + wave4, currentBrightness, currentBlending);
+    leds[i] = ColorFromPalette(currentPalette, i + wave, currentBrightness, currentBlending);
   }
 }
 
 void Pattern::everyother()
 {
-  uint8_t wave1 = beatsin8(currentSpeed * 2, 0, 255);
+  uint8_t wave1 = beatsin8(currentSpeed * 2);
   uint8_t wave2 = 255 - wave1;
   for (int i = 0; i < CNT; i++)
   {
@@ -131,4 +129,10 @@ void Pattern::noise()
 void Pattern::picker()
 {
   fill_solid(leds, CNT, ColorFromPalette(currentPalette, 0));
+}
+
+void Pattern::breathe()
+{
+  uint8_t b = beatsin8(currentSpeed * 3);
+  fill_solid(leds, CNT, ColorFromPalette(currentPalette, 0, b));
 }
