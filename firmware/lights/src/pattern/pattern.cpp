@@ -108,12 +108,37 @@ void Pattern::beatwave()
 
 void Pattern::everyother()
 {
+  CRGB c1 = currentPalette[0];
+  CRGB c2;
+  for (uint8_t i = 1; i < 16; i++)
+  {
+    if (currentPalette[i] != c1)
+    {
+      c2 = currentPalette[i];
+      break;
+    }
+    else if (i == 15)
+    {
+      c2 = currentPalette[0];
+    }
+  }
+
   uint8_t wave1 = beatsin8(currentSpeed * 2);
   uint8_t wave2 = 255 - wave1;
   for (int i = 0; i < CNT; i++)
   {
-    uint8_t b = i % 2 ? wave1 : wave2;
-    leds[i] = ColorFromPalette(currentPalette, i, b, currentBlending);
+    if (i % 2)
+    {
+      CHSV c = rgb2hsv_approximate(c1);
+      c.value = wave1;
+      leds[i] = c;
+    }
+    else
+    {
+      CHSV c = rgb2hsv_approximate(c2);
+      c.value = wave2;
+      leds[i] = c;
+    }
   }
 }
 
