@@ -37,6 +37,7 @@ const patternOptions: [number, string][] = [
   [Pattern.PATTERN_NOISE, "Noise"],
   [Pattern.PATTERN_PICKER, "Color Picker"],
   [Pattern.PATTERN_BREATHE, "Breathe"],
+  [Pattern.PATTERN_OPENCLOSE, "Open/Close"],
 ];
 
 const paletteOptions: [number, string][] = [

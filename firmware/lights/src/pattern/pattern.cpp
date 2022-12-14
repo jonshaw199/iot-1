@@ -39,6 +39,7 @@ void Pattern::init()
   patternFnMap[PATTERN_NOISE] = noise;
   patternFnMap[PATTERN_PICKER] = picker;
   patternFnMap[PATTERN_BREATHE] = breathe;
+  patternFnMap[PATTERN_OPENCLOSE] = openClose;
   curPatternFn = picker;
 }
 
@@ -160,4 +161,15 @@ void Pattern::breathe()
 {
   uint8_t b = beatsin8(currentSpeed * 3);
   fill_solid(leds, CNT, ColorFromPalette(currentPalette, 0, b));
+}
+
+void Pattern::openClose()
+{
+  int middle = CNT / 2;
+  uint8_t b = beatsin8(currentSpeed);
+  int len = b * CNT / 255;
+  for (int i = 0; i < CNT; i++)
+  {
+    leds[i] = i >= middle - len && i <= middle + len ? ColorFromPalette(currentPalette, i, currentBrightness, currentBlending) : CRGB::Black;
+  }
 }

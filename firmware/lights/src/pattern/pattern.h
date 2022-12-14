@@ -17,7 +17,8 @@ enum patterns
   PATTERN_EVERYOTHER,
   PATTERN_NOISE,
   PATTERN_PICKER,
-  PATTERN_BREATHE
+  PATTERN_BREATHE,
+  PATTERN_OPENCLOSE
 };
 
 typedef void (*patternFn)();
@@ -31,6 +32,7 @@ class Pattern
   static void noise();
   static void picker();
   static void breathe();
+  static void openClose();
 
   static patternFn curPatternFn;
   static std::map<uint8_t, patternFn> patternFnMap;

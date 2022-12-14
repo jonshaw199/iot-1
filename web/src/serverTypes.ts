@@ -69,6 +69,7 @@ export enum Pattern {
   PATTERN_NOISE,
   PATTERN_PICKER,
   PATTERN_BREATHE,
+  PATTERN_OPENCLOSE,
 }
 
 export type SubscriberId = string;
