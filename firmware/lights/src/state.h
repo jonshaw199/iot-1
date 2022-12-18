@@ -6,19 +6,4 @@ enum custom_states
   STATE_HOME = 0,
 };
 
-enum custom_types
-{
-  TYPE_MQTT_SUBSCRIBE = 0,
-  TYPE_MQTT_SUBACK,
-  TYPE_MQTT_UNSUBSCRIBE,
-  TYPE_MQTT_UNSUBACK,
-  TYPE_MQTT_PUBLISH,
-  // QOS 1
-  TYPE_MQTT_PUBACK,
-  // QOS 2
-  TYPE_MQTT_PUBREC,
-  TYPE_MQTT_PUBREL,
-  TYPE_MQTT_PUBCOMP,
-};
-
 #endif // STATE_H_
