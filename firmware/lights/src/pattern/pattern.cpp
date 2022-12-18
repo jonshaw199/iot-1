@@ -88,7 +88,7 @@ void Pattern::setCurPatternFn(uint8_t p)
 
 void Pattern::cbPattern()
 {
-  nblendPaletteTowardPalette(currentPalette, targetPalette);
+  nblendPaletteTowardPalette(currentPalette, targetPalette, 48);
   curPatternFn();
   FastLED.show();
 }
