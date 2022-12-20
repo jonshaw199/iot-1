@@ -40,6 +40,7 @@ void Pattern::init()
   patternFnMap[PATTERN_PICKER] = picker;
   patternFnMap[PATTERN_BREATHE] = breathe;
   patternFnMap[PATTERN_OPENCLOSE] = openClose;
+  patternFnMap[PATTERN_RANDFILL] = randFill;
   curPatternFn = picker;
 }
 
@@ -171,5 +172,65 @@ void Pattern::openClose()
   for (int i = 0; i < CNT; i++)
   {
     leds[i] = i >= middle - len && i <= middle + len ? ColorFromPalette(currentPalette, i, currentBrightness, currentBlending) : CRGB::Black;
+  }
+}
+
+void Pattern::randFill()
+{
+  // 2 unique colors from palette if available
+  CRGB c1 = currentPalette[0];
+  CRGB c2;
+  for (uint8_t i = 1; i < 16; i++)
+  {
+    if (currentPalette[i] != c1)
+    {
+      c2 = currentPalette[i];
+      break;
+    }
+    else if (i == 15)
+    {
+      c2 = currentPalette[0];
+    }
+  }
+
+  // init
+  static std::vector<int> c1Vec;
+  static std::vector<int> c2Vec;
+  if (!c1Vec.size() && !c2Vec.size())
+  {
+    for (int i = 0; i < CNT; i++)
+    {
+      c1Vec.push_back(i);
+    }
+  }
+
+  uint8_t b = beatsin8(currentSpeed / 10);
+  float percent = (float)b / (float)255;
+  int newNumC1 = (float)CNT * percent;
+  int dif = newNumC1 - c1Vec.size();
+  random16_set_seed(getTime());
+  if (dif < 0)
+  {
+    // Move from c1 to c2
+    for (int i = 0; i < abs(dif) && c1Vec.size(); i++)
+    {
+      int j = random8(c1Vec.size());
+      int val = c1Vec[j];
+      c2Vec.push_back(val);
+      c1Vec.erase(c1Vec.begin() + j);
+      leds[val] = c2;
+    }
+  }
+  else if (dif > 0)
+  {
+    // Move from c2 to c1
+    for (int i = 0; i < abs(dif) && c2Vec.size(); i++)
+    {
+      int j = random8(c2Vec.size());
+      int val = c2Vec[j];
+      c1Vec.push_back(val);
+      c2Vec.erase(c2Vec.begin() + j);
+      leds[val] = c1;
+    }
   }
 }

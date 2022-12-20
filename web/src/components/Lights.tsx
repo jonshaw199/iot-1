@@ -38,6 +38,7 @@ const patternOptions: [number, string][] = [
   [Pattern.PATTERN_PICKER, "Color Picker"],
   [Pattern.PATTERN_BREATHE, "Breathe"],
   [Pattern.PATTERN_OPENCLOSE, "Open/Close"],
+  [Pattern.PATTERN_RANDFILL, "Random Fill"],
 ];
 
 const paletteOptions: [number, string][] = [
