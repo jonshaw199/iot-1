@@ -189,7 +189,7 @@ void Pattern::randFill()
     }
     else if (i == 15)
     {
-      c2 = currentPalette[0];
+      c2 = CRGB::Black;
     }
   }
 
