@@ -41,6 +41,7 @@ void Pattern::init()
   patternFnMap[PATTERN_BREATHE] = breathe;
   patternFnMap[PATTERN_OPENCLOSE] = openClose;
   patternFnMap[PATTERN_RANDFILL] = randFill;
+  patternFnMap[PATTERN_EVERYN] = everyN;
   curPatternFn = picker;
 }
 
@@ -231,6 +232,26 @@ void Pattern::randFill()
       c1Vec.push_back(val);
       c2Vec.erase(c2Vec.begin() + j);
       leds[val] = c1;
+    }
+  }
+}
+
+void Pattern::everyN()
+{
+  int speed = currentSpeed;
+  int scale = currentScale;
+
+  unsigned long time = getTime() / ((100 - std::max(speed, 1)) * 4);
+  uint8_t offset = time % std::max(scale, 1) % CNT;
+  for (int i = 0; i < CNT; i++)
+  {
+    if (i % std::max(scale, 1) == offset)
+    {
+      leds[i] = CRGB::White;
+    }
+    else
+    {
+      leds[i] = currentPalette[0];
     }
   }
 }

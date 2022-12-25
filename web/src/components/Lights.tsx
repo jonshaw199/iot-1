@@ -39,6 +39,7 @@ const patternOptions: [number, string][] = [
   [Pattern.PATTERN_BREATHE, "Breathe"],
   [Pattern.PATTERN_OPENCLOSE, "Open/Close"],
   [Pattern.PATTERN_RANDFILL, "Random Fill"],
+  [Pattern.PATTERN_EVERYN, "Every N"],
 ];
 
 const paletteOptions: [number, string][] = [

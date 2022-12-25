@@ -8,7 +8,7 @@
 
 #include "color/palette/list.h"
 
-#define CNT max(CNT_A, CNT_B)
+#define CNT preMax(CNT_A, CNT_B)
 #define SECONDS_PER_PALETTE 20
 
 enum patterns
@@ -19,7 +19,8 @@ enum patterns
   PATTERN_PICKER,
   PATTERN_BREATHE,
   PATTERN_OPENCLOSE,
-  PATTERN_RANDFILL
+  PATTERN_RANDFILL,
+  PATTERN_EVERYN
 };
 
 typedef void (*patternFn)();
@@ -35,6 +36,7 @@ class Pattern
   static void breathe();
   static void openClose();
   static void randFill();
+  static void everyN();
 
   static patternFn curPatternFn;
   static std::map<uint8_t, patternFn> patternFnMap;
