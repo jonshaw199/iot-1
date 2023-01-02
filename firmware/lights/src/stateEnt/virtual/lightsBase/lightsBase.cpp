@@ -26,7 +26,7 @@ void LightsBase::setup()
   M5.Lcd.pushImage(0, 0, MOUNTAINS_WIDTH, MOUNTAINS_HEIGHT, (uint16_t *)mountains);
 #endif
 
-  addEvent(Event(
+  addEvent(AF1Event(
       "PatternLoop", [](ECBArg a)
       { Pattern::cbPattern(); },
       EVENT_TYPE_TEMP, 20));
