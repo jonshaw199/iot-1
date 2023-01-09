@@ -1,9 +1,9 @@
 #ifndef STATEENT_HOME_H_
 #define STATEENT_HOME_H_
 
-#include <AF1.h>
+#include "stateEnt/audioBase/audioBase.h"
 
-class Home : public Base
+class Home : public AudioBase
 {
 public:
   void setup();
