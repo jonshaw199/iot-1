@@ -13,7 +13,7 @@
 #define MODE_MIC 0 // Define the working mode.  定义工作模式
 #define MODE_SPK 1
 #define DATA_SIZE 1024
-#define MAX_DATA_SIZE DATA_SIZE * 250
+#define MAX_DATA_SIZE DATA_SIZE * 250 // 100 original
 
 uint8_t *AudioBase::microphoneData;
 int AudioBase::data_offset = 0;
