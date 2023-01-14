@@ -19,10 +19,20 @@ export async function handleWS(w: WS, req: Request, next) {
   ws.on("message", (m) => {
     process.stdout.write("<");
     try {
-      const packet = JSON.parse(m.toString());
-      MessageBroker.handlePacket({ packet, orgId: ws.orgId });
+      if (m instanceof Buffer) {
+        console.log(`Received binary: ${m.toString()}`);
+      } else if (typeof m == "string") {
+        try {
+          const packet = JSON.parse(m);
+          MessageBroker.handlePacket({ packet, orgId: ws.orgId });
+        } catch (e) {
+          console.log(`Error parsing JSON: ${m}, (${e})`);
+        }
+      } else {
+        throw `Unknown message`;
+      }
     } catch (e) {
-      console.log(`Unable to parse JSON: ${m} (${e})`);
+      console.log(`Error receiving message: ${m} (${e})`);
     }
   });
 
