@@ -90,6 +90,12 @@ async function insertDocuments() {
       _id: "638ccd1ac3573560b9cbbbcc",
     }),
     new deviceModel({
+      board: Board.BOARD_WEMOS_D1_MINI32,
+      name: "11",
+      orgId: org.id,
+      _id: "63a0a9743c5ce31877af3455",
+    }),
+    new deviceModel({
       board: Board.BOARD_M5STICK_C,
       name: "15",
       orgId: org.id,
@@ -100,6 +106,12 @@ async function insertDocuments() {
       name: "18",
       orgId: org.id,
       _id: "637e6824353c2a48866b901a",
+    }),
+    new deviceModel({
+      board: Board.BOARD_M5STACK_CORE2,
+      name: "19",
+      orgId: org.id,
+      _id: "63c47ae8d7531ebb0ded4b9a",
     }),
   ];
 
