@@ -1,8 +1,8 @@
 import express from "express";
-import * as mqttCtrl from "../controllers/mqtt";
+import * as websocketCtrl from "../controllers/websocket";
 
 const rootRouter = express.Router();
 
-rootRouter.ws("", mqttCtrl.handleWS);
+rootRouter.ws("", websocketCtrl.handleWS);
 
 export default rootRouter;
