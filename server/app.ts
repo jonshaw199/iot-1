@@ -15,8 +15,10 @@ import orgRouter from "./routes/org";
 import deviceRouter from "./routes/device";
 import MQTT from "./mqtt";
 import rootRouter from "./routes/root";
+import Websocket from "./websocket";
 
-MQTT.init(expressWs);
+Websocket.init(expressWs);
+MQTT.init();
 
 mongoose.connect(process.env.MONGODB_URI, null, (err) => {
   console.log(err || `Connected to MongoDB.`);

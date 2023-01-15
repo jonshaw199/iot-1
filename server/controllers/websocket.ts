@@ -4,8 +4,9 @@ import { Types } from "mongoose";
 import MQTT from "../mqtt";
 import { WebSocketClient, Request } from "../types";
 import deviceModel from "../models/device";
+import Websocket from "../websocket";
 
-export async function handleWS(w: WS, req: Request, next) {
+export async function handleWs(w: WS, req: Request, next) {
   const ws = w as WebSocketClient;
   ws.path = req.path;
   try {
@@ -22,10 +23,16 @@ export async function handleWS(w: WS, req: Request, next) {
       if (m instanceof Buffer) {
         const data = new Uint8Array(m.length);
         console.log(`Received binary: ${data}`);
+        if (ws.path === "/audio") {
+          console.log("Handle audio binary");
+        } else if (ws.path === "/") {
+          console.log("Handle lights binary");
+        }
       } else if (typeof m == "string") {
         try {
           const packet = JSON.parse(m);
-          MQTT.handlePacket({ packet, orgId: ws.orgId });
+          const clients = Websocket.getClients(ws.path, ws.orgId);
+          MQTT.handlePacket({ packet, clients });
         } catch (e) {
           console.log(`Error parsing JSON: ${m}, (${e})`);
         }

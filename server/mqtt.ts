@@ -1,4 +1,3 @@
-import { Instance } from "express-ws";
 import { Types } from "mongoose";
 
 import {
@@ -11,6 +10,7 @@ import {
   PacketId,
   Subscriber,
 } from "./types";
+import Websocket from "./websocket";
 
 const WILDCARD = "*";
 const WILDCARD_MULTI = "#";
@@ -39,7 +39,6 @@ class TopicTree {
 
 export default class MQTT {
   private static topicTree: TopicTree = new TopicTree();
-  private static expressWsInstance: Instance;
   private static subscriberMap: Map<
     SubscriberId,
     {
@@ -56,8 +55,7 @@ export default class MQTT {
     this.subscriberMap = new Map();
   }
 
-  public static init(i: Instance) {
-    this.expressWsInstance = i;
+  public static init() {
     this.subscriberMap = new Map();
   }
 
@@ -111,21 +109,15 @@ export default class MQTT {
     return this.subscriberMap.get(subscriberId);
   }
 
-  private static getOrgClients(orgId?: Types.ObjectId) {
-    return Array.from(
-      (this.expressWsInstance?.getWss().clients as Set<WebSocketClient>) || []
-    ).filter((w: WebSocketClient) => !orgId || w.orgId.equals(orgId));
-  }
-
   public static getSubscriberClients({
     topic,
-    orgId,
+    clients,
   }: {
     topic?: Topic;
-    orgId?: Types.ObjectId;
+    clients: WebSocketClient[];
   }) {
     const subscribers = this.getSubscribers(topic);
-    return this.getOrgClients(orgId).reduce((arr: SubscriberClient[], cur) => {
+    return clients.reduce((arr: SubscriberClient[], cur) => {
       if (!topic || subscribers.has(cur.deviceId.toString())) {
         const subscriberClient = cur as SubscriberClient;
         const subscriber = subscribers.get(cur.deviceId.toString());
@@ -137,10 +129,6 @@ export default class MQTT {
       }
       return arr;
     }, []);
-  }
-
-  public static getClient(subscriberId: SubscriberId) {
-    return this.getOrgClients().find((w) => w.deviceId.equals(subscriberId));
   }
 
   public static subscribe(packet: Packet) {
@@ -169,7 +157,9 @@ export default class MQTT {
       }
       const res = packet;
       res.type = MessageType.TYPE_MQTT_SUBACK;
-      this.getClient(packet.senderId)?.send(JSON.stringify(res));
+      Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
+        JSON.stringify(res)
+      );
     }
   }
 
@@ -191,7 +181,9 @@ export default class MQTT {
 
       const res = packet;
       res.type = MessageType.TYPE_MQTT_UNSUBACK;
-      this.getClient(packet.senderId)?.send(JSON.stringify(res));
+      Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
+        JSON.stringify(res)
+      );
     }
   }
 
@@ -209,7 +201,9 @@ export default class MQTT {
     }
     const res = packet;
     res.type = MessageType.TYPE_MQTT_PUBREL;
-    this.getClient(senderId)?.send(JSON.stringify(res));
+    Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
+      JSON.stringify(res)
+    );
   }
 
   private static pubRel(packet: Packet) {
@@ -219,7 +213,9 @@ export default class MQTT {
     }
     const res = packet;
     res.type = MessageType.TYPE_MQTT_PUBCOMP;
-    this.getClient(senderId)?.send(JSON.stringify(res));
+    Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
+      JSON.stringify(res)
+    );
   }
 
   private static pubComp(packet: Packet) {
@@ -230,17 +226,20 @@ export default class MQTT {
   }
 
   private static publish({
-    orgId,
+    clients,
     packet,
   }: {
-    orgId?: Types.ObjectId;
+    clients: WebSocketClient[];
     packet: Packet;
   }) {
     const { topic, qos, packetId, senderId } = packet;
     console.log(`Publish topic ${topic}`);
     const qosInternal = qos == null ? DEFAULT_QOS : qos;
-    const clients = this.getSubscriberClients({ topic: topic, orgId });
-    clients.forEach((subscriber) => {
+    const subscriberClients = this.getSubscriberClients({
+      topic: topic,
+      clients,
+    });
+    subscriberClients.forEach((subscriber) => {
       // Subscriber can downgrade
       const minQos =
         subscriber.qos < qosInternal ? subscriber.qos : qosInternal;
@@ -261,25 +260,29 @@ export default class MQTT {
       switch (qosInternal) {
         case 1:
           res.type = MessageType.TYPE_MQTT_PUBACK;
-          this.getClient(packet.senderId)?.send(JSON.stringify(res));
+          Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
+            JSON.stringify(res)
+          );
           break;
         case 2:
           if (packetId != null) {
             this.getOrCreate(senderId).unackedPackets.set(packetId, packet);
           }
           res.type = MessageType.TYPE_MQTT_PUBREC;
-          this.getClient(senderId)?.send(JSON.stringify(res));
+          Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
+            JSON.stringify(res)
+          );
           break;
       }
     }
   }
 
   public static handlePacket({
-    orgId,
     packet,
+    clients,
   }: {
-    orgId?: Types.ObjectId;
     packet: Packet;
+    clients: WebSocketClient[];
   }) {
     switch (packet.type) {
       case MessageType.TYPE_MQTT_SUBSCRIBE:
@@ -290,7 +293,7 @@ export default class MQTT {
         break;
       case MessageType.TYPE_MQTT_PUBLISH:
         this.publish({
-          orgId,
+          clients,
           packet,
         });
         break;

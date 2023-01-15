@@ -3,6 +3,6 @@ import * as websocketCtrl from "../controllers/websocket";
 
 const rootRouter = express.Router();
 
-rootRouter.ws("", websocketCtrl.handleWS);
+rootRouter.ws("", websocketCtrl.handleWs);
 
 export default rootRouter;
