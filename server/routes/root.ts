@@ -1,8 +1,8 @@
 import express from "express";
-import * as messageBrokerCtrl from "../controllers/messageBroker";
+import * as mqttCtrl from "../controllers/mqtt";
 
 const rootRouter = express.Router();
 
-rootRouter.ws("", messageBrokerCtrl.handleWS);
+rootRouter.ws("", mqttCtrl.handleWS);
 
 export default rootRouter;

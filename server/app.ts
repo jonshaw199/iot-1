@@ -13,11 +13,10 @@ dotenv.config();
 import usersRouter from "./routes/user";
 import orgRouter from "./routes/org";
 import deviceRouter from "./routes/device";
-import MessageBroker from "./messageBroker";
-import { handleWS } from "./controllers/messageBroker";
+import MQTT from "./mqtt";
 import rootRouter from "./routes/root";
 
-MessageBroker.init(expressWs);
+MQTT.init(expressWs);
 
 mongoose.connect(process.env.MONGODB_URI, null, (err) => {
   console.log(err || `Connected to MongoDB.`);
