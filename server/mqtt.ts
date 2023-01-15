@@ -307,7 +307,7 @@ export default class MQTT {
         this.pubComp(packet);
         break;
       default:
-        console.log("Unknown packet type");
+        console.log(`Unknown packet type (${packet.type})`);
     }
   }
 }
