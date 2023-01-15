@@ -32,7 +32,10 @@ export async function handleWs(w: WS, req: Request, next) {
         try {
           const packet = JSON.parse(m);
           const clients = Websocket.getClients(ws.path, ws.orgId);
-          MQTT.handlePacket({ packet, clients });
+          const senderClient = clients.find((c) =>
+            c.deviceId.equals(ws.deviceId)
+          );
+          MQTT.handlePacket({ packet, clients, senderClient });
         } catch (e) {
           console.log(`Error parsing JSON: ${m}, (${e})`);
         }

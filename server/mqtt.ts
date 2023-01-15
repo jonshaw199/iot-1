@@ -131,7 +131,7 @@ export default class MQTT {
     }, []);
   }
 
-  public static subscribe(packet: Packet) {
+  public static subscribe(packet: Packet, client?: WebSocketClient) {
     const { senderId, topic, qos } = packet;
     console.log(
       `Subscribe device ID: ${senderId}; topic: ${topic}; qos: ${qos}`
@@ -157,13 +157,11 @@ export default class MQTT {
       }
       const res = packet;
       res.type = MessageType.TYPE_MQTT_SUBACK;
-      Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
-        JSON.stringify(res)
-      );
+      client?.send(JSON.stringify(res));
     }
   }
 
-  public static unsubscribe(packet: Packet) {
+  public static unsubscribe(packet: Packet, client?: WebSocketClient) {
     const { senderId, topic } = packet;
     console.log(`Unsubscribe device ID: ${senderId}; topic: ${topic}`);
 
@@ -181,9 +179,7 @@ export default class MQTT {
 
       const res = packet;
       res.type = MessageType.TYPE_MQTT_UNSUBACK;
-      Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
-        JSON.stringify(res)
-      );
+      client?.send(JSON.stringify(res));
     }
   }
 
@@ -194,28 +190,24 @@ export default class MQTT {
     }
   }
 
-  private static pubRec(packet: Packet) {
+  private static pubRec(packet: Packet, client?: WebSocketClient) {
     const { packetId, senderId } = packet;
     if (packetId != null) {
       this.getOrCreate(senderId).unackedPackets.set(packetId, packet);
     }
     const res = packet;
     res.type = MessageType.TYPE_MQTT_PUBREL;
-    Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
-      JSON.stringify(res)
-    );
+    client?.send(JSON.stringify(res));
   }
 
-  private static pubRel(packet: Packet) {
+  private static pubRel(packet: Packet, client?: WebSocketClient) {
     const { packetId, senderId } = packet;
     if (packetId != null) {
       this.getOrCreate(senderId).unackedPackets.delete(packetId);
     }
     const res = packet;
     res.type = MessageType.TYPE_MQTT_PUBCOMP;
-    Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
-      JSON.stringify(res)
-    );
+    client?.send(JSON.stringify(res));
   }
 
   private static pubComp(packet: Packet) {
@@ -228,9 +220,11 @@ export default class MQTT {
   private static publish({
     clients,
     packet,
+    senderClient,
   }: {
     clients: WebSocketClient[];
     packet: Packet;
+    senderClient?: WebSocketClient;
   }) {
     const { topic, qos, packetId, senderId } = packet;
     console.log(`Publish topic ${topic}`);
@@ -260,18 +254,14 @@ export default class MQTT {
       switch (qosInternal) {
         case 1:
           res.type = MessageType.TYPE_MQTT_PUBACK;
-          Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
-            JSON.stringify(res)
-          );
+          senderClient?.send(JSON.stringify(res));
           break;
         case 2:
           if (packetId != null) {
             this.getOrCreate(senderId).unackedPackets.set(packetId, packet);
           }
           res.type = MessageType.TYPE_MQTT_PUBREC;
-          Websocket.getClient(new Types.ObjectId(packet.senderId))?.send(
-            JSON.stringify(res)
-          );
+          senderClient?.send(JSON.stringify(res));
           break;
       }
     }
@@ -280,31 +270,34 @@ export default class MQTT {
   public static handlePacket({
     packet,
     clients,
+    senderClient,
   }: {
     packet: Packet;
     clients: WebSocketClient[];
+    senderClient?: WebSocketClient;
   }) {
     switch (packet.type) {
       case MessageType.TYPE_MQTT_SUBSCRIBE:
-        this.subscribe(packet);
+        this.subscribe(packet, senderClient);
         break;
       case MessageType.TYPE_MQTT_UNSUBSCRIBE:
-        this.unsubscribe(packet);
+        this.unsubscribe(packet, senderClient);
         break;
       case MessageType.TYPE_MQTT_PUBLISH:
         this.publish({
           clients,
           packet,
+          senderClient,
         });
         break;
       case MessageType.TYPE_MQTT_PUBACK:
         this.pubAck(packet);
         break;
       case MessageType.TYPE_MQTT_PUBREC:
-        this.pubRec(packet);
+        this.pubRec(packet, senderClient);
         break;
       case MessageType.TYPE_MQTT_PUBREL:
-        this.pubRel(packet);
+        this.pubRel(packet, senderClient);
         break;
       case MessageType.TYPE_MQTT_PUBCOMP:
         this.pubComp(packet);

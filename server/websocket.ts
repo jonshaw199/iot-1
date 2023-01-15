@@ -1,7 +1,7 @@
 import { Instance } from "express-ws";
 import { Types } from "mongoose";
 
-import { WebSocketClient, SubscriberId } from "./types";
+import { WebSocketClient } from "./types";
 
 export default class Websocket {
   private static instance: Instance;
