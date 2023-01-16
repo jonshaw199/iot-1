@@ -6,12 +6,6 @@ import { WebSocketClient, Request } from "../types";
 import deviceModel from "../models/device";
 import Websocket from "../websocket";
 
-function toHexString(byteArray: Uint8Array) {
-  return Array.from(byteArray, function (byte) {
-    return ("0" + (byte & 0xff).toString(16)).slice(-2);
-  }).join("");
-}
-
 export async function handleWs(w: WS, req: Request, next) {
   const ws = w as WebSocketClient;
   ws.request = req;
@@ -25,15 +19,7 @@ export async function handleWs(w: WS, req: Request, next) {
   ws.on("message", (m) => {
     process.stdout.write("<");
     try {
-      if (m instanceof Buffer) {
-        const data = new Uint8Array(m.length);
-        console.log(`Received binary: ${toHexString(data)}`);
-        if (ws.request.path === "/audio") {
-          console.log("Handle audio binary");
-        } else if (ws.request.path === "/") {
-          console.log("Handle lights binary");
-        }
-      } else if (typeof m == "string") {
+      if (typeof m == "string") {
         try {
           const packet = JSON.parse(m);
           const clients = Websocket.getClients(
@@ -48,7 +34,7 @@ export async function handleWs(w: WS, req: Request, next) {
           console.log(`Error parsing JSON: ${m}, (${e})`);
         }
       } else {
-        throw `Unknown message`;
+        throw `Unknown message at ${ws.request.path}`;
       }
     } catch (e) {
       console.log(`Error receiving message: ${m} (${e})`);
