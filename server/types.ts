@@ -112,8 +112,7 @@ export type PacketLightsAppearance = Packet & {
 
 export type WebSocketClient = WS & {
   path: Nullable<string>;
-  deviceId: Nullable<Types.ObjectId>;
-  orgId: Nullable<Types.ObjectId>;
+  device: Nullable<Device>;
 };
 
 export type SubscriberClient = WebSocketClient & {

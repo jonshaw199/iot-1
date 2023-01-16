@@ -16,9 +16,8 @@ export async function handleWs(w: WS, req: Request, next) {
   const ws = w as WebSocketClient;
   ws.path = req.path;
   try {
-    ws.deviceId = new Types.ObjectId(req.query.deviceId?.toString());
-    const device = await deviceModel.findById(ws.deviceId);
-    ws.orgId = device.orgId;
+    const deviceId = new Types.ObjectId(req.query.deviceId?.toString());
+    ws.device = await deviceModel.findById(deviceId);
   } catch (e) {
     next(e);
   }
@@ -37,9 +36,9 @@ export async function handleWs(w: WS, req: Request, next) {
       } else if (typeof m == "string") {
         try {
           const packet = JSON.parse(m);
-          const clients = Websocket.getClients(ws.path, ws.orgId);
+          const clients = Websocket.getClients(ws.path, ws.device.orgId);
           const senderClient = clients.find((c) =>
-            c.deviceId.equals(ws.deviceId)
+            c.device._id.equals(ws.device._id)
           );
           MQTT.handlePacket({ packet, clients, senderClient });
         } catch (e) {

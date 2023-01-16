@@ -118,9 +118,9 @@ export default class MQTT {
   }) {
     const subscribers = this.getSubscribers(topic);
     return clients.reduce((arr: SubscriberClient[], cur) => {
-      if (!topic || subscribers.has(cur.deviceId.toString())) {
+      if (!topic || subscribers.has(cur.device._id.toString())) {
         const subscriberClient = cur as SubscriberClient;
-        const subscriber = subscribers.get(cur.deviceId.toString());
+        const subscriber = subscribers.get(cur.device._id.toString());
         if (subscriber) {
           subscriberClient.topic = subscriber.topic;
           subscriberClient.qos = subscriber.qos;
@@ -238,7 +238,7 @@ export default class MQTT {
       const minQos =
         subscriber.qos < qosInternal ? subscriber.qos : qosInternal;
       if (minQos > 0 && packetId != null) {
-        this.getOrCreate(subscriber.deviceId.toString()).unackedPackets.set(
+        this.getOrCreate(subscriber.device._id.toString()).unackedPackets.set(
           packetId,
           { ...packet, qos: minQos }
         );
