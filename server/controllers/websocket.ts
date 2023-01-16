@@ -6,6 +6,12 @@ import { WebSocketClient, Request } from "../types";
 import deviceModel from "../models/device";
 import Websocket from "../websocket";
 
+function toHexString(byteArray: Uint8Array) {
+  return Array.from(byteArray, function (byte) {
+    return ("0" + (byte & 0xff).toString(16)).slice(-2);
+  }).join("");
+}
+
 export async function handleWs(w: WS, req: Request, next) {
   const ws = w as WebSocketClient;
   ws.path = req.path;
@@ -22,7 +28,7 @@ export async function handleWs(w: WS, req: Request, next) {
     try {
       if (m instanceof Buffer) {
         const data = new Uint8Array(m.length);
-        console.log(`Received binary: ${data}`);
+        console.log(`Received binary: ${toHexString(data)}`);
         if (ws.path === "/audio") {
           console.log("Handle audio binary");
         } else if (ws.path === "/") {

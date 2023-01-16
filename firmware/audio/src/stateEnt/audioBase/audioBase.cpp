@@ -13,7 +13,7 @@
 #define MODE_MIC 0 // Define the working mode.  定义工作模式
 #define MODE_SPK 1
 #define DATA_SIZE 1024
-#define MAX_DATA_SIZE DATA_SIZE * 250 // 100 original
+#define MAX_DATA_SIZE DATA_SIZE * 100
 
 uint8_t *AudioBase::microphoneData;
 int AudioBase::data_offset = 0;
@@ -137,10 +137,13 @@ void AudioBase::loop()
         if (data_offset == MAX_DATA_SIZE || M5.Touch.ispressed() != true)
           break;
       }
-      size_t bytes_written;
+      pushOutbox(AF1Msg(microphoneData, data_offset));
+      Serial.printf("Length: %d", data_offset);
+      // hexdump(microphoneData, data_offset);
+      /*size_t bytes_written;
       initI2SSpeakOrMic(MODE_SPK);
       i2s_write(Speak_I2S_NUMBER, microphoneData, data_offset, &bytes_written,
-                portMAX_DELAY);
+                portMAX_DELAY);*/
     }
   }
 }
