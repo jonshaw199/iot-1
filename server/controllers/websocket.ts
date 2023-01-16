@@ -14,7 +14,7 @@ function toHexString(byteArray: Uint8Array) {
 
 export async function handleWs(w: WS, req: Request, next) {
   const ws = w as WebSocketClient;
-  ws.path = req.path;
+  ws.request = req;
   try {
     const deviceId = new Types.ObjectId(req.query.deviceId?.toString());
     ws.device = await deviceModel.findById(deviceId);
@@ -28,15 +28,18 @@ export async function handleWs(w: WS, req: Request, next) {
       if (m instanceof Buffer) {
         const data = new Uint8Array(m.length);
         console.log(`Received binary: ${toHexString(data)}`);
-        if (ws.path === "/audio") {
+        if (ws.request.path === "/audio") {
           console.log("Handle audio binary");
-        } else if (ws.path === "/") {
+        } else if (ws.request.path === "/") {
           console.log("Handle lights binary");
         }
       } else if (typeof m == "string") {
         try {
           const packet = JSON.parse(m);
-          const clients = Websocket.getClients(ws.path, ws.device.orgId);
+          const clients = Websocket.getClients(
+            ws.request.path,
+            ws.device.orgId
+          );
           const senderClient = clients.find((c) =>
             c.device._id.equals(ws.device._id)
           );
@@ -53,11 +56,11 @@ export async function handleWs(w: WS, req: Request, next) {
   });
 
   ws.on("error", (err) => {
-    console.log(`${ws.path} error: ` + err);
+    console.log(`${ws.request.path} error: ` + err);
   });
 
   ws.on("close", () => {
-    console.log(`Closing connection at ${ws.path}`);
+    console.log(`Closing connection at ${ws.request.path}`);
   });
 
   next();

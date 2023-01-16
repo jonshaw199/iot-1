@@ -15,7 +15,8 @@ export default class Websocket {
       (this.instance.getWss().clients as Set<WebSocketClient>) || []
     ).filter(
       (w: WebSocketClient) =>
-        (!orgId || w.device.orgId.equals(orgId)) && (!path || w.path === path)
+        (!orgId || w.device.orgId.equals(orgId)) &&
+        (!path || w.request.path === path)
     );
   }
 

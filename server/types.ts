@@ -111,7 +111,7 @@ export type PacketLightsAppearance = Packet & {
 };
 
 export type WebSocketClient = WS & {
-  path: Nullable<string>;
+  request: Nullable<Request>;
   device: Nullable<Device>;
 };
 
