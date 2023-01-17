@@ -26,8 +26,12 @@ export function useWebsocket<T>({
         onOpen();
       };
       client.current.onmessage = (msg) => {
-        console.log(`WS msg: ${msg}`);
-        onRecv(JSON.parse(msg.data.toString()));
+        console.log(`WS msg: ${msg.data}`);
+        if (msg.data instanceof Blob) {
+          msg.data.text().then((t) => console.log(t));
+        } else {
+          onRecv(JSON.parse(msg.data.toString()));
+        }
       };
     }
   }, [url, onOpen, onRecv]);

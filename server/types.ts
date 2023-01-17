@@ -5,6 +5,7 @@ import { Document, Types } from "mongoose";
 export type Nullable<T> = null | undefined | T;
 
 export enum MessageType {
+  TYPE_AUDIO = 0,
   TYPE_NONE = 100,
   TYPE_HANDSHAKE_REQUEST,
   TYPE_HANDSHAKE_RESPONSE,

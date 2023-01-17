@@ -58,6 +58,8 @@ export const recvMessageThunk = createAsyncThunk(
           })
         );
         break;
+      case MessageType.TYPE_AUDIO:
+        break;
     }
     return msg; // Return as received
   }

@@ -57,7 +57,7 @@ function LoggedIn() {
   const [open, setOpen] = useState(false);
 
   const ws = useWebsocket<Packet>({
-    url: `ws://${process.env.REACT_APP_SERVER_ADDRESS}/?deviceId=${process.env.REACT_APP_DEVICE_ID}`,
+    url: `ws://${process.env.REACT_APP_SERVER_ADDRESS}/?deviceId=${process.env.REACT_APP_DEVICE_ID}&pubs=63c47ae8d7531ebb0ded4b9a`,
     onOpen: () => {
       ws.send({
         senderId: process.env.REACT_APP_DEVICE_ID!,

@@ -1,4 +1,5 @@
 #include "audioBase.h"
+#include "state.h"
 
 #include <M5Core2.h>
 #include <driver/i2s.h>
@@ -137,7 +138,7 @@ void AudioBase::loop()
         if (data_offset == MAX_DATA_SIZE || M5.Touch.ispressed() != true)
           break;
       }
-      pushOutbox(AF1Msg(microphoneData, data_offset));
+      pushOutbox(AF1Msg(TYPE_AUDIO, microphoneData, data_offset));
       Serial.printf("Length: %d", data_offset);
       // hexdump(microphoneData, data_offset);
       /*size_t bytes_written;

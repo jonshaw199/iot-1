@@ -5,6 +5,7 @@ import { Document, Types } from "mongoose";
 export type Nullable<T> = null | undefined | T;
 
 export enum MessageType {
+  TYPE_AUDIO = 0,
   TYPE_NONE = 100,
   TYPE_HANDSHAKE_REQUEST,
   TYPE_HANDSHAKE_RESPONSE,
@@ -111,9 +112,8 @@ export type PacketLightsAppearance = Packet & {
 };
 
 export type WebSocketClient = WS & {
-  path: Nullable<string>;
-  deviceId: Nullable<Types.ObjectId>;
-  orgId: Nullable<Types.ObjectId>;
+  request: Nullable<Request>;
+  device: Nullable<Device>;
 };
 
 export type SubscriberClient = WebSocketClient & {

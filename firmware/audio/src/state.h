@@ -6,4 +6,9 @@ typedef enum
   STATE_HOME = 0
 } states;
 
+typedef enum
+{
+  TYPE_AUDIO = 0
+} types;
+
 #endif
