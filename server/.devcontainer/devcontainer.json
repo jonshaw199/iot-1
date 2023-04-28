@@ -4,13 +4,12 @@
 	"name": "Alpine",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	//"image": "mcr.microsoft.com/devcontainers/base:alpine-3.17"
-    "build": {
-        // Path is relataive to the devcontainer.json file.
-        "dockerfile": "Dockerfile"
-    }
-	
+
+	"dockerComposeFile": ["../../docker-compose.yml"],
+	"workspaceFolder": "/workspace"
+
 	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+	//"features": {}
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
