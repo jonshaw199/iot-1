@@ -12,6 +12,6 @@ services:
       - 3000:3000
     volumes:
       - ./server:/workspace
-      - ~/.gitconfig:/root/.gitconfig
+      - ./.gitconfig:/root/.gitconfig
     #env_file:
       #- ./.devcontainer/server/devcontainer.env
