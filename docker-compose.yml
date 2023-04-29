@@ -11,5 +11,5 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ~/server:/workspace
+      - ./server:/workspace
       #- ~/.gitconfig:/root/.gitconfig
