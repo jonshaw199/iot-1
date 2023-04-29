@@ -14,4 +14,4 @@ services:
       - ./server:/workspace
       #- ~/.gitconfig:/root/.gitconfig
     env_file:
-      - ./.devcontainer/server/devcontainer.env
+      #- ./.devcontainer/server/devcontainer.env
