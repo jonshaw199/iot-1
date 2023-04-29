@@ -1,8 +1,8 @@
 version: '3.4'
 
 services:
-  af1server1:
-    image: af1server1
+  server:
+    image: server
     build:
       context: ./server
       dockerfile: ../.devcontainer/server/Dockerfile
@@ -13,3 +13,5 @@ services:
     volumes:
       - ./server:/workspace
       #- ~/.gitconfig:/root/.gitconfig
+    env_file:
+      - ./.devcontainer/server/devcontainer.env
