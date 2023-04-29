@@ -5,11 +5,11 @@ services:
     image: af1server1
     build:
       context: ./server
-      dockerfile: ./Dockerfile
+      dockerfile: ../.devcontainer/server/Dockerfile
     environment:
       NODE_ENV: production
     ports:
       - 3000:3000
     volumes:
-      - ./server:/workspace
+      - ~/server:/workspace
       #- ~/.gitconfig:/root/.gitconfig
