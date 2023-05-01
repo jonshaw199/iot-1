@@ -1,11 +1,9 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
-	"name": "Server",
-	//"service": "server",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"name": "Web",
 	"image": "mcr.microsoft.com/devcontainers/base:alpine-3.17",
-	"workspaceMount": "source=${localWorkspaceFolder}/server,target=/workspace,type=bind",
+	"workspaceMount": "source=${localWorkspaceFolder}/web,target=/workspace,type=bind",
 	"workspaceFolder": "/workspace"
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	//"features": {}
@@ -18,14 +16,3 @@
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }
-/*
-{
-  "name": "server-container",
-  "dockerComposeFile": ["../docker-compose.yml"],
-  "service": "server-container",
-  "shutdownAction": "none",
-  "extensions": ["golang.go"],
-  // Open the sub-folder with the source code
-  "workspaceFolder": "/workspace/container1-src"
-}
-*/
