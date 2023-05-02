@@ -63,6 +63,8 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`AF1 server is running on port ${process.env.PORT}.`);
+const port = process.env.PORT;
+
+app.listen(port, () => {
+    console.log(port ? `AF1 server is running on port ${port}.` :  `Wheres me envs`)
 });
