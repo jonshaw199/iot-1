@@ -3,6 +3,8 @@
 {
   "name": "Server",
   //"service": "server",
+  "workspaceMount": "source=${localWorkspaceFolder}/server,target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "image": "mcr.microsoft.com/devcontainers/base:alpine-3.17",
   // Features to add to the dev container. More info: https://containers.dev/features.

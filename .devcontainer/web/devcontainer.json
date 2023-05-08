@@ -2,6 +2,8 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
   "name": "Web",
+  "workspaceMount": "source=${localWorkspaceFolder}/web,target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
   "image": "mcr.microsoft.com/devcontainers/base:alpine-3.17",
   // Features to add to the dev container. More info: https://containers.dev/features.
   //"features": {}
