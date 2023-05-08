@@ -1,18 +1,17 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
-	"name": "Web",
-	"image": "mcr.microsoft.com/devcontainers/base:alpine-3.17",
-	"workspaceMount": "source=${localWorkspaceFolder}/web,target=/workspace,type=bind",
-	"workspaceFolder": "/workspace",
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	//"features": {}
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apk add npm && npm i"
-	// Configure tool-specific properties.
-	// "customizations": {},
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+  "name": "Web",
+  "image": "mcr.microsoft.com/devcontainers/base:alpine-3.17",
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  //"features": {}
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  //"forwardPorts": [3020],
+  "appPort": "3020:3020",
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "cd .devcontainer && chmod +x postCreate.sh && ./postCreate.sh"
+  // Configure tool-specific properties.
+  // "customizations": {},
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  //"remoteUser": "root"
 }
