@@ -1,7 +1,7 @@
 sudo apk add npm git
 npm i
 
-if ! [ -e .env ]
+if ! [ -e ../.env ]
 then
     read -p "Decrypt .env files? (Y/N): " confirm
     if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
@@ -10,6 +10,7 @@ then
         read -p "Enter initialization vector: " iv
         node crypt/index.js -d . .env.encrypted "$key" "$iv"
         rm -rf crypt
+        mv .env ..
     fi
 fi
 

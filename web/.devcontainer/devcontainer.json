@@ -13,7 +13,7 @@
   //"forwardPorts": [3020],
   // "appPort": "3020:3020",
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "./.devcontainer/postCreate.sh",
+  "postCreateCommand": "cd .devcontainer && ./postCreate.sh",
   "shutdownAction": "none"
   // Configure tool-specific properties.
   // "customizations": {},
