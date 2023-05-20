@@ -1,22 +1,24 @@
 version: "3.9"
 services:
   server:
+    container_name: server
     build:
-      context: .
-      dockerfile: .devcontainer/server/Dockerfile
+      context: ./server
+      dockerfile: .devcontainer/Dockerfile
     ports:
       - "3021:3021"
     volumes:
       # This is where VS Code should expect to find your project's source code and the value of "workspaceFolder" in .devcontainer/devcontainer.json
       - ./server:/workspace
-      - ./.devcontainer/server:/workspace/.devcontainer
+    command: /bin/sh -c "while sleep 1000; do :; done"
   web:
+    container_name: web
     build:
-      context: .
-      dockerfile: .devcontainer/web/Dockerfile
+      context: ./web
+      dockerfile: .devcontainer/Dockerfile
     ports:
       - "3020:3020"
     volumes:
       # This is where VS Code should expect to find your project's source code and the value of "workspaceFolder" in .devcontainer/devcontainer.json
       - ./web:/workspace
-      - ./.devcontainer/web:/workspace/.devcontainer
+    command: /bin/sh -c "while sleep 1000; do :; done"
