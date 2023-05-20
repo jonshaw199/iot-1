@@ -10,3 +10,13 @@ services:
       # This is where VS Code should expect to find your project's source code and the value of "workspaceFolder" in .devcontainer/devcontainer.json
       - ./server:/workspace
       - ./.devcontainer/server:/workspace/.devcontainer
+  web:
+    build:
+      context: .
+      dockerfile: .devcontainer/web/Dockerfile
+    ports:
+      - "3020:3020"
+    volumes:
+      # This is where VS Code should expect to find your project's source code and the value of "workspaceFolder" in .devcontainer/devcontainer.json
+      - ./web:/workspace
+      - ./.devcontainer/web:/workspace/.devcontainer

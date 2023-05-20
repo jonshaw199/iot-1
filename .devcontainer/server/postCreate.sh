@@ -14,3 +14,4 @@ then
 fi
 
 echo "postCreate.sh complete"
+npm run monitor
