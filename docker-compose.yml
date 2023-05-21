@@ -1,7 +1,7 @@
 version: "3.9"
 services:
-  server:
-    container_name: server
+  iot-1-server-1:
+    container_name: iot-1-server-1
     build:
       context: ./server
       dockerfile: .devcontainer/Dockerfile
@@ -11,8 +11,8 @@ services:
       # This is where VS Code should expect to find your project's source code and the value of "workspaceFolder" in .devcontainer/devcontainer.json
       - ./server:/workspace
     command: /bin/sh -c "while sleep 1000; do :; done"
-  web:
-    container_name: web
+  iot-1-web-1:
+    container_name: iot-1-web-1
     build:
       context: ./web
       dockerfile: .devcontainer/Dockerfile

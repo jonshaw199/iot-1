@@ -1,5 +1,5 @@
 {
-  "name": "af1-server-1",
+  "name": "iot-1-server-1",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,16 +8,8 @@
     "monitor": "nodemon app.ts",
     "serve": "npx ts-node app.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jonshaw199/af1-server-1.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jonshaw199/af1-server-1/issues"
-  },
-  "homepage": "https://github.com/jonshaw199/af1-server-1#readme",
   "devDependencies": {
     "@types/driftless": "^2.0.1",
     "@types/express": "^4.17.13",
