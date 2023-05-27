@@ -12,8 +12,8 @@
   // Features to add to the dev container. More info: https://containers.dev/features.
   //"features": {}
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  // "forwardPorts": [3021],
-  // "appPort": "3021:3021"
+  "forwardPorts": [3021],
+  "appPort": "3021:3021",
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "cd .devcontainer && ./postCreate.sh",
   "shutdownAction": "none"
