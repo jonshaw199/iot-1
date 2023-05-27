@@ -2,7 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
   "name": "Lights",
-  "workspaceMount": "source=${localWorkspaceFolder}/firmware/lights,target=/workspace,type=bind",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
   "workspaceFolder": "/workspace",
   //"image": "mcr.microsoft.com/devcontainers/base:alpine-3.17",
   "build": { "dockerfile": "Dockerfile" },
