@@ -15,7 +15,7 @@
     8008
   ],
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "cd .devcontainer && ./postCreate.sh",
+  "postCreateCommand": "cd .devcontainer && bash postCreate.sh",
   "postAttachCommand": "sudo service udev restart",
   // Configure tool-specific properties.
   "customizations": {
