@@ -15,8 +15,8 @@
 
 void setup()
 {
-  Serial.setTimeout(JS_SERIAL_TIMEOUT);
-  Serial.begin(JS_BAUD);
+  Serial.setTimeout(SERIAL_TIMEOUT);
+  Serial.begin(SERIAL_BAUD);
 #ifdef ARDUINO_M5Stick_C
   M5.begin();
   M5.Lcd.setSwapBytes(true);
@@ -25,9 +25,9 @@ void setup()
 #endif
   AF1::begin(JS_ID);
 #ifdef JS_IP_A
-  AF1::addWifiAP(JSSSID, JSPASS, JS_IP_A, JS_IP_B, JS_IP_C, JS_IP_D, 192, 168, 1, 254, 255, 255, 255, 0);
+  AF1::addWifiAP(WIFI_SSID, WIFI_PASS, JS_IP_A, JS_IP_B, JS_IP_C, JS_IP_D, 192, 168, 1, 254, 255, 255, 255, 0);
 #else
-  AF1::addWifiAP(JSSSID, JSPASS);
+  AF1::addWifiAP(WIFI_SSID, WIFI_PASS);
 #endif
   AF1::addStateEnt(STATE_HOME, new Home());
   AF1::addStringHandler("home", [](SHArg a)

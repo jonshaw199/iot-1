@@ -15,6 +15,7 @@
   "forwardPorts": [3021],
   "appPort": "3021:3021",
   // Use 'postCreateCommand' to run commands after the container is created.
+  // Don't have to change dir here but postCreate.sh is based on current dir
   "postCreateCommand": "cd .devcontainer && ./postCreate.sh",
   "shutdownAction": "none"
   // Configure tool-specific properties.
@@ -22,14 +23,4 @@
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root"
 }
-/*
-{
-  "name": "server-container",
-  "dockerComposeFile": ["../docker-compose.yml"],
-  "service": "server-container",
-  "shutdownAction": "none",
-  "extensions": ["golang.go"],
-  // Open the sub-folder with the source code
-  "workspaceFolder": "/workspace/container1-src"
-}
-*/
+
