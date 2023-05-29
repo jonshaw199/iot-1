@@ -1,4 +1,5 @@
 #!/bin/bash
+
 if ! [ -e ../buildFlags.h ]
 then
     read -r -p "Decrypt build flags file? (Y/N): " response
