@@ -1,10 +1,11 @@
-sudo apk add npm git
-npm i
+#!/bin/bash
 
 if ! [ -e ../.env ]
 then
-    read -p "Decrypt .env files? (Y/N): " confirm
-    if [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]]; then
+    read -r -p "Decrypt .env files? (Y/N): " response
+    response=${response,,}    # tolower
+    if [[ "$response" =~ ^(yes|y)$ ]]     
+    then   
         git clone https://github.com/jonshaw199/crypt.git
         read -p "Enter encryption key: " key
         read -p "Enter initialization vector: " iv
@@ -13,6 +14,8 @@ then
         mv .env ..
     fi
 fi
+
+npm i
 
 echo "postCreate.sh complete"
 npm run monitor
