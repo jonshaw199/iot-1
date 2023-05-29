@@ -23,7 +23,8 @@
       "extensions": [
         "ms-vscode.cpptools",
         "ms-vscode.cpptools-extension-pack",
-        "platformio.platformio-ide"
+        "platformio.platformio-ide",
+        "esbenp.prettier-vscode"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh"
@@ -37,5 +38,7 @@
   ],
   "runArgs": [
     "--privileged"
-  ]
+  ],
+  // Fix error when starting container; keeps container running
+  "overrideCommand": true
 }
