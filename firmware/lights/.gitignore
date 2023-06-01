@@ -2,5 +2,6 @@
 .vscode
 
 buildFlags.h
+env.h
 
 lib/AF1
