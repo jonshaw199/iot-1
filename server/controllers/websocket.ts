@@ -26,8 +26,8 @@ export async function handleWs(w: WS, req: Request, next) {
     process.stdout.write("<");
     try {
       if (m instanceof Buffer) {
-        const data = new Uint8Array(m.length);
-        //console.log(`Received binary: ${toHexString(data)}`);
+        const data = new Uint8Array(m);
+        // console.log(`Received binary: ${toHexString(data)}`);
         if (m.length && Object.values(MessageType).includes(data[0])) {
           Websocket.getBinSubClients(
             ws.request.path,
