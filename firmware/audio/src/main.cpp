@@ -13,7 +13,7 @@ void setup()
   AF1::addStateEnt(STATE_HOME, new Home());
   AF1::setInitialState(INITIAL_STATE);
   AF1::addWifiAP(WIFI_SSID, WIFI_PASS);
-  AF1::setDefaultWS(SERVER_IP, String("/?deviceId=") + String(JS_ID), SERVER_PORT);
+  AF1::setDefaultWS(SERVER_IP, String("/?deviceId=") + String(JS_ID) + "&pubs=" + String(JS_ID), SERVER_PORT);
   M5.begin();
   M5.Lcd.print("Hello world");
 }
