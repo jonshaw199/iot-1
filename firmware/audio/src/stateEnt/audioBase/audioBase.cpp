@@ -154,3 +154,8 @@ void AudioBase::preStateChange(int s)
   Base::preStateChange(s);
   delete microphoneData;
 }
+
+bool AudioBase::doScanForPeersESPNow()
+{
+  return false;
+}

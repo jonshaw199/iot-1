@@ -13,6 +13,7 @@ public:
   void setup();
   void loop();
   void preStateChange(int s) override;
+  bool doScanForPeersESPNow() override;
 };
 
 #endif
